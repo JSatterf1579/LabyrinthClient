@@ -42,6 +42,7 @@ public class MapLoader : MonoBehaviour {
         Debug.Log("Recieved Response");
         Debug.Log(response.ToString());
         currentMap = storeRecievedMap(response.list[0]);
+        Debug.Log(currentMap.ToString());
     }
 
     private Map storeRecievedMap(JSONObject response)
@@ -49,29 +50,13 @@ public class MapLoader : MonoBehaviour {
         if(response.GetField("status").n == 200)
         {
             Debug.Log("Got proper response");
-            return buildMapFromJSON(response.GetField("map"));
+            MapDecoder decoder = new MapDecoder(response.GetField("map"));
+            decoder.decodeMap();
+            return decoder.getMap();
         }
+        Debug.Log("Got non 200 return. Did something go wrong?");
         return currentMap;
         
-    }
-
-    private Map buildMapFromJSON(JSONObject serializedMap)
-    {
-        int x = (int)serializedMap.GetField("size").GetField("x").n;
-        int y = (int)serializedMap.GetField("size").GetField("y").n;
-
-        Map workingMap =  new Map(x, y);
-        JSONObject serializedTiles = serializedMap.GetField("tiles");
-        for(int i = 0; i < serializedTiles.list.Count; i++)
-        {
-            int tileX = (int)serializedTiles.list[i].GetField("position").list[0].n;
-            int tileY = (int)serializedTiles.list[i].GetField("position").list[1].n;
-            int rotation = (int)serializedTiles.list[i].GetField("rotation").n;
-            string type = serializedTiles.list[i].GetField("terrain").str;
-            workingMap.setTile(tileX, tileY, new Tile(tileX, tileY, rotation, type));
-        }
-
-        return workingMap;
     }
 
     public Map getCurrentMap()

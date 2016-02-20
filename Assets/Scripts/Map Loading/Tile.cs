@@ -15,5 +15,10 @@ public class Tile {
         this.type = type;
     }
 
+    public override string ToString()
+    {
+        return "Position: " + xPos + "," + yPos + ":" + rotation + "\r\n" + "Type: " + type;
+    }
+
 	
 }
