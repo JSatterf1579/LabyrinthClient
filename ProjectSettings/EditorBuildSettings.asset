@@ -4,4 +4,14 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/UIScenes/MainMenu.unity
+  - enabled: 1
+    path: Assets/UIScenes/FindGame.unity
+  - enabled: 1
+    path: Assets/UIScenes/MyHeroes.unity
+  - enabled: 1
+    path: Assets/UIScenes/MyDeck.unity
+  - enabled: 1
+    path: Assets/UIScenes/Store.unity
