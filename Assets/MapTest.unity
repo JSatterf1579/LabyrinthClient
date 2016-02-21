@@ -126,7 +126,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: b30cc084d923f0645b55bba668610d48, type: 2}
       propertyPath: url
-      value: ws://192.168.60.10:4567/socket.io/?EIO=4&transport=websocket
+      value: ws://localhost:4567/socket.io/?EIO=4&transport=websocket
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: b30cc084d923f0645b55bba668610d48, type: 2}
       propertyPath: reconnectDelay
@@ -164,7 +164,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 6
   m_Type: 1
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -574,6 +574,61 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1694491430}
+--- !u!1 &1863475800
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1863475802}
+  - 114: {fileID: 1863475801}
+  m_Layer: 0
+  m_Name: MapRenderer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1863475801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1863475800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 329a7ed9ddccc354d948445b9d1d1d49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TileList:
+  - Name: default
+    Prefab: {fileID: 194768, guid: dddf88b200c002b419f853e3d49c2267, type: 2}
+  - Name: wall
+    Prefab: {fileID: 151854, guid: 4fbe136d1dd700048b29df6da5251b26, type: 2}
+  - Name: dirt
+    Prefab: {fileID: 128014, guid: c2c174f755a9a8245ac96af3805410b7, type: 2}
+  - Name: sand
+    Prefab: {fileID: 177846, guid: 6a283570fc2c90a4ab74c62f8b09acdc, type: 2}
+  - Name: water
+    Prefab: {fileID: 124022, guid: d1eca36b13b049e4ea1f18a4445e73b1, type: 2}
+  - Name: rock
+    Prefab: {fileID: 126678, guid: 70ec49ba8d237bb45a032dddfb6c7079, type: 2}
+  - Name: empty
+    Prefab: {fileID: 0}
+  loader: {fileID: 2060771704}
+--- !u!4 &1863475802
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1863475800}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
 --- !u!1 &1889420571
 GameObject:
   m_ObjectHideFlags: 0
@@ -586,6 +641,7 @@ GameObject:
   - 92: {fileID: 1889420574}
   - 124: {fileID: 1889420573}
   - 81: {fileID: 1889420572}
+  - 114: {fileID: 1889420577}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -660,6 +716,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!114 &1889420577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1889420571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 820792527d81c524ca8fadeb91b546ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PanWhenMouseAtEdge: 1
+  MousePanBounds: 10
+  CardinalPanSpeed: 10
 --- !u!1 &2060771703
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,11 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿public class Tile {
 
-public class Tile {
-
-    int xPos;
-    int yPos;
-    int rotation;
+    public int xPos;
+    public int yPos;
+    public int rotation;
     public string type;
 
     public Tile(int xPos, int yPos, int rotation, string type)

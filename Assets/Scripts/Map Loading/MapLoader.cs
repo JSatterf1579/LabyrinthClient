@@ -1,18 +1,20 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 using SocketIO;
-using System.Collections.Generic;
-using System;
 
 public class MapLoader : MonoBehaviour {
 
     public Button mapButton;
     private SocketIOComponent socket;
     private Map currentMap;
+    public bool MapLoaded {
+        get;
+        private set;
+    }
 
     // Use this for initialization
     void Start () {
+        MapLoaded = false;
         socket = GameManager.instance.getSocket();
         socket.On("room_ping", (SocketIOEvent data) => {
             Debug.Log(data.data.ToString());
@@ -20,21 +22,16 @@ public class MapLoader : MonoBehaviour {
         mapButton.onClick.AddListener(requestMap);
 
     }
-	
-	// Update is called once per frame
-	void Update () {
-        
-	}
+
+
 
     private void requestMap()
     {
         JSONObject data = new JSONObject();
-        data.AddField("x", 2);
-        data.AddField("y", 2);
+        data.AddField("x", 20);
+        data.AddField("y", 20);
         Debug.Log("Getting map");
         socket.Emit("map", data, recieveMap);
-        
-
     }
 
     private void recieveMap(JSONObject response)
@@ -43,6 +40,7 @@ public class MapLoader : MonoBehaviour {
         Debug.Log(response.ToString());
         currentMap = storeRecievedMap(response.list[0]);
         Debug.Log(currentMap.ToString());
+        MapLoaded = true;
     }
 
     private Map storeRecievedMap(JSONObject response)
