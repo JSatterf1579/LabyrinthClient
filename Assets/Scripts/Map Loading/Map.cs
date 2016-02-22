@@ -4,31 +4,31 @@ using System.Collections;
 public class Map {
 
     //Keyed to y,x
-    public Tile[,] tiles;
-    public int width;
-    public int height;
+    public Tile[,] Tiles;
+    public int Width;
+    public int Height;
 
 
     public Map(int width, int height)
     {
-        this.width = width;
-        this.height = height;
-        this.tiles = new Tile[height ,width];
+        this.Width = width;
+        this.Height = height;
+        this.Tiles = new Tile[height ,width];
     }
 
-    public void setTile(int x, int y, Tile tile)
+    public void SetTile(int x, int y, Tile tile)
     {
-        if(x < width && y < height)
+        if(x < Width && y < Height)
         {
-            tiles[y, x] = tile;
+            Tiles[y, x] = tile;
         }
     }
 
-    public Tile getTile(int x, int y)
+    public Tile GetTile(int x, int y)
     {
-        if (x < width && y < height)
+        if (x < Width && y < Height)
         {
-            return tiles[y, x];
+            return Tiles[y, x];
         }
         else
         {
@@ -39,11 +39,11 @@ public class Map {
     public override string ToString()
     {
         string rep = "";
-        for (int y = 0; y < height; y++)
+        for (int y = 0; y < Height; y++)
         {
-            for (int x = 0; x < width; x++)
+            for (int x = 0; x < Width; x++)
             {
-                rep = rep + getTile(x, y).ToString() + "\r\n";
+                rep = rep + GetTile(x, y).ToString() + "\r\n";
             }
         }
         return rep;

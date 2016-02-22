@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 using SocketIO;
 
@@ -7,6 +8,7 @@ public class MapLoader : MonoBehaviour {
     public Button mapButton;
     private SocketIOComponent socket;
     private Map currentMap;
+    private JSONObject currenMapJSON;
     public bool MapLoaded {
         get;
         private set;
@@ -40,16 +42,18 @@ public class MapLoader : MonoBehaviour {
         Debug.Log(response.ToString());
         currentMap = storeRecievedMap(response.list[0]);
         Debug.Log(currentMap.ToString());
-        MapLoaded = true;
+        
     }
 
     private Map storeRecievedMap(JSONObject response)
     {
-        if(response.GetField("status").n == 200)
+        if(Math.Abs(response.GetField("status").n - 200) < .000001)
         {
             Debug.Log("Got proper response");
             MapDecoder decoder = new MapDecoder(response.GetField("map"));
+            currenMapJSON = response.GetField("map");
             decoder.decodeMap();
+            MapLoaded = true;
             return decoder.getMap();
         }
         Debug.Log("Got non 200 return. Did something go wrong?");
@@ -60,5 +64,10 @@ public class MapLoader : MonoBehaviour {
     public Map getCurrentMap()
     {
         return currentMap;
+    }
+
+    public JSONObject getCurrentMapJson()
+    {
+        return currenMapJSON;
     }
 }

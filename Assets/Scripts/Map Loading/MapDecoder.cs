@@ -33,7 +33,7 @@ public class MapDecoder{
             int tileY = (int)serializedTiles.list[i].GetField("position").list[1].n;
             int rotation = (int)serializedTiles.list[i].GetField("rotation").n;
             string type = serializedTiles.list[i].GetField("terrain").str;
-            workingMap.setTile(tileX, tileY, new Tile(tileX, tileY, rotation, type));
+            workingMap.SetTile(tileX, tileY, new Tile(tileX, tileY, rotation, type));
         }
         isMapDecoded = true;
         decodedMap = workingMap;

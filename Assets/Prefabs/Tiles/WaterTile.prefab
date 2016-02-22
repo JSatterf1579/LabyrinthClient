@@ -27,6 +27,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 493904}
+  - 114: {fileID: 11442222}
   m_Layer: 0
   m_Name: WaterTile
   m_TagString: Untagged
@@ -92,6 +93,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 116130}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &11442222
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 124022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c911cf496e5c0b5459763270b4720ee7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Type: water
 --- !u!198 &19872556
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -1646,6 +1659,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: scalingMode
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: Type
+      value: water
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

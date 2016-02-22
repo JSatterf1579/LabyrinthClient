@@ -56,20 +56,21 @@ public class MapRenderer : MonoBehaviour {
     void CreateMap() {
         var map = loader.getCurrentMap();
         
-        CurrentMap = new GameObject[map.width, map.height];
-        float xOffset = map.width / -2.0f;
-        float yOffset = map.height / -2.0f;
+        CurrentMap = new GameObject[map.Width, map.Height];
+        float xOffset = map.Width / -2.0f;
+        float yOffset = map.Height / -2.0f;
 
 
-        for(int x = 0; x < map.width; x++) {
-            for(int y = 0; y < map.height; y++) {
-                var tile = map.tiles[x, y];
-                CurrentMap[x, y] = InstantiateTile(x, y, tile.type, tile.rotation, xOffset, yOffset);
+        for(int x = 0; x < map.Width; x++) {
+            for(int y = 0; y < map.Height; y++) {
+                var tile = map.Tiles[x, y];
+                CurrentMap[x, y] = InstantiateTile(x, y, tile.Type, tile.Rotation, xOffset, yOffset);
             }
         }
         Loaded = true;
 
     }
+
 
     private GameObject InstantiateTile(int x, int y, string type, int rotation, float xOffset = 0f, float yOffset = 0f) {
         if (!TileSet.ContainsKey(type.ToUpper())) {
@@ -80,6 +81,7 @@ public class MapRenderer : MonoBehaviour {
         if (prefab != null) {
             GameObject instance = Instantiate(prefab, new Vector3(x + xOffset, 0, y + yOffset), Quaternion.identity) as GameObject;
             instance.name = "tile (" + x + "," + y + ") " + type;
+            instance.GetComponent<Tile>().Init(x, y, rotation);
             return instance;
         } else {
             return null;
