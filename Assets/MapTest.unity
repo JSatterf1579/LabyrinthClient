@@ -584,7 +584,7 @@ GameObject:
   - 4: {fileID: 1863475802}
   - 114: {fileID: 1863475801}
   m_Layer: 0
-  m_Name: MapRenderer
+  m_Name: Map
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -616,7 +616,6 @@ MonoBehaviour:
     Prefab: {fileID: 126678, guid: 70ec49ba8d237bb45a032dddfb6c7079, type: 2}
   - Name: empty
     Prefab: {fileID: 0}
-  loader: {fileID: 2060771704}
 --- !u!4 &1863475802
 Transform:
   m_ObjectHideFlags: 0
@@ -758,6 +757,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapButton: {fileID: 1558808167}
+  mapRenderer: {fileID: 1863475801}
 --- !u!4 &2060771705
 Transform:
   m_ObjectHideFlags: 0
