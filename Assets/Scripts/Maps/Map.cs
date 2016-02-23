@@ -16,6 +16,11 @@ public class Map : MonoBehaviour {
 
     private Tile[,] CurrentMap;
 
+    public Tile TileUnderMouse {
+        get;
+        private set;
+    }
+
     /// <summary>
     /// width is on the x axis
     /// depth is on the z (or y) axis
@@ -116,6 +121,15 @@ public class Map : MonoBehaviour {
         return CurrentMap[x, y];
     }
 
+    public Tile GetTileAtMouse() {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if(Physics.Raycast(ray, out hit, float.PositiveInfinity, LayerMask.GetMask("MapTile"))) {
+            return hit.collider.GetComponent<Tile>();
+        }
+        return null;
+    }
+
     public Tile this[int x, int y] {
         get {
             return GetTileAtPosition(x, y);
@@ -126,5 +140,9 @@ public class Map : MonoBehaviour {
     public struct PrefabNamePair {
         public string Name;
         public GameObject Prefab;
+    }
+
+    void Update() {
+        DebugHUD.setValue("TileUnderMouse", GetTileAtMouse() as Tile);
     }
 }
