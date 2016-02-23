@@ -8,7 +8,7 @@ public class MapLoader : MonoBehaviour {
     public Button mapButton;
     private SocketIOComponent socket;
     private Map currentMap;
-    private JSONObject currenMapJSON;
+    private JSONObject currentMapJSON;
     public bool MapLoaded {
         get;
         private set;
@@ -50,11 +50,11 @@ public class MapLoader : MonoBehaviour {
         if(Math.Abs(response.GetField("status").n - 200) < .000001)
         {
             Debug.Log("Got proper response");
-            MapDecoder decoder = new MapDecoder(response.GetField("map"));
-            currenMapJSON = response.GetField("map");
-            decoder.decodeMap();
+            currentMapJSON = response.GetField("map");
+            Map map =  MapDecoder.decodeMap(currentMapJSON);
             MapLoaded = true;
-            return decoder.getMap();
+            return map;
+
         }
         Debug.Log("Got non 200 return. Did something go wrong?");
         return currentMap;
@@ -68,6 +68,6 @@ public class MapLoader : MonoBehaviour {
 
     public JSONObject getCurrentMapJson()
     {
-        return currenMapJSON;
+        return currentMapJSON;
     }
 }

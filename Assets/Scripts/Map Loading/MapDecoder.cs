@@ -3,24 +3,15 @@ using System.Collections;
 
 public class MapDecoder{
 
-    private JSONObject serializedMap;
+    
 
-    private Map decodedMap;
+    
 
-    private bool isMapDecoded;
+    
 
-    public MapDecoder(JSONObject map)
+    public static Map decodeMap(JSONObject serializedMap)
     {
-        isMapDecoded = false;
-        serializedMap = map;
-    }
-
-    public void decodeMap()
-    {
-        if (isMapDecoded)
-        {
-            return;
-        }
+        
 
         int x = (int)serializedMap.GetField("size").GetField("x").n;
         int y = (int)serializedMap.GetField("size").GetField("y").n;
@@ -35,14 +26,10 @@ public class MapDecoder{
             string type = serializedTiles.list[i].GetField("terrain").str;
             workingMap.SetTile(tileX, tileY, new Tile(tileX, tileY, rotation, type));
         }
-        isMapDecoded = true;
-        decodedMap = workingMap;
+        return workingMap;
     }
 
-    public Map getMap()
-    {
-        return decodedMap;
-    }
+    
 
 
 }
