@@ -13,6 +13,8 @@ public class HeroLoader : MonoBehaviour {
     public string testPass;
     private SocketIOComponent _socket;
 
+    public HeroManager Manager;
+
     // Use this for initialization
     void Start () {
 	
@@ -50,6 +52,7 @@ public class HeroLoader : MonoBehaviour {
     {
         Debug.Log("Recieved hero data");
         Debug.Log(response.ToString());
+        DecodeHeroes(response.list[0].GetField("heroes"));
     }
 
     private void MakeUser()
@@ -113,6 +116,7 @@ public class HeroLoader : MonoBehaviour {
 
 
             int level = (int)hero.GetField("level").n;
+            int health = (int) hero.GetField("health").n;
             int attack = (int)hero.GetField("attack").n;
             int defense = (int)hero.GetField("defense").n;
             int vision = (int)hero.GetField("vision").n;
@@ -120,7 +124,7 @@ public class HeroLoader : MonoBehaviour {
 
             string heroType = hero.GetField("hero_type").str;
 
-            //GameObject heroObj = Instantiate()
+            Manager.InstantiateHero(heroType, owner, controller, UUID, xPos, yPos, health, level, attack, defense, vision, movement);
 
         }
         return heroes;

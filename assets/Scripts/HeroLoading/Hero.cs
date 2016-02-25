@@ -13,7 +13,7 @@ public class Hero : Unit
     public Object passive;
 
     public void Init(string ownerID, string contrllerID, string UUID, int x, int y, int level, int health, int attack,
-        int defense, int vision, int movement)
+        int defense, int vision, int movement, Object passive)
     {
         base.Init(ownerID, contrllerID, UUID, x, y, level, health, attack, defense, vision, movement);
     }
