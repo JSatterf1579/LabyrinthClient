@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using SocketIO;
 using System.Collections;
+using System.Collections.Generic;
 
 public class HeroLoader : MonoBehaviour {
 
@@ -96,5 +97,32 @@ public class HeroLoader : MonoBehaviour {
             Debug.Log("User Login Failed");
             Debug.Log(response.ToString());
         }
+    }
+
+    private GameObject[] DecodeHeroes(JSONObject serializedHeroes)
+    {
+        List<JSONObject> heroList = serializedHeroes.list;
+        GameObject[] heroes = new GameObject[heroList.Count];
+        foreach (JSONObject hero in heroList)
+        {
+            string UUID = hero.GetField("id").str;
+            string owner = hero.GetField("owner_id").str;
+            string controller = hero.GetField("controller_id").str;
+            int xPos = (int)hero.GetField("x").n;
+            int yPos = (int)hero.GetField("y").n;
+
+
+            int level = (int)hero.GetField("level").n;
+            int attack = (int)hero.GetField("attack").n;
+            int defense = (int)hero.GetField("defense").n;
+            int vision = (int)hero.GetField("vision").n;
+            int movement = (int)hero.GetField("movement").n;
+
+            string heroType = hero.GetField("hero_type").str;
+
+            //GameObject heroObj = Instantiate()
+
+        }
+        return heroes;
     }
 }

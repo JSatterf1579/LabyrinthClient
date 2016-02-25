@@ -1,15 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEditor;
 
-public class Hero : MonoBehaviour {
+public class Hero : Unit
+{
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    //Really placeholder stuff until we finish this up.
+    public Object[] equipment;
+
+    public Object[] weapon;
+
+    public Object passive;
+
+    public void Init(string ownerID, string contrllerID, string UUID, int x, int y, int level, int health, int attack,
+        int defense, int vision, int movement)
+    {
+        base.Init(ownerID, contrllerID, UUID, x, y, level, health, attack, defense, vision, movement);
+    }
 }

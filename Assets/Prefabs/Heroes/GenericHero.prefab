@@ -11,6 +11,7 @@ GameObject:
   - 33: {fileID: 3317034}
   - 136: {fileID: 13664036}
   - 23: {fileID: 2375114}
+  - 114: {fileID: 11490832}
   m_Layer: 0
   m_Name: GenericHero
   m_TagString: Untagged
@@ -63,6 +64,33 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 185560}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &11490832
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 185560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e066f13efac0254aacb0fbf6a5de65b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerID: 
+  controllerID: 
+  UUID: 
+  posX: 0
+  posY: 0
+  level: 0
+  maxHealth: 0
+  attack: 0
+  defense: 0
+  vision: 0
+  movement: 0
+  status: []
+  abilities: []
+  equipment: []
+  weapon: []
+  passive: {fileID: 0}
 --- !u!136 &13664036
 CapsuleCollider:
   m_ObjectHideFlags: 1
