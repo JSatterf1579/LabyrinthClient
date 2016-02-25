@@ -85,6 +85,7 @@ public class Map : MonoBehaviour {
                 Destroy(instance);
             } else {
                 tile.Init(x, y, rotation, type);
+                CurrentMap[x, y] = tile;
             }
             return tile;
         } else {

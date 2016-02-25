@@ -52,7 +52,14 @@ public class HeroLoader : MonoBehaviour {
     {
         Debug.Log("Recieved hero data");
         Debug.Log(response.ToString());
-        DecodeHeroes(response.list[0].GetField("heroes"));
+        if (response.list[0].GetField("status").n == 200)
+        {
+            DecodeHeroes(response.list[0].GetField("heroes"));
+        }
+        else
+        {
+            Debug.Log("Error Reciving Hero Data");
+        }
     }
 
     private void MakeUser()

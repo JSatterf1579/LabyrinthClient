@@ -42,13 +42,20 @@ public class HeroManager : MonoBehaviour
             var hero = instance.GetComponent<Hero>();
             if (hero == null)
             {
-                Debug.Log("Joe WTF?");
+                Debug.Log("Joe WTF? Where's the prefab?");
                 Destroy(instance);
             }
             else
             {
                 hero.Init(ownerID, controllerID, UUID, x, y, level, health, attack, defense, vision, movement, null);
                 heroList.Add(UUID, hero);
+                if (GameMap.Loaded)
+                {
+                    Tile currentTile = GameMap.GetTileAtPosition(x, y);
+                    GameObject tileObject = currentTile.gameObject;
+                    instance.transform.SetParent(tileObject.transform);
+                    instance.transform.localPosition = new Vector3(0, 0, tileObject.transform.localScale.z);
+                }
             }
         }
     }
