@@ -26,6 +26,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 470168}
   - 114: {fileID: 11430736}
+  - 65: {fileID: 6551472}
   m_Layer: 0
   m_Name: DefaultTile
   m_TagString: Untagged
@@ -91,6 +92,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 158884}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &6551472
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 194768}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 0.25, z: 1}
+  m_Center: {x: 0, y: -0.125, z: 0}
 --- !u!114 &11430736
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -102,7 +115,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c911cf496e5c0b5459763270b4720ee7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Type: 
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
