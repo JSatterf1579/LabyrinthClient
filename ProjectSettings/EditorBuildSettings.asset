@@ -12,6 +12,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/UIScenes/MyHeroes.unity
   - enabled: 1
-    path: Assets/UIScenes/MyDeck.unity
+    path: Assets/UIScenes/MyCollection.unity
   - enabled: 1
     path: Assets/UIScenes/Store.unity
