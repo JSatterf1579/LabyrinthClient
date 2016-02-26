@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ public class MyCollection : MonoBehaviour {
 	private List<GameObject> displayed = new List<GameObject>();
 	public GameObject buttonPrefab;
 	public GameObject contentParent;
+	public InputField searchBox;
 	public enum SortingOptions {CostIncreasing = 0, CostDecreasing, Alphabetical};
 	private SortingOptions curSort = SortingOptions.CostIncreasing;
 
@@ -35,117 +37,113 @@ public class MyCollection : MonoBehaviour {
 	}
 
 	public void OnAll(bool on) {
-//		RectTransform ct = (RectTransform)contentParent.transform;
-//		ct.rect.height = 
 		if (!on) return;
-		Clear();
+		searchBox.text = "";
+		displayed.Clear();
 		for (int i = 0; i < buttons.Length; i++) {
 			displayed.Add(buttons[i]);
 		}
-		Sort();
+		RefreshDisplay();
 	}
 
 	public void OnMonsters(bool on) {
-		Clear();
 		if (!on) return;
+		searchBox.text = "";
+		displayed.Clear();
 		for (int i = 0; i < buttons.Length; i++) {
 			if (collection[i].IsMonster) {
 				displayed.Add(buttons[i]);
 			}
 		}
-		Sort();
+		RefreshDisplay();
 	}
 
 	public void OnTraps(bool on) {
-		Clear();
 		if (!on) return;
+		searchBox.text = "";
+		displayed.Clear();
 		for (int i = 0; i < buttons.Length; i++) {
 			if (!collection[i].IsMonster) {
 				displayed.Add(buttons[i]);
 			}
 		}
-		Sort();
+		RefreshDisplay();
 	}
 
 	public void Search(string term) {
-		GameObject[] toSearch = displayed.ToArray();
-		Clear();
-		term = term.ToLower();
-		for (int i = 0; i < toSearch.Length; i++) {
-			if (collection[i].Name.ToLower().Contains(term)) {
-				displayed.Add(buttons[i]);
-			}
-		}
-		Sort();
+		List<GameObject> results = displayed.Where(o => o.GetComponent<CardButton>().cardInfo.Name.ToLower().Contains(term.ToLower())).ToList();
+		ClearDisplay();
+		addListToDisplay(Sort(results));
 	}
 
 	public void Dropdown(int value) {
 		curSort = (SortingOptions)value;
-		Sort();
+		RefreshDisplay();
 	}
 
-	private void Sort() {
+	private void RefreshDisplay() {
+		ClearDisplay();
+		addListToDisplay(Sort(displayed));
+	}
+
+	private List<GameObject> Sort(List<GameObject> toSort) {
+		List<GameObject> sorted;
 		switch (curSort) {
 		case SortingOptions.CostIncreasing:
-			CostIncreasing();
+			sorted = CostIncreasing(toSort);
 			break;
 		case SortingOptions.CostDecreasing:
-			CostDecreasing();
+			sorted = CostDecreasing(toSort);
 			break;
 		case SortingOptions.Alphabetical:
-			Alphabetical();
+			sorted = Alphabetical(toSort);
 			break;
 		default:
-			CostIncreasing();
+			sorted = CostIncreasing(toSort);
 			break;
 		}
+		return sorted;
 	}
 
-	private void CostIncreasing() {
-		List<GameObject> sorted = displayed.OrderBy(o=>o.GetComponent<CardButton>().cardInfo.Cost).ToList();
-		Clear();
-		addList(sorted);
+	private List<GameObject> CostIncreasing(List<GameObject> toSort) {
+		List<GameObject> sorted = toSort.OrderBy(o=>o.GetComponent<CardButton>().cardInfo.Cost).ToList();
+		return sorted;
 	}
 
-	public void CostDecreasing() {
-		List<GameObject> sorted = displayed.OrderBy(o=>o.GetComponent<CardButton>().cardInfo.Cost).ToList();
+	public List<GameObject> CostDecreasing(List<GameObject> toSort) {
+		List<GameObject> sorted = CostIncreasing(toSort);
 		sorted.Reverse();
-		Clear();
-		addList(sorted);
+		return sorted;
 	}
 
-	private void Alphabetical() {
-		List<GameObject> sorted = displayed.OrderBy(o=>o.GetComponent<CardButton>().cardInfo.Name).ToList();
-		Clear();
-		addList(sorted);
+	private List<GameObject> Alphabetical(List<GameObject> toSort) {
+		List<GameObject> sorted = toSort.OrderBy(o=>o.GetComponent<CardButton>().cardInfo.Name).ToList();
+		return sorted;
 	}
 
-	public void Clear() {
-		foreach (GameObject b in displayed) {
-			removeContent(b);
-		}
-		displayed.Clear();
-	}
-
-	private void addContent(GameObject b, int index) {
+	private void addContentToDisplay(GameObject b, int index) {
 		b.transform.SetParent(contentParent.transform, false);
 		RectTransform rt = (RectTransform)(b.transform);
 		calcRect(ref rt, index);
 		b.SetActive(true);
-		displayed.Add(b);
 	}
 
-	private void addList(List<GameObject> list) {
+	private void addListToDisplay(List<GameObject> list) {
 		int count = 0;
 		foreach (GameObject b in list) {
-			addContent(b, count);
+			addContentToDisplay(b, count);
 			count++;
 		}
 	}
+		
+	public void ClearDisplay() {
+		foreach (Transform b in contentParent.transform) {
+			removeContentFromDisplay(b.gameObject);
+		}
+	}
 
-	private void removeContent(GameObject b) {
+	private void removeContentFromDisplay(GameObject b) {
 		b.SetActive(false);
-		b.transform.parent = null;
 	}
 
 	private void calcRect(ref RectTransform rt, int i) {
