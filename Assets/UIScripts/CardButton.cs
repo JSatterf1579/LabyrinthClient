@@ -8,13 +8,8 @@ public class CardButton : MonoBehaviour {
 	public Text name;
 	public Text costQty;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-
 	public void UpdateView() {
 		name.text = cardInfo.Name;
-		costQty.text = cardInfo.Cost + " | " + cardInfo.Quantity;
+		costQty.text = cardInfo.Cost + " | x" + cardInfo.Quantity;
 	}
 }

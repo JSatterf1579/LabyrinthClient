@@ -8,8 +8,8 @@ using UnityEngine.SceneManagement;
 public class MyCollection : MonoBehaviour {
 
 	private TempCard[] collection;
-	private GameObject[] buttons;
-	private List<GameObject> displayed = new List<GameObject>();
+	private CardButton[] buttons;
+	private List<CardButton> displayed = new List<CardButton>();
 	public GameObject buttonPrefab;
 	public GameObject contentParent;
 	public InputField searchBox;
@@ -27,67 +27,47 @@ public class MyCollection : MonoBehaviour {
 		SceneManager.LoadScene("MainMenu");
 	}
 
-	private void makeCollection() {
-		collection = new TempCard[16];
-		for (int i = 0; i < collection.Length; i++) {
-			bool ismonster = i % 3 != 0;
-			string name = ismonster ? "Monster " + (i + 1) : "Trap " + (i + 1);
-			collection[i] = new TempCard(name, (int)Random.Range(100, 500), ismonster, (int)Random.Range(1, 10));
-		}
-	}
-
 	public void OnAll(bool on) {
 		if (!on) return;
 		searchBox.text = "";
 		displayed.Clear();
-		for (int i = 0; i < buttons.Length; i++) {
-			displayed.Add(buttons[i]);
-		}
-		RefreshDisplay();
+		displayed = buttons.ToList();
+		RefreshDisplay(displayed);
 	}
 
 	public void OnMonsters(bool on) {
 		if (!on) return;
 		searchBox.text = "";
 		displayed.Clear();
-		for (int i = 0; i < buttons.Length; i++) {
-			if (collection[i].IsMonster) {
-				displayed.Add(buttons[i]);
-			}
-		}
-		RefreshDisplay();
+		displayed = buttons.Where(o => o.cardInfo.IsMonster).ToList();
+		RefreshDisplay(displayed);
 	}
 
 	public void OnTraps(bool on) {
 		if (!on) return;
 		searchBox.text = "";
 		displayed.Clear();
-		for (int i = 0; i < buttons.Length; i++) {
-			if (!collection[i].IsMonster) {
-				displayed.Add(buttons[i]);
-			}
-		}
-		RefreshDisplay();
+		displayed = buttons.Where(o => !o.cardInfo.IsMonster).ToList();
+		RefreshDisplay(displayed);
 	}
 
 	public void Search(string term) {
-		List<GameObject> results = displayed.Where(o => o.GetComponent<CardButton>().cardInfo.Name.ToLower().Contains(term.ToLower())).ToList();
-		ClearDisplay();
-		addListToDisplay(Sort(results));
+		List<CardButton> results = displayed.Where(o => o.cardInfo.Name.ToLower().Contains(term.ToLower())).ToList();
+		RefreshDisplay(results);
 	}
 
 	public void Dropdown(int value) {
 		curSort = (SortingOptions)value;
-		RefreshDisplay();
+		RefreshDisplay(displayed);
 	}
 
-	private void RefreshDisplay() {
+	private void RefreshDisplay(List<CardButton> toDisplay) {
 		ClearDisplay();
-		addListToDisplay(Sort(displayed));
+		addListToDisplay(Sort(toDisplay));
 	}
 
-	private List<GameObject> Sort(List<GameObject> toSort) {
-		List<GameObject> sorted;
+	private List<CardButton> Sort(List<CardButton> toSort) {
+		List<CardButton> sorted;
 		switch (curSort) {
 		case SortingOptions.CostIncreasing:
 			sorted = CostIncreasing(toSort);
@@ -105,19 +85,19 @@ public class MyCollection : MonoBehaviour {
 		return sorted;
 	}
 
-	private List<GameObject> CostIncreasing(List<GameObject> toSort) {
-		List<GameObject> sorted = toSort.OrderBy(o=>o.GetComponent<CardButton>().cardInfo.Cost).ToList();
+	private List<CardButton> CostIncreasing(List<CardButton> toSort) {
+		List<CardButton> sorted = toSort.OrderBy(o=>o.cardInfo.Cost).ToList();
 		return sorted;
 	}
 
-	public List<GameObject> CostDecreasing(List<GameObject> toSort) {
-		List<GameObject> sorted = CostIncreasing(toSort);
+	public List<CardButton> CostDecreasing(List<CardButton> toSort) {
+		List<CardButton> sorted = CostIncreasing(toSort);
 		sorted.Reverse();
 		return sorted;
 	}
 
-	private List<GameObject> Alphabetical(List<GameObject> toSort) {
-		List<GameObject> sorted = toSort.OrderBy(o=>o.GetComponent<CardButton>().cardInfo.Name).ToList();
+	private List<CardButton> Alphabetical(List<CardButton> toSort) {
+		List<CardButton> sorted = toSort.OrderBy(o=>o.cardInfo.Name).ToList();
 		return sorted;
 	}
 
@@ -128,10 +108,10 @@ public class MyCollection : MonoBehaviour {
 		b.SetActive(true);
 	}
 
-	private void addListToDisplay(List<GameObject> list) {
+	private void addListToDisplay(List<CardButton> list) {
 		int count = 0;
-		foreach (GameObject b in list) {
-			addContentToDisplay(b, count);
+		foreach (CardButton b in list) {
+			addContentToDisplay(b.gameObject, count);
 			count++;
 		}
 	}
@@ -155,13 +135,22 @@ public class MyCollection : MonoBehaviour {
 	}
 
 	private void makeButtons() {
-		buttons = new GameObject[collection.Length];
+		buttons = new CardButton[collection.Length];
 		for (int i = 0; i < collection.Length; i++) {
-			buttons[i] = Instantiate(buttonPrefab);
-			CardButton cb = buttons[i].GetComponent<CardButton>();
-			cb.cardInfo = collection[i];
-			cb.UpdateView();
-			buttons[i].SetActive(false);
+			GameObject b = Instantiate(buttonPrefab);
+			buttons[i] = b.GetComponent<CardButton>();
+			buttons[i].cardInfo = collection[i];
+			buttons[i].UpdateView();
+			buttons[i].gameObject.SetActive(false);
+		}
+	}
+		
+	private void makeCollection() {
+		collection = new TempCard[16];
+		for (int i = 0; i < collection.Length; i++) {
+			bool ismonster = i % 3 != 0;
+			string name = ismonster ? "Monster " + (i + 1) : "Trap " + (i + 1);
+			collection[i] = new TempCard(name, (int)Random.Range(100, 500), ismonster, (int)Random.Range(1, 10));
 		}
 	}
 }

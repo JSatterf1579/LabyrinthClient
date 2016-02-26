@@ -18,8 +18,8 @@ public class MainMenu : MonoBehaviour {
 		SceneManager.LoadScene("MyHeroes");
 	}
 
-	public void OnMyDeck() {
-		SceneManager.LoadScene("MyDeck");
+	public void OnMyCollection() {
+		SceneManager.LoadScene("MyCollection");
 	}
 
 	public void OnStore() {
