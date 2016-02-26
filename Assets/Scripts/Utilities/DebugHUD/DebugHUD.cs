@@ -40,7 +40,7 @@ public class DebugHUD : MonoBehaviour {
     }
 
     void LateUpdate() {
-        if (Input.GetKeyDown(KeyCode.F3)) {
+        if (Input.GetKeyDown(KeyCode.BackQuote)) {
             text.enabled = !text.enabled;
         }
         string s = "";
