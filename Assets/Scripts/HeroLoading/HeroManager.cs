@@ -51,6 +51,7 @@ public class HeroManager : MonoBehaviour
                 heroList.Add(UUID, hero);
                 if (GameMap.Loaded)
                 {
+                    //Move to unit functionality
                     Tile currentTile = GameMap.GetTileAtPosition(x, y);
                     GameObject tileObject = currentTile.gameObject;
                     instance.transform.SetParent(tileObject.transform);
@@ -60,8 +61,5 @@ public class HeroManager : MonoBehaviour
         }
     }
 	
-	// Update is called once per frame
-	void Update () {
 	
-	}
 }
