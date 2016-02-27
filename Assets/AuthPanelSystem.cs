@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using SocketIO;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class AuthPanelSystem : MonoBehaviour {
 
@@ -14,6 +15,9 @@ public class AuthPanelSystem : MonoBehaviour {
 	public Button registerButton;
 	public Button loginButton;
 	public Button roomButton;
+
+    public GameObject loginSuccessModal;
+    public Button toMenuButton;
 
 	private SocketIOComponent socket;
 
@@ -30,6 +34,7 @@ public class AuthPanelSystem : MonoBehaviour {
 		registerButton.onClick.AddListener(register);
 		loginButton.onClick.AddListener (login);
 		roomButton.onClick.AddListener (toggleRoom);
+        toMenuButton.onClick.AddListener(toMenu);
 	}
 	
 	// Update is called once per frame
@@ -53,6 +58,11 @@ public class AuthPanelSystem : MonoBehaviour {
 	private void login(){
 		sendPacket (false);
 	}
+
+    private void toMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
 
 	private bool sendPacket(bool isRegister){
 		Dictionary<string,string> data = new Dictionary<string,string>();
@@ -89,5 +99,9 @@ public class AuthPanelSystem : MonoBehaviour {
 
 	private void processLogin(JSONObject response){
 		Debug.Log (response.ToString ());
+	    if (response.list[0].GetField("status").n == 200)
+	    {
+	        loginSuccessModal.SetActive(true);
+	    }
 	}
 }
