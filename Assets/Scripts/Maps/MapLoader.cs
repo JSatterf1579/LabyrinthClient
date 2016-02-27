@@ -55,11 +55,12 @@ public class MapLoader : MonoBehaviour {
         JSONObject serializedTiles = serializedMap.GetField("tiles");
         for (int i = 0; i < serializedTiles.list.Count; i++)
         {
-            int tileX = (int)serializedTiles.list[i].GetField("position").list[0].n;
-            int tileY = (int)serializedTiles.list[i].GetField("position").list[1].n;
+            int tileX = (int)serializedTiles.list[i].GetField("x").n;
+            int tileY = (int)serializedTiles.list[i].GetField("y").n;
             int rotation = (int)serializedTiles.list[i].GetField("rotation").n;
             string type = serializedTiles.list[i].GetField("terrain").str;
-            mapRenderer.InstantiateTile(tileX, tileY, type, rotation);
+            bool isObstacle = serializedTiles.list[i].GetField("is_obstacle").b;
+            mapRenderer.InstantiateTile(tileX, tileY, type, rotation, isObstacle);
         }
     }
 
