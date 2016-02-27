@@ -7,18 +7,67 @@ public class Tile : MonoBehaviour
     public int Rotation { get; private set; }
     public string Type { get; private set; }
 
-    public void Init(int xPos, int yPos, int rotation, string type)
-    {
+    private Renderer[] renderers;
+
+    public Color MouseOverColor;
+    public Color HighlightColor;
+    private bool forceHighlighted = false;
+    
+    public bool IsMouseOver {
+        get;
+        private set;
+    }
+
+    /// <summary>
+    /// true if this tile is highlighted (regardless of whether or not the cursor is over it)
+    /// </summary>
+    public bool Highlighted {
+        get {
+            return forceHighlighted;
+        }
+
+        set {
+            forceHighlighted = value;
+            if(!IsMouseOver) SetEmissionColor(value ? HighlightColor : Color.black);
+        }
+    }
+
+    private void SetEmissionColor(Color c) {
+        foreach (var r in renderers) {
+            r.material.SetColor("_EmissionColor", c);
+        }
+    }
+
+    void Awake() {
+        // this is required to enable the OnMouseEnter() and OnMouseExit() events
+        if (!Physics.queriesHitTriggers) Physics.queriesHitTriggers = true;
+        renderers = GetComponentsInChildren<Renderer>();
+        SetEmissionColor(Color.black);
+    }
+
+    public void Init(int xPos, int yPos, int rotation, string type) {
         this.XPos = xPos;
         this.YPos = yPos;
         this.Rotation = rotation;
         this.Type = type;
     }
 
-    public override string ToString()
-    {
-        return "Position: " + XPos + "," + YPos + ":" + Rotation + "\r\n" + "Type: " + Type;
+    void OnMouseEnter() {
+        SetEmissionColor(MouseOverColor);
+        IsMouseOver = true;
     }
 
+    void OnMouseExit() {
+        IsMouseOver = false;
+        if (Highlighted) {
+            SetEmissionColor(HighlightColor);
+        } else {
+            SetEmissionColor(Color.black);
+        }
+    }
+
+    public override string ToString() {
+        return "Tile: " + Type + ": (" + XPos + ", " + YPos + ") r=" + Rotation;
+    }
 
 }
