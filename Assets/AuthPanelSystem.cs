@@ -24,7 +24,8 @@ public class AuthPanelSystem : MonoBehaviour {
 	private bool room = false;
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    { 
 		socket = GameManager.instance.getSocket();
 		socket.On ("room_ping", (SocketIOEvent data) => {
 			Debug.Log (data.data.ToString());
@@ -101,6 +102,7 @@ public class AuthPanelSystem : MonoBehaviour {
 		Debug.Log (response.ToString ());
 	    if (response.list[0].GetField("status").n == 200)
 	    {
+	        GameManager.instance.Username = this.username;
 	        loginSuccessModal.SetActive(true);
 	    }
 	}

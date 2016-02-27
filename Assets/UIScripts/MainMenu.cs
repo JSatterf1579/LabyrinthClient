@@ -10,6 +10,11 @@ public class MainMenu : MonoBehaviour {
 	
 	}
 
+    void Awake()
+    {
+
+    }
+
 	public void OnFindGame() {
 		SceneManager.LoadScene("FindGame");
 	}
