@@ -6,12 +6,15 @@ public class Tile : MonoBehaviour
     public int XPos { get; private set; }
     public int Rotation { get; private set; }
     public string Type { get; private set; }
+    public bool IsObstacle { get; private set; }
 
     private Renderer[] renderers;
 
     public Color MouseOverColor;
     public Color HighlightColor;
     private bool forceHighlighted = false;
+
+    public Transform OverlayTransform;
     
     public bool IsMouseOver {
         get;
@@ -45,11 +48,12 @@ public class Tile : MonoBehaviour
         SetEmissionColor(Color.black);
     }
 
-    public void Init(int xPos, int yPos, int rotation, string type) {
+    public void Init(int xPos, int yPos, int rotation, string type, bool isObstacle) {
         this.XPos = xPos;
         this.YPos = yPos;
         this.Rotation = rotation;
         this.Type = type;
+        this.IsObstacle = isObstacle;
     }
 
     void OnMouseEnter() {

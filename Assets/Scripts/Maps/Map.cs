@@ -68,7 +68,7 @@ public class Map : MonoBehaviour {
     }
 
 
-    public Tile InstantiateTile(int x, int y, string type, int rotation) {
+    public Tile InstantiateTile(int x, int y, string type, int rotation, bool isObstacle) {
         if (!Loaded) {
             Debug.LogError("Tried to instantiate a tile on a Map that has not been initalized yet");
             return null;
@@ -89,7 +89,7 @@ public class Map : MonoBehaviour {
                 Debug.LogError("Error: a Tile prefab was instantiated, but it does not have an attached Tile behaviour; it will now be destroyed for its insubordination");
                 Destroy(instance);
             } else {
-                tile.Init(x, y, rotation, type);
+                tile.Init(x, y, rotation, type, isObstacle);
                 CurrentMap[x, y] = tile;
             }
             return tile;
