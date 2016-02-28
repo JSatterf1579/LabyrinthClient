@@ -21,6 +21,13 @@ public class Tile : MonoBehaviour
         private set;
     }
 
+    public bool IsValidForMovement {
+        get {
+            //TODO: also return false if there is a unit on this tile
+            return !IsObstacle;
+        }
+    }
+
     /// <summary>
     /// true if this tile is highlighted (regardless of whether or not the cursor is over it)
     /// </summary>
@@ -71,7 +78,7 @@ public class Tile : MonoBehaviour
     }
 
     public override string ToString() {
-        return "Tile: " + Type + ": (" + XPos + ", " + YPos + ") r=" + Rotation;
+        return "Tile: " + Type + ": (" + XPos + ", " + YPos + ") r=" + Rotation + " IsObstacle="+IsObstacle + " IsValidForMovement="+IsValidForMovement;
     }
 
 }
