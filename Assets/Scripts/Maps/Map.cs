@@ -29,6 +29,10 @@ public class Map : MonoBehaviour {
 
     private float xOffset, yOffset;
 
+    public int Width { get { return mapWidth; } }
+    public int Depth { get { return mapDepth; } }
+    public int Height { get { return mapDepth; } }
+
     public bool Loaded {
         get;
         private set;
@@ -64,6 +68,8 @@ public class Map : MonoBehaviour {
         CurrentMap = new Tile[width, height];
         this.xOffset = xOffsetOverride;
         this.yOffset = yOffsetOverride;
+        mapWidth = width;
+        mapDepth = height;
         Loaded = true;
     }
 
@@ -120,6 +126,22 @@ public class Map : MonoBehaviour {
             return null;
         }
         return CurrentMap[x, y];
+    }
+
+    public bool CheckCoordinates(int x, int y) {
+        if (x < 0) {
+            return false;
+        }
+        if (y < 0) {
+            return false;
+        }
+        if (x >= mapWidth) {
+            return false;
+        }
+        if (y >= mapDepth) {
+            return false;
+        }
+        return true;
     }
 
     public Tile GetTileAtMouse() {
