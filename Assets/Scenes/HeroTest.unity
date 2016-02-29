@@ -157,7 +157,7 @@ RectTransform:
   m_RootOrder: 1
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 40}
+  m_AnchoredPosition: {x: 463, y: 167}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &216559421
@@ -267,7 +267,7 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 463, y: 127}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &419387760
@@ -598,7 +598,7 @@ RectTransform:
   m_RootOrder: 3
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 120}
+  m_AnchoredPosition: {x: 463, y: 247}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &879269929
@@ -810,7 +810,7 @@ RectTransform:
   m_RootOrder: 2
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 80}
+  m_AnchoredPosition: {x: 463, y: 207}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1110799002
@@ -1195,17 +1195,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   heroPrefabs:
   - Name: warrior
-    Prefab: {fileID: 154094, guid: 039598c9599bf264680205a2cc2a3fcf, type: 2}
+    Prefab: {fileID: 185560, guid: e9743a780c6a2994d83d4a7a070972b5, type: 2}
   - Name: rogue
-    Prefab: {fileID: 150022, guid: 66a4f5593872b31419960be75c9605df, type: 2}
+    Prefab: {fileID: 185560, guid: 8d7aed5ac1fd66044a85831ff91873a1, type: 2}
   - Name: mage
-    Prefab: {fileID: 186238, guid: cab2c75b429326f4ebcf5046eb0cf768, type: 2}
+    Prefab: {fileID: 185560, guid: daeee9c7cb4fb4c4cabe20df6683cacd, type: 2}
   - Name: warriormage
-    Prefab: {fileID: 179610, guid: 2571b1ee898199e42b20949bdfa0e099, type: 2}
+    Prefab: {fileID: 185560, guid: 8b7278197b3bbd743a91ee4d46de3eb6, type: 2}
   - Name: warriorrogue
-    Prefab: {fileID: 121286, guid: db923a7b463962f42bbf61016c49dd2f, type: 2}
+    Prefab: {fileID: 185560, guid: ee24d6c37eaea294785d271e6fb19186, type: 2}
   - Name: roguemage
-    Prefab: {fileID: 155226, guid: 466505bbbc9f4004d93203b9d59e2e09, type: 2}
+    Prefab: {fileID: 185560, guid: f5ac7819c1d83f1438dd3aa902a2d265, type: 2}
   GameMap: {fileID: 706243868}
 --- !u!4 &1542255583
 Transform:
