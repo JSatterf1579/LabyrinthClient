@@ -41,7 +41,7 @@ RenderSettings:
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 6
-  m_GIWorkflowMode: 1
+  m_GIWorkflowMode: 0
   m_LightmapsMode: 1
   m_GISettings:
     serializedVersion: 2
@@ -112,6 +112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: befee8d6bf762427e8c9f139f77d6b43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Username: 
 --- !u!4 &91340750
 Transform:
   m_ObjectHideFlags: 0
@@ -157,7 +158,7 @@ RectTransform:
   m_RootOrder: 1
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 463, y: 167}
+  m_AnchoredPosition: {x: 21, y: 0}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &216559421
@@ -267,7 +268,7 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 463, y: 127}
+  m_AnchoredPosition: {x: 21, y: -40}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &419387760
@@ -598,7 +599,7 @@ RectTransform:
   m_RootOrder: 3
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 463, y: 247}
+  m_AnchoredPosition: {x: 21, y: 80}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &879269929
@@ -810,7 +811,7 @@ RectTransform:
   m_RootOrder: 2
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 463, y: 207}
+  m_AnchoredPosition: {x: 21, y: 40}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1110799002

@@ -42,6 +42,7 @@ public class FindGame : MonoBehaviour
         {
             queued = true;
             QueueingModal.SetActive(true);
+
         }
     }
 
@@ -58,7 +59,8 @@ public class FindGame : MonoBehaviour
 
     private void OnMatch(SocketIOEvent e)
     {
+        GameManager.instance.RecieveMatchData(e.data);
         Debug.Log(e.data);
-        
+        SceneManager.LoadScene("MatchScene");
     }
 }
