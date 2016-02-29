@@ -139,12 +139,12 @@ public class MovementUI : MonoBehaviour {
 	void Update () {
         //DEBUG STUFF
         if (!map.Loaded) return;
-        if (Input.GetMouseButtonDown(0)) {
-            var tile = map.GetTileAtMouse();
-            if (tile == null) return;
-            Cancel();
-            BeginMove(tile.XPos, tile.YPos, 5);
-        }
+        //if (Input.GetMouseButtonDown(0)) {
+        //    var tile = map.GetTileAtMouse();
+        //    if (tile == null) return;
+        //    Cancel();
+        //    BeginMove(tile.XPos, tile.YPos, 5);
+        //}
         if (!active) {
             return;
         }

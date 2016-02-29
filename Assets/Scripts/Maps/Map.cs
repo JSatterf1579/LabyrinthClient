@@ -188,6 +188,8 @@ public class Map : MonoBehaviour {
         obj.transform.parent = mount;
         obj.transform.localPosition = Vector3.zero;
         tile.AddMapObject(obj);
+        obj.posX = tile.XPos;
+        obj.posY = tile.YPos;
     }
 
     /// <summary>
