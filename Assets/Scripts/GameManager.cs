@@ -1,11 +1,17 @@
+using System;
 using UnityEngine;
 using System.Collections;
 using SocketIO;
 
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour
+{
 
-    //Transisition to 
-    public string Username { get;  set; }
+
+    public string Username;
+
+    public bool InMatch { get; private set; }
+
+    public JSONObject MatchData { get; private set; }
 
     public static GameManager instance;
 
@@ -20,11 +26,12 @@ public class GameManager : MonoBehaviour {
 			GameManager.instance = this;
 		}
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
+    public void RecieveMatchData(JSONObject data)
+    {
+        InMatch = true;
+        MatchData = data;
+    }
 
 	public SocketIOComponent getSocket(){
 		GameObject s = GameObject.Find ("SocketIO");

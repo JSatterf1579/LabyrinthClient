@@ -20,6 +20,7 @@ public class FindGame : MonoBehaviour
     void Awake()
     {
         socket = GameManager.instance.getSocket();
+        socket.On("match_found", OnMatch);
     }
 	
 	public void OnBack() {
@@ -30,8 +31,8 @@ public class FindGame : MonoBehaviour
     {
         JSONObject data = new JSONObject();
         Debug.Log(data);
-        data.AddField("queue_with_passbot", false);
-        socket.Emit("queue_up_heroes", new JSONObject(), HeroesQueue);
+        data.AddField("queue_with_passbot", true);
+        socket.Emit("queue_up_heroes", data, HeroesQueue);
     }
 
     private void HeroesQueue(JSONObject response)
@@ -57,6 +58,7 @@ public class FindGame : MonoBehaviour
 
     private void OnMatch(SocketIOEvent e)
     {
+        Debug.Log(e.data);
         
     }
 }
