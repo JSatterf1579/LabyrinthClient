@@ -27,9 +27,6 @@ public class AuthPanelSystem : MonoBehaviour {
 	void Start ()
     { 
 		socket = GameManager.instance.getSocket();
-		socket.On ("room_ping", (SocketIOEvent data) => {
-			Debug.Log (data.data.ToString());
-		});
 		usernameField.onValueChange.AddListener(updateUsername);
 		passField.onValueChange.AddListener(updatePassword);
 		registerButton.onClick.AddListener(register);

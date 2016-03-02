@@ -17,9 +17,7 @@ public class MapLoader : MonoBehaviour {
     void Start () {
         MapLoaded = false;
         socket = GameManager.instance.getSocket();
-        socket.On("room_ping", (SocketIOEvent data) => {
-            Debug.Log(data.data.ToString());
-        });
+        
         mapButton.onClick.AddListener(requestMap);
 
     }

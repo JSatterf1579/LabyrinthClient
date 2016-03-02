@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System;
+using UnityEngine.UI;
 
 public class MovementUI : MonoBehaviour {
     public GameObject ArrowPrefab;
     public GameObject StraightPrefab;
     public GameObject CornerPrefab;
+    public Button ConfirmButton;
 
     public Color highlightColor;
 
@@ -22,6 +24,12 @@ public class MovementUI : MonoBehaviour {
 
     private bool active = false;
 
+    private Unit selectedUnit;
+
+    private float timer = 0;
+
+    private static float debounce = 1.0f;
+
     public List<Tile> Path {
         get { return movement; }
     }
@@ -29,17 +37,19 @@ public class MovementUI : MonoBehaviour {
     private bool frozen = false;
 
     public void Freeze() {
-        active = false;
+        
         frozen = true;
     }
 
     public void Resume() {
         if (!frozen) return;
-        active = true;
+        
         frozen = false;
     }
     
-    public void BeginMove(int x, int y, int maxLength) {
+    public void BeginMove(int x, int y, int maxLength)
+    {
+        timer = 0;
         frozen = false;
         Debug.Log("beginning a move from (" + x + ", " + y + ") of length " + maxLength);
         movement = new List<Tile>();
@@ -50,6 +60,12 @@ public class MovementUI : MonoBehaviour {
         ClearValidTiles();
         HighlightValidTiles(firstTile, maxLength);
         Debug.Log("" + validTiles.Count + " Tile(s) highlighted");
+    }
+
+    public void BeginMove(Unit moveTarget)
+    {
+        selectedUnit = moveTarget;
+        BeginMove(moveTarget.posX, moveTarget.posY, moveTarget.movement);
     }
 
     public void EndMove() {
@@ -145,9 +161,36 @@ public class MovementUI : MonoBehaviour {
         //    Cancel();
         //    BeginMove(tile.XPos, tile.YPos, 5);
         //}
+	    
         if (!active) {
             return;
         }
+
+        if (timer >= debounce && Input.GetMouseButtonDown(0))
+        {
+            timer = 0;
+            if (frozen)
+            {
+                Resume();
+                ConfirmButton.gameObject.SetActive(false);
+            }
+            else
+            {
+                Freeze();
+                ConfirmButton.gameObject.SetActive(true);
+            }
+        }
+
+	    if (timer < debounce)
+	    {
+	        timer += Time.deltaTime;
+	    }
+
+	    if (frozen)
+	    {
+	        return;
+	    }
+
         Tile selected = map.GetTileAtMouse();
         if (selected == null) return;
         if (!selected.IsValidForMovement) return;
@@ -269,5 +312,14 @@ public class MovementUI : MonoBehaviour {
             last.x = cur.XPos;
             last.y = cur.YPos;
         }
+    }
+
+    public void ConfirmMove()
+    {
+        JSONObject data = JSONEncoder.EncodeMove(selectedUnit, Path);
+        MatchManager.instance.SendAction("move", data);
+        Debug.Log(data);
+        EndMove();
+        ConfirmButton.gameObject.SetActive(false);
     }
 }

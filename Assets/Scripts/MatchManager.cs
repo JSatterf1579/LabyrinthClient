@@ -12,6 +12,8 @@ public class MatchManager : MonoBehaviour
 
     public HeroManager manager;
 
+    public static MatchManager instance;
+
     public string MatchIdentifier { get; private set; }
 
     public string HeroPlayer { get; private set; }
@@ -36,7 +38,16 @@ public class MatchManager : MonoBehaviour
 	        JSONDecoder.DecodeMap(GameManager.instance.MatchData.GetField("map"), map);
             JSONDecoder.DecodeHeroes(GameManager.instance.MatchData.GetField("board_objects"), manager);
             socket.On("game_update", GameUpdate);
-	    }
+            if (instance != null)
+            {
+                Debug.LogError("Something went wrong in match singleton creation");
+                Destroy(this);
+                return;
+            }
+            else {
+                MatchManager.instance = this;
+            }
+        }
 	    else
 	    {
             Debug.LogError("You got in here without a game manager or match start data! How did you do that!");
@@ -56,22 +67,51 @@ public class MatchManager : MonoBehaviour
         }
     }
 
+    public void SendAction(string actionType, JSONObject payload)
+    {
+        payload.AddField("type", actionType);
+        socket.Emit("game_action", payload, ActionCallback);
+    }
+
+    private void ActionCallback(JSONObject response)
+    {
+        Debug.Log(response);
+    }
+
     private void GameUpdate(SocketIOEvent e)
     {
         JSONObject data = e.data;
-        if ((int) data.GetField("new_state").GetField("current_sequence").n == SeqNumber + 1)
+        Debug.Log(data);
+        if (true)
         {
             SeqNumber++;
             ProcessAction(data.GetField("action"));
         }
         else
         {
+            Debug.Log("Queued packet for future processing");
             queuedPackets.Add((int)data.GetField("new_state").GetField("current_sequence").n, data);
         }
     }
 
     private void ProcessAction(JSONObject action)
     {
-        
+        if (action.GetField("type").str.Equals("move"))
+        {
+            MoveCharacter(action);
+        }
+    }
+
+    private void MoveCharacter(JSONObject move)
+    {
+        List<JSONObject> path = move.GetField("path").list;
+        string characterID = move.GetField("character").str;
+        for (int i = 0; i < path.Count; i++)
+        {
+            int xPos = (int) path[i].GetField("x").n;
+            int yPos = (int) path[i].GetField("y").n;
+            Unit target = manager.heroList[characterID];
+            map.MoveMapObject(target, xPos, yPos);
+        }
     }
 }
