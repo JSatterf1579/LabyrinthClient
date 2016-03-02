@@ -164,7 +164,7 @@ public class Map : MonoBehaviour {
         return null;
     }
 
-    public void MoveMapObject(MapObject obj, int newX, int newY) {
+    public void MoveMapObject(Unit obj, int newX, int newY) {
         if (!obj.PlacedInMap) {
             Debug.LogError("Error; attempted to move an object that has not yet been placed on the map!");
             return;

@@ -47,7 +47,8 @@ public class Hero : Unit
                     moving = true;
                     movementUI.BeginMove(posX, posY, movement);
                 }
-            } else {
+            }
+            else {
                 moving = false;
                 var movementUI = FindObjectOfType<MovementUI>();
                 if (movementUI == null) {
