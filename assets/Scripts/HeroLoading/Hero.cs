@@ -55,7 +55,7 @@ public class Hero : Unit
                     Debug.LogError("Could not find MovementUI");
                     return;
                 }
-                movementUI.Cancel();
+                movementUI.EndMove();
                 moves = movementUI.Path;
                 Debug.Log("Movement of length "+moves.Count +" recieved");
             }

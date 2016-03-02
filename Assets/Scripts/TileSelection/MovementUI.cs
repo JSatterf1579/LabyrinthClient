@@ -52,7 +52,7 @@ public class MovementUI : MonoBehaviour {
         Debug.Log("" + validTiles.Count + " Tile(s) highlighted");
     }
 
-    public void Cancel() {
+    public void EndMove() {
         Debug.Log("Movement Canceled");
         ClearValidTiles();
         ClearLine();
