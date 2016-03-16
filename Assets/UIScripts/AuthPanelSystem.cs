@@ -95,7 +95,17 @@ public class AuthPanelSystem : MonoBehaviour {
 		socket.Emit ("leave", new JSONObject() , processLogin);
 	}
 
-	private void processLogin(JSONObject response){
+    private void processRegister(JSONObject response)
+    {
+        Debug.Log(response.ToString());
+        if (response.list[0].GetField("status").n == 200)
+        {
+            GameManager.instance.Username = this.username;
+            //loginSuccessModal.SetActive(true);
+        }
+    }
+
+    private void processLogin(JSONObject response){
 		Debug.Log (response.ToString ());
 	    if (response.list[0].GetField("status").n == 200)
 	    {

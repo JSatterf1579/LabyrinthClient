@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Linq;
+using UnityEngine.EventSystems;
 
 public class Selector : MonoBehaviour
 {
@@ -24,7 +25,7 @@ public class Selector : MonoBehaviour
 	void Update () {
 	    if (timer > debounce)
 	    {
-	        if (Input.GetMouseButtonDown(0))
+	        if (Input.GetMouseButtonDown(0) && EventSystem.current.currentSelectedGameObject == null)
 	        {
 	            MapObject tempUnit = SelectUnitUnderCursor();
 	            if (tempUnit != null)

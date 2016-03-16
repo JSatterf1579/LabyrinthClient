@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class MovementUI : MonoBehaviour {
@@ -166,7 +167,7 @@ public class MovementUI : MonoBehaviour {
             return;
         }
 
-        if (timer >= debounce && Input.GetMouseButtonDown(0))
+        if (timer >= debounce && Input.GetMouseButtonDown(0)  && EventSystem.current.currentSelectedGameObject == null)
         {
             timer = 0;
             if (frozen)
