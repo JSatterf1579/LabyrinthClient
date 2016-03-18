@@ -14,51 +14,56 @@ public class AuthPanelSystem : MonoBehaviour {
 	public InputField passField;
 	public Button registerButton;
 	public Button loginButton;
-	public Button roomButton;
+	public Text errorMessage;
+	public Color fieldErrorColor;
 
-    public GameObject loginSuccessModal;
-    public Button toMenuButton;
+	private Color defaultFieldColor;
+	private Image passImage;
+	private Image userImage;
 
 	private SocketIOComponent socket;
 
-	private bool room = false;
-
 	// Use this for initialization
-	void Start ()
-    { 
+	void Start () { 
 		socket = GameManager.instance.getSocket();
-		usernameField.onValueChange.AddListener(updateUsername);
-		passField.onValueChange.AddListener(updatePassword);
-		registerButton.onClick.AddListener(register);
-		loginButton.onClick.AddListener (login);
-		roomButton.onClick.AddListener (toggleRoom);
-        toMenuButton.onClick.AddListener(toMenu);
+		defaultFieldColor =  usernameField.GetComponent<Image>().color;
+		passImage = passField.GetComponent<Image>();
+		userImage = usernameField.GetComponent<Image>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+
+		if(usernameField.isFocused && Input.GetKey(KeyCode.Tab) && !(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))) {
+			passField.ActivateInputField();
+		}
+
+		if(Input.GetKey(KeyCode.Return)) {
+			login();
+		}
+
+		if(passField.isFocused && Input.GetKey(KeyCode.Tab) && (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))) {
+			usernameField.ActivateInputField();
+		}
 	}
 
-	private void updateUsername(string arg0){
-		this.username = arg0;
+	public void updateUsername(InputField arg0){
+		this.username = arg0.text;
 	}
 
-	private void updatePassword(string arg0){
-		this.password = arg0;
+	public void updatePassword(InputField arg0){
+		this.password = arg0.text;
 	}
 
-	private void register(){
-		Debug.Log ("Registering");
+	public void register() {
 		sendPacket (true);
 	}
 
-	private void login(){
+	public void login() {
 		sendPacket (false);
 	}
 
-    private void toMenu()
-    {
+    private void toMenu() {
         SceneManager.LoadScene("MainMenu");
     }
 
@@ -71,46 +76,47 @@ public class AuthPanelSystem : MonoBehaviour {
 			socket.Emit ("register", new JSONObject (data), ProcessRegister);
 			return true;
 		} else {
-
 			socket.Emit ("login", new JSONObject (data), processLogin);
 			return true;
 		}
 	}
 
-	private void toggleRoom(){
-		if (room) {
-			leaveRoom ();
-			room = false;
+	private void ProcessRegister(JSONObject response) {
+		clearError();
+        Debug.Log(response.ToString());
+		float status = response.list[0].GetField("status").n;
+        if (status == 200)
+        {
+            GameManager.instance.Username = this.username;
 		} else {
-			joinRoom();
-			room = true;
+			string message = response.list[0].GetField("message").str;
+			error(message, usernameField);
 		}
 	}
 
-	private void joinRoom(){
-		socket.Emit ("join", new JSONObject() , processLogin);
-	}
-
-	private void leaveRoom(){
-		socket.Emit ("leave", new JSONObject() , processLogin);
-	}
-
-    private void ProcessRegister(JSONObject response)
-    {
-        Debug.Log(response.ToString());
-        if (response.list[0].GetField("status").n == 200)
-        {
-            GameManager.instance.Username = this.username;
-            //loginSuccessModal.SetActive(true);
-        }
-    }
-
-    private void processLogin(JSONObject response){
+    private void processLogin(JSONObject response) {
+		clearError();
 		Debug.Log (response.ToString ());
-	    if (response.list[0].GetField("status").n == 200)
-	    {
+		float status = response.list[0].GetField("status").n;
+	    if (status == 200) {
 	        GameManager.instance.Username = this.username;
-	        loginSuccessModal.SetActive(true);
-	    }
+			toMenu();
+		} else {
+			string message = response.list[0].GetField("message").str;
+			error(message, passField);
+		}
+	}
+
+	private void error(string message, InputField field) {
+		errorMessage.text = message;
+		field.text = "";
+		field.ActivateInputField();
+		field.GetComponent<Image>().color = fieldErrorColor;
+	}
+
+	private void clearError() {
+		errorMessage.text = "";
+		userImage.color = defaultFieldColor;
+		passImage.color = defaultFieldColor;
 	}
 }
