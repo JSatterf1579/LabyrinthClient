@@ -68,7 +68,7 @@ public class AuthPanelSystem : MonoBehaviour {
 		data ["password"] = this.password;
 		if (isRegister) {
 			data ["password_confirm"] = this.password;
-			socket.Emit ("register", new JSONObject (data), processLogin);
+			socket.Emit ("register", new JSONObject (data), ProcessRegister);
 			return true;
 		} else {
 
@@ -95,7 +95,7 @@ public class AuthPanelSystem : MonoBehaviour {
 		socket.Emit ("leave", new JSONObject() , processLogin);
 	}
 
-    private void processRegister(JSONObject response)
+    private void ProcessRegister(JSONObject response)
     {
         Debug.Log(response.ToString());
         if (response.list[0].GetField("status").n == 200)
