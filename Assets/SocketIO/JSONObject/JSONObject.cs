@@ -648,6 +648,10 @@ public class JSONObject {
 	public string Print(bool pretty) {
 		StringBuilder builder = new StringBuilder();
 		Stringify(0, builder, pretty);
+	    if (builder.ToString() == "null")
+	    {
+	        return "{}";
+	    }
 		return builder.ToString();
 	}
 	// Default parameters fix

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 public class Map : MonoBehaviour {
 
+    public static Map Current = null;
+
     /// <summary>
     /// This allows us to set the tile names and their corresponding prefabs in the editor.  
     /// NOTE: changes made after the scene loads are ignored
@@ -28,6 +30,10 @@ public class Map : MonoBehaviour {
     private int mapWidth, mapDepth;
 
     private float xOffset, yOffset;
+
+    public int Width { get { return mapWidth; } }
+    public int Depth { get { return mapDepth; } }
+    public int Height { get { return mapDepth; } }
 
     public bool Loaded {
         get;
@@ -64,11 +70,18 @@ public class Map : MonoBehaviour {
         CurrentMap = new Tile[width, height];
         this.xOffset = xOffsetOverride;
         this.yOffset = yOffsetOverride;
+        mapWidth = width;
+        mapDepth = height;
         Loaded = true;
+        Current = this;
+    }
+
+    void OnDestroy() {
+        if (Current == this) Current = null;
     }
 
 
-    public Tile InstantiateTile(int x, int y, string type, int rotation) {
+    public Tile InstantiateTile(int x, int y, string type, int rotation, bool isObstacle) {
         if (!Loaded) {
             Debug.LogError("Tried to instantiate a tile on a Map that has not been initalized yet");
             return null;
@@ -89,7 +102,7 @@ public class Map : MonoBehaviour {
                 Debug.LogError("Error: a Tile prefab was instantiated, but it does not have an attached Tile behaviour; it will now be destroyed for its insubordination");
                 Destroy(instance);
             } else {
-                tile.Init(x, y, rotation, type);
+                tile.Init(x, y, rotation, type, isObstacle);
                 CurrentMap[x, y] = tile;
             }
             return tile;
@@ -122,13 +135,80 @@ public class Map : MonoBehaviour {
         return CurrentMap[x, y];
     }
 
+    public bool CheckCoordinates(int x, int y) {
+        if (x < 0) {
+            return false;
+        }
+        if (y < 0) {
+            return false;
+        }
+        if (x >= mapWidth) {
+            return false;
+        }
+        if (y >= mapDepth) {
+            return false;
+        }
+        return true;
+    }
+
     public Tile GetTileAtMouse() {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        if(Physics.Raycast(ray, out hit, float.PositiveInfinity, LayerMask.GetMask("MapTile"))) {
+        if(Physics.Raycast(ray, out hit, float.PositiveInfinity, LayerMask.GetMask("MapTile", "Hero"))) {
+            if (hit.transform.CompareTag("Hero")) {
+                var hero = hit.transform.GetComponent<Hero>();
+                return GetTileAtPosition(hero.posX, hero.posY);
+            }
             return hit.collider.GetComponent<Tile>();
         }
         return null;
+    }
+
+    public void MoveMapObject(Unit obj, int newX, int newY) {
+        if (!obj.PlacedInMap) {
+            Debug.LogError("Error; attempted to move an object that has not yet been placed on the map!");
+            return;
+        }
+        if(!CheckCoordinates(newX, newY)) {
+            Debug.LogError("Error; attempted to move an object to coordinates that are outside the map bounds");
+            return;
+        }
+        Tile dest = GetTileAtPosition(newX, newY);
+        if(dest == null) {
+            Debug.LogError("Error; attempted to move an object to a null tile");
+            return;
+        }
+        Tile src = GetTileAtPosition(obj.posX, obj.posY);
+        src.RemoveMapObject(obj);
+        putObjectAtTile(obj, dest);
+    }
+
+    private void putObjectAtTile(MapObject obj, Tile tile) {
+        var mount = tile.OverlayTransform;
+        obj.transform.parent = mount;
+        obj.transform.localPosition = Vector3.zero;
+        tile.AddMapObject(obj);
+        obj.posX = tile.XPos;
+        obj.posY = tile.YPos;
+    }
+
+    /// <summary>
+    /// Initally places the MapObject in the map.  This should only EVER be called exactly ONCE PER OBJECT at initalization.  
+    /// </summary>
+    /// <param name="obj"></param>
+    public void PlaceNewObjectIntoMap(MapObject obj) {
+        Debug.Log("Placing new object into map");
+        if (obj.PlacedInMap) {
+            Debug.LogError("Error; attempted to place an object as new, but it has already been placed!");
+            return;
+        }
+        Tile t = GetTileAtPosition(obj.posX, obj.posY);
+        if (t != null) {
+            putObjectAtTile(obj, t);
+            obj.PlacedInMap = true;
+        } else {
+            Debug.LogError("Error; attempted to place a new object onto an invalid tile");
+        }
     }
 
     public Tile this[int x, int y] {

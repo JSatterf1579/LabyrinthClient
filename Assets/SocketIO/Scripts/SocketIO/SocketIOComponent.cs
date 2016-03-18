@@ -114,6 +114,8 @@ namespace SocketIO
 
 			connected = false;
 
+            DontDestroyOnLoad(gameObject);
+
 			#if SOCKET_IO_DEBUG
 			if(debugMethod == null) { debugMethod = Debug.Log; };
 			#endif

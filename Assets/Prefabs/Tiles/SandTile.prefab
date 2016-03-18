@@ -17,6 +17,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &142172
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 496816}
+  m_Layer: 10
+  m_Name: OverlayMount
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &177846
 GameObject:
   m_ObjectHideFlags: 0
@@ -44,6 +59,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 496816}
   - {fileID: 475332}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -56,6 +72,18 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.125, z: 0}
   m_LocalScale: {x: 1, y: 0.25, z: 1}
+  m_Children: []
+  m_Father: {fileID: 410848}
+  m_RootOrder: 1
+--- !u!4 &496816
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 142172}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.01, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 410848}
   m_RootOrder: 0
@@ -115,8 +143,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c911cf496e5c0b5459763270b4720ee7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HighlihgtRenderers:
+  - {fileID: 2339660}
   MouseOverColor: {r: 0, g: 0.697, b: 0, a: 1}
   HighlightColor: {r: 1, g: 0, b: 0, a: 1}
+  OverlayTransform: {fileID: 496816}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -124,6 +155,10 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: HighlihgtRenderers.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: Type
       value: sand
@@ -156,6 +191,10 @@ Prefab:
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: OverlayTransform
+      value: 
+      objectReference: {fileID: 496816}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 177846}

@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using SocketIO;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class AuthPanelSystem : MonoBehaviour {
 
@@ -15,21 +16,23 @@ public class AuthPanelSystem : MonoBehaviour {
 	public Button loginButton;
 	public Button roomButton;
 
+    public GameObject loginSuccessModal;
+    public Button toMenuButton;
+
 	private SocketIOComponent socket;
 
 	private bool room = false;
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    { 
 		socket = GameManager.instance.getSocket();
-		socket.On ("room_ping", (SocketIOEvent data) => {
-			Debug.Log (data.data.ToString());
-		});
 		usernameField.onValueChange.AddListener(updateUsername);
 		passField.onValueChange.AddListener(updatePassword);
 		registerButton.onClick.AddListener(register);
 		loginButton.onClick.AddListener (login);
 		roomButton.onClick.AddListener (toggleRoom);
+        toMenuButton.onClick.AddListener(toMenu);
 	}
 	
 	// Update is called once per frame
@@ -54,13 +57,18 @@ public class AuthPanelSystem : MonoBehaviour {
 		sendPacket (false);
 	}
 
+    private void toMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
 	private bool sendPacket(bool isRegister){
 		Dictionary<string,string> data = new Dictionary<string,string>();
 		data["username"] = this.username;
 		data ["password"] = this.password;
 		if (isRegister) {
 			data ["password_confirm"] = this.password;
-			socket.Emit ("register", new JSONObject (data), processLogin);
+			socket.Emit ("register", new JSONObject (data), ProcessRegister);
 			return true;
 		} else {
 
@@ -87,7 +95,22 @@ public class AuthPanelSystem : MonoBehaviour {
 		socket.Emit ("leave", new JSONObject() , processLogin);
 	}
 
-	private void processLogin(JSONObject response){
+    private void ProcessRegister(JSONObject response)
+    {
+        Debug.Log(response.ToString());
+        if (response.list[0].GetField("status").n == 200)
+        {
+            GameManager.instance.Username = this.username;
+            //loginSuccessModal.SetActive(true);
+        }
+    }
+
+    private void processLogin(JSONObject response){
 		Debug.Log (response.ToString ());
+	    if (response.list[0].GetField("status").n == 200)
+	    {
+	        GameManager.instance.Username = this.username;
+	        loginSuccessModal.SetActive(true);
+	    }
 	}
 }

@@ -27,6 +27,7 @@ public class HeroManager : MonoBehaviour
     public void InstantiateHero(string heroID, string ownerID, string controllerID, string UUID, int x, int y, int level, int health, int attack,
         int defense, int vision, int movement)
     {
+        Debug.Log("Instantiating a hero");
         string heroType = heroID.ToUpper().Trim();
         if (!heroPrefabDict.ContainsKey(heroType))
         {
@@ -51,11 +52,7 @@ public class HeroManager : MonoBehaviour
                 heroList.Add(UUID, hero);
                 if (GameMap.Loaded)
                 {
-                    //Move to unit functionality
-                    Tile currentTile = GameMap.GetTileAtPosition(x, y);
-                    GameObject tileObject = currentTile.gameObject;
-                    instance.transform.SetParent(tileObject.transform);
-                    instance.transform.localPosition = new Vector3(0, 0, tileObject.transform.localScale.z);
+                    GameMap.PlaceNewObjectIntoMap(hero);
                 }
             }
         }
