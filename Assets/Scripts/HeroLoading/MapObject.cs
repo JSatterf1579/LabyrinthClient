@@ -43,6 +43,13 @@ public abstract class MapObject : MonoBehaviour {
         posY = y;
         //TODO remove this
         BlocksMovement = false;
+
+        Debug.Log("Instantiating MapObject.  UUID=" + UUID);
+        Debug.Log("MatchManager.instance = " + MatchManager.instance);
+        Debug.Log("MatchManager.instance.MapObjects = " + MatchManager.instance.MapObjects);
+        
+
+        MatchManager.instance.MapObjects.Add(UUID, this);
     }
 
     /// <summary>
@@ -64,6 +71,12 @@ public abstract class MapObject : MonoBehaviour {
     void OnMouseExit() {
         IsMouseOver = false;
         if (OnMouseEvent != null) OnMouseEvent(false);
+    }
+
+    void OnDestroy() {
+        if(MatchManager.instance != null) {
+            MatchManager.instance.MapObjects.Remove(UUID);
+        }
     }
 
 }

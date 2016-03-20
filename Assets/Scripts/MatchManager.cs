@@ -25,12 +25,21 @@ public class MatchManager : MonoBehaviour
 
     private SocketIOComponent socket;
 
-    private Dictionary<int, JSONObject> queuedPackets; 
+    private Dictionary<int, JSONObject> queuedPackets;
+
+    public Dictionary<string, MapObject> MapObjects = new Dictionary<string, MapObject>();
 
 	// Use this for initialization
 	void Start () {
 	    if (GameManager.instance != null && GameManager.instance.MatchData != null)
 	    {
+            if (instance != null) {
+                Debug.LogError("Something went wrong in match singleton creation");
+                Destroy(this);
+                return;
+            } else {
+                MatchManager.instance = this;
+            }
             queuedPackets = new Dictionary<int, JSONObject>();
 	        socket = GameManager.instance.getSocket();
 	        MatchIdentifier = GameManager.instance.MatchData.GetField("match_identifier").str;
@@ -38,15 +47,6 @@ public class MatchManager : MonoBehaviour
 	        JSONDecoder.DecodeMap(GameManager.instance.MatchData.GetField("map"), map);
             JSONDecoder.DecodeHeroes(GameManager.instance.MatchData.GetField("board_objects"), manager);
             socket.On("game_update", GameUpdate);
-            if (instance != null)
-            {
-                Debug.LogError("Something went wrong in match singleton creation");
-                Destroy(this);
-                return;
-            }
-            else {
-                MatchManager.instance = this;
-            }
         }
 	    else
 	    {
@@ -106,12 +106,14 @@ public class MatchManager : MonoBehaviour
     {
         List<JSONObject> path = move.GetField("path").list;
         string characterID = move.GetField("character").str;
+        List<Tile> tiles = new List<Tile>();
         for (int i = 0; i < path.Count; i++)
         {
             int xPos = (int) path[i].GetField("x").n;
             int yPos = (int) path[i].GetField("y").n;
-            Unit target = manager.heroList[characterID];
-            map.MoveMapObject(target, xPos, yPos);
+            tiles.Add(map.GetTileAtPosition(xPos, yPos));
         }
+        MapObject target = MapObjects[characterID];
+        map.MoveMapObject(target, tiles);
     }
 }

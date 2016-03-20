@@ -8,7 +8,6 @@ public class HeroManager : MonoBehaviour
     public Map.PrefabNamePair[] heroPrefabs;
     private Dictionary<string, GameObject> heroPrefabDict; 
 
-    public Dictionary<string, Unit> heroList;
     public Map GameMap;
      
 
@@ -16,7 +15,6 @@ public class HeroManager : MonoBehaviour
 	void Awake () {
 	
         heroPrefabDict = new Dictionary<string, GameObject>();
-        heroList = new Dictionary<string, Unit>();
 
 	    foreach (var pair in heroPrefabs)
 	    {
@@ -49,7 +47,6 @@ public class HeroManager : MonoBehaviour
             else
             {
                 hero.Init(ownerID, controllerID, UUID, x, y, level, health, attack, defense, vision, movement, null);
-                heroList.Add(UUID, hero);
                 if (GameMap.Loaded)
                 {
                     GameMap.PlaceNewObjectIntoMap(hero);
