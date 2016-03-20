@@ -12,6 +12,8 @@ public abstract class Unit : MapObject
     public int defense;
     public int vision;
     public int movement;
+    public int MaxActionPoints;
+    public int CurrentActionPoints;
     public Weapon weapon;
 
     public Object[] status;

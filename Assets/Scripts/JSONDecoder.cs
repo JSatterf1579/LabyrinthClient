@@ -56,7 +56,12 @@ public class JSONDecoder{
 
                 string heroType = hero.GetField("hero_type").str;
 
-                Manager.InstantiateHero(heroType, owner, controller, UUID, xPos, yPos, health, level, attack, defense,
+                if (hero.GetField("weapon") != null)
+                {
+                    
+                }
+
+                Manager.InstantiateHero(heroType, owner, controller, UUID, xPos, yPos, level, health, attack, defense,
                     vision, movement);
             }
 
