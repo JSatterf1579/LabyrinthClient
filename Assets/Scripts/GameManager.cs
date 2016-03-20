@@ -18,7 +18,6 @@ public class GameManager : MonoBehaviour
 	// Use this for initialization
 	void Awake () {
         DontDestroyOnLoad(gameObject);
-        DebugHUD.setValue("Username", Username);
 		if (instance != null) {
 			Destroy (this);
 			return;

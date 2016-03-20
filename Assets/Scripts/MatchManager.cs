@@ -19,9 +19,39 @@ public class MatchManager : MonoBehaviour
     public string HeroPlayer { get; private set; }
     public string ArchitectPlayer { get; private set; }
 
+	public string OpponentName { get; private set; }
+
+	public PlayerType OpponentType { get; private set; }
+
     public int SeqNumber { get; private set; }
 
-    public string GameState { get; private set; }
+	public int TurnNumber { get; private set; }
+
+	public PlayerType PlayerTurn { get; private set; }
+
+	public bool MyTurn {
+		get { 
+			return PlayerTurn.Equals(MyPlayerType); 
+		}
+	}
+
+	public PlayerType MyPlayerType { get; private set; }
+
+	private string _GameState;
+
+	public string GameState { 
+		get {
+			return _GameState;
+		} 
+		private set {
+			_GameState = value;
+			if ("hero_turn".Equals(value)) {
+				PlayerTurn = PlayerType.Heroes;
+			} else if ("architect_turn".Equals(value)) {
+				PlayerTurn = PlayerType.Architect;
+			}
+		} 
+	}
 
     private SocketIOComponent socket;
 
@@ -33,10 +63,19 @@ public class MatchManager : MonoBehaviour
 	    {
             queuedPackets = new Dictionary<int, JSONObject>();
 	        socket = GameManager.instance.getSocket();
-	        MatchIdentifier = GameManager.instance.MatchData.GetField("match_identifier").str;
+			JSONObject data = GameManager.instance.MatchData;
+	        MatchIdentifier = data.GetField("match_identifier").str;
 
-	        JSONDecoder.DecodeMap(GameManager.instance.MatchData.GetField("map"), map);
-            JSONDecoder.DecodeHeroes(GameManager.instance.MatchData.GetField("board_objects"), manager);
+			Debug.Log("match manager data:");
+			Debug.Log(data);
+
+			UpdatePlayers(data);
+
+			UpdateTurn(data);
+			UpdateGameState(data);
+
+	        JSONDecoder.DecodeMap(data.GetField("map"), map);
+            JSONDecoder.DecodeHeroes(data.GetField("board_objects"), manager);
             socket.On("game_update", GameUpdate);
             if (instance != null)
             {
@@ -64,7 +103,7 @@ public class MatchManager : MonoBehaviour
             JSONObject data = queuedPackets[SeqNumber];
             queuedPackets.Remove(SeqNumber);
             ProcessAction(data);
-        }
+		}
     }
 
     public void SendAction(string actionType, JSONObject payload)
@@ -85,7 +124,13 @@ public class MatchManager : MonoBehaviour
         if (true)
         {
             SeqNumber++;
-            ProcessAction(data.GetField("action"));
+			ProcessAction(data.GetField("action"));
+			if (data.HasField("game_state")) {
+				UpdateGameState(data);
+			}
+			if (data.HasField("turn_number")) {
+				UpdateTurn(data);
+			}
         }
         else
         {
@@ -114,4 +159,27 @@ public class MatchManager : MonoBehaviour
             map.MoveMapObject(target, xPos, yPos);
         }
     }
+
+	private void UpdateGameState(JSONObject data) {
+		GameState = data.GetField("game_state").str;
+	}
+
+	private void UpdateTurn(JSONObject data) {
+		TurnNumber = (int)data.GetField("turn_number").n;
+	}
+
+	private void UpdatePlayers(JSONObject data) {
+		if (data.GetField("players").GetField("heroes").str.Equals(GameManager.instance.Username)) {
+			MyPlayerType = PlayerType.Heroes;
+			OpponentName = data.GetField("players").GetField("architect").str;
+			OpponentType = PlayerType.Architect;
+		} else {
+			MyPlayerType = PlayerType.Architect;
+			OpponentName = data.GetField("players").GetField("heroes").str;
+			OpponentType = PlayerType.Heroes;
+		}
+		Debug.Log("Updated Players");
+	}
 }
+
+public enum PlayerType {Heroes, Architect, None};
