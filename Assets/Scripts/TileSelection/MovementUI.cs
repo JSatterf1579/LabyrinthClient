@@ -10,6 +10,8 @@ public class MovementUI : MonoBehaviour {
     public GameObject CornerPrefab;
     public Button ConfirmButton;
 
+    public Selector Selector;
+
     public Color highlightColor;
 
     public Map map;
@@ -75,7 +77,7 @@ public class MovementUI : MonoBehaviour {
         ClearLine();
         active = false;
         frozen = false;
-        
+        Selector.EndMovement();
     }
 
     private void ClearValidTiles() {
