@@ -37,6 +37,7 @@ public class DebugHUD : MonoBehaviour {
         text.anchor = TextAnchor.UpperLeft;
         text.richText = true;
         text.enabled = Application.isEditor || Debug.isDebugBuild;
+        DontDestroyOnLoad(this);
     }
 
     void LateUpdate() {
