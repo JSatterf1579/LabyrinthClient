@@ -60,7 +60,7 @@ public class Selector : MonoBehaviour
     public void EndMovement()
     {
         CurrentState = CursorState.Selecting;
-        
+        SelectedUnit = null;
     }
 
     private MapObject SelectUnitUnderCursor()
