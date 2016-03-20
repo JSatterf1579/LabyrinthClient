@@ -26,8 +26,15 @@ public class MapViewCameraController : MonoBehaviour {
 	void Update () {
         if (Input.GetKeyDown(KeyCode.M)) PanWhenMouseAtEdge = !PanWhenMouseAtEdge;
 
+        bool up = Input.GetKey(KeyCode.UpArrow);
+        bool down = Input.GetKey(KeyCode.DownArrow);
+        bool left = Input.GetKey(KeyCode.LeftArrow);
+        bool right = Input.GetKey(KeyCode.RightArrow);
+        bool shift = Input.GetKey(KeyCode.LeftShift);
+        bool leftClick = Input.GetMouseButton(1);
+        bool rightClick = Input.GetMouseButton(2);
 
-        if (Input.GetMouseButton(1) && !Input.GetKey(KeyCode.LeftShift)) {
+        if (leftClick && shift) {
             transform.RotateAround(target, transform.up, Input.GetAxis("Mouse X"));
             transform.RotateAround(target, transform.right, -Input.GetAxis("Mouse Y"));
             transform.LookAt(target,Vector3.up);
@@ -35,22 +42,23 @@ public class MapViewCameraController : MonoBehaviour {
 
         transform.Translate(Vector3.forward * Input.mouseScrollDelta.y, Space.Self);
 
-        if(Input.GetMouseButton(2) || (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButton(1))){
-            //free pan
-            //Vector3 delta = Vector3.zero;
-            //delta += transform.right * -Input.GetAxis("Mouse X");
-            //delta += transform.up * -Input.GetAxis("Mouse Y");
-            //target += delta;
-            //transform.position += delta;
+        float x = 0f;
+        float y = 0f;
+        if (shift) {
+            if (up) y += 1;
+            if (down) y -= 1;
+            if (left) x -= 1;
+            if (right) x += 1;
+        }
 
-            //restricted pan
+
+        if(rightClick || (shift && leftClick)) {
+            x += Input.GetAxis("Mouse X");
+            y += Input.GetAxis("Mouse Y");
             MoveAlongBoardNonNormalized(new Vector3(Input.GetAxis("Mouse X"), 0f, Input.GetAxis("Mouse Y")));
         }
 
-        bool up = Input.GetKey(KeyCode.UpArrow);
-        bool down = Input.GetKey(KeyCode.DownArrow);
-        bool left = Input.GetKey(KeyCode.LeftArrow);
-        bool right = Input.GetKey(KeyCode.RightArrow);
+
         if (PanWhenMouseAtEdge) {
             Vector3 mousePosition = Input.mousePosition;
             if (mousePosition.y > (Screen.height - MousePanBounds)) up = true;
@@ -60,7 +68,7 @@ public class MapViewCameraController : MonoBehaviour {
         }
 
 
-        if(up || down || left || right) {
+        if(up || down || left || right && !shift) {
             Vector3 movement = Vector3.zero;
             if (up) movement += Vector3.forward;
             if (down) movement += Vector3.back;
