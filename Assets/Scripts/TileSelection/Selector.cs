@@ -8,6 +8,8 @@ public class Selector : MonoBehaviour
 
     private Unit SelectedUnit;
 
+    public CursorState CurrentState { get; set; }
+
     public MovementUI Mover;
 
     public Map GameMap;
@@ -17,25 +19,34 @@ public class Selector : MonoBehaviour
 
 
 	// Use this for initialization
-	void Start () {
-	
+	void Start ()
+    {
+        CurrentState = CursorState.Selecting;
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
 	    if (timer > debounce)
 	    {
 	        if (Input.GetMouseButtonDown(0) && EventSystem.current.currentSelectedGameObject == null)
 	        {
 	            MapObject tempUnit = SelectUnitUnderCursor();
-	            if (tempUnit != null)
+	            if (CurrentState == CursorState.Selecting)
 	            {
-	                SelectedUnit = (Unit)tempUnit;
-                    Mover.BeginMove(SelectedUnit);
-	            }
-	            else
-	            {
-	                Debug.Log("Wrong type checking or managed to not click on tile.");
+	                if (tempUnit != null)
+	                {
+	                    SelectedUnit = (Unit) tempUnit;
+	                    if (SelectedUnit.controllerID == GameManager.instance.Username)
+	                    {
+                            CurrentState = CursorState.Movement;
+	                        Mover.BeginMove(SelectedUnit);
+	                    }
+	                }
+	                else
+	                {
+	                    Debug.Log("Didn't select a unit");
+	                }
 	            }
 	        }
 	    }
@@ -45,6 +56,12 @@ public class Selector : MonoBehaviour
 	    }
 	
 	}
+
+    public void EndMovement()
+    {
+        CurrentState = CursorState.Selecting;
+        
+    }
 
     private MapObject SelectUnitUnderCursor()
     {
@@ -56,4 +73,12 @@ public class Selector : MonoBehaviour
 
         return null;
     }
+
+
+    public enum CursorState
+    {
+        Movement,
+        Attacking,
+        Selecting
+    };
 }

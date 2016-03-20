@@ -813,6 +813,7 @@ MonoBehaviour:
   StraightPrefab: {fileID: 134096, guid: d475f14160f03154cb29c38953a827ad, type: 2}
   CornerPrefab: {fileID: 129228, guid: d75dc22d209eaf440888f4e934599ed6, type: 2}
   ConfirmButton: {fileID: 1526130241}
+  Selector: {fileID: 1158007036}
   highlightColor: {r: 0, g: 0.628, b: 1, a: 1}
   map: {fileID: 177063253}
 --- !u!4 &1568433442

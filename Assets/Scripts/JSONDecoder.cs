@@ -36,23 +36,29 @@ public class JSONDecoder{
         GameObject[] heroes = new GameObject[heroList.Count];
         foreach (JSONObject hero in heroList)
         {
-            string UUID = hero.GetField("id").str;
-            string owner = hero.GetField("owner_id").str;
-            string controller = hero.GetField("controller_id").str;
-            int xPos = (int)hero.GetField("x").n;
-            int yPos = (int)hero.GetField("y").n;
+            if (hero.GetField("type").str == "hero")
+            {
 
 
-            int level = (int)hero.GetField("level").n;
-            int health = (int)hero.GetField("health").n;
-            int attack = (int)hero.GetField("attack").n;
-            int defense = (int)hero.GetField("defense").n;
-            int vision = (int)hero.GetField("vision").n;
-            int movement = (int)hero.GetField("movement").n;
+                string UUID = hero.GetField("id").str;
+                string owner = hero.GetField("owner_id").str;
+                string controller = hero.GetField("controller_id").str;
+                int xPos = (int) hero.GetField("x").n;
+                int yPos = (int) hero.GetField("y").n;
 
-            string heroType = hero.GetField("hero_type").str;
 
-            Manager.InstantiateHero(heroType, owner, controller, UUID, xPos, yPos, health, level, attack, defense, vision, movement);
+                int level = (int) hero.GetField("level").n;
+                int health = (int) hero.GetField("health").n;
+                int attack = (int) hero.GetField("attack").n;
+                int defense = (int) hero.GetField("defense").n;
+                int vision = (int) hero.GetField("vision").n;
+                int movement = (int) hero.GetField("movement").n;
+
+                string heroType = hero.GetField("hero_type").str;
+
+                Manager.InstantiateHero(heroType, owner, controller, UUID, xPos, yPos, health, level, attack, defense,
+                    vision, movement);
+            }
 
         }
         

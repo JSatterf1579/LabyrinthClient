@@ -12,12 +12,13 @@ public abstract class Unit : MapObject
     public int defense;
     public int vision;
     public int movement;
+    public Weapon weapon;
 
     public Object[] status;
     public Object[] abilities;
 
 
-    public void Init(string ownerID, string contrllerID, string UUID, int x, int y, int level, int health, int attack, int defense, int vision, int movement)
+    public void Init(string ownerID, string contrllerID, string UUID, int x, int y, int level, int health, int attack, int defense, int vision, int movement, Weapon weapon)
     {
         Init(ownerID, contrllerID, UUID, x, y);
         this.level = level;
@@ -26,6 +27,7 @@ public abstract class Unit : MapObject
         this.defense = defense;
         this.vision = vision;
         this.movement = movement;
+        this.weapon = weapon;
     }
 
     
