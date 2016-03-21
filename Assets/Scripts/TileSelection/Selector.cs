@@ -63,6 +63,10 @@ public class Selector : MonoBehaviour
         SelectedUnit = null;
     }
 
+	public void SelectUnit(Unit Unit) {
+		SelectedUnit = Unit;
+	}
+
     private MapObject SelectUnitUnderCursor()
     {
         Tile underCursor = GameMap.GetTileAtMouse();

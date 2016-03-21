@@ -8,7 +8,7 @@ public class MovementUI : MonoBehaviour {
     public GameObject ArrowPrefab;
     public GameObject StraightPrefab;
     public GameObject CornerPrefab;
-	public GameObject ConfirmPanel;
+	public Dialog ConfirmPanel;
 
     public Selector Selector;
 
@@ -78,7 +78,7 @@ public class MovementUI : MonoBehaviour {
         active = false;
         frozen = false;
         Selector.EndMovement();
-		ConfirmPanel.gameObject.SetActive(false);
+		ConfirmPanel.Hide();
     }
 
     private void ClearValidTiles() {
@@ -176,12 +176,12 @@ public class MovementUI : MonoBehaviour {
             if (frozen)
             {
                 Resume();
-				ConfirmPanel.gameObject.SetActive(false);
+				ConfirmPanel.Hide();
             }
             else
             {
                 Freeze();
-				ConfirmPanel.gameObject.SetActive(true);
+				ConfirmPanel.Show("Are you sure you want to move?", "Yes", this.ConfirmMove, "No", this.EndMove);
             }
         }
 
@@ -324,6 +324,6 @@ public class MovementUI : MonoBehaviour {
         MatchManager.instance.SendAction("move", data);
         Debug.Log(data);
         EndMove();
-		ConfirmPanel.gameObject.SetActive(false);
+		ConfirmPanel.Hide();
     }
 }

@@ -8,6 +8,8 @@ public class InGame : MonoBehaviour {
 
 	public Button ConfirmAction;
 
+	public GameObject jumpButtonPrefab;
+
 	[System.NonSerialized]
 	public Unit selectedUnit;
 
@@ -17,14 +19,21 @@ public class InGame : MonoBehaviour {
 
 	private MatchManager match;
 
+	private bool alreadyDismissed;
+
+	public Unit tempSelectedUnit;
+
 	// Use this for initialization
 	void Start () {
 		match = MatchManager.instance;
 		infoPanel.gameObject.SetActive(false);
+		alreadyDismissed = false;
+		tempSelectedUnit = selector.SelectedUnit;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		if (!tempSelectedUnit) tempSelectedUnit = selector.SelectedUnit;
 		DebugHUD.setValue("Is dismissed", infoPanel.dismissButton.Dismissed);
 		if (match) {
 			updateGameInfo();
@@ -34,14 +43,23 @@ public class InGame : MonoBehaviour {
 					updateSelectedInfo(selectedUnit);
 					infoPanel.gameObject.SetActive(true);
 					infoPanel.dismissButton.Dismissed = false;
+					alreadyDismissed = false;
 				}
 			} else {
 //				infoPanel.gameObject.SetActive(false);
-				infoPanel.dismissButton.Dismissed = true;
+				if (!alreadyDismissed) {
+					infoPanel.dismissButton.Dismissed = true;
+					alreadyDismissed = true;
+				}
 			}
 		} else {
 			match = MatchManager.instance;
 		}
+	}
+
+	public void displayHeroes() {
+		selector.SelectUnit(tempSelectedUnit);
+		selector.Mover.BeginMove(tempSelectedUnit);
 	}
 
 	private void updateSelectedInfo(Unit unit) {
