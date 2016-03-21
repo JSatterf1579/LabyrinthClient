@@ -29,6 +29,8 @@ public class MatchManager : MonoBehaviour
 
     public Dictionary<string, MapObject> MapObjects = new Dictionary<string, MapObject>();
 
+    private JSONObject matchState;
+
 	// Use this for initialization
 	void Start () {
 	    if (GameManager.instance != null && GameManager.instance.MatchData != null)
@@ -86,6 +88,7 @@ public class MatchManager : MonoBehaviour
         {
             SeqNumber++;
             ProcessAction(data.GetField("action"));
+            GameManager.instance.ApplyDiff(data["new_state"]);
         }
         else
         {
