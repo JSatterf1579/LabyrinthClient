@@ -6,16 +6,16 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/UIScenes/LoginScreen.unity
+    path: Assets/UI/UIScenes/LoginScreen.unity
   - enabled: 1
-    path: Assets/UIScenes/MainMenu.unity
+    path: Assets/UI/UIScenes/MainMenu.unity
   - enabled: 1
-    path: Assets/UIScenes/FindGame.unity
+    path: Assets/UI/UIScenes/FindGame.unity
   - enabled: 1
-    path: Assets/UIScenes/MyHeroes.unity
+    path: Assets/UI/UIScenes/MyHeroes.unity
   - enabled: 1
-    path: Assets/UIScenes/MyCollection.unity
+    path: Assets/UI/UIScenes/MyCollection.unity
   - enabled: 1
-    path: Assets/UIScenes/Store.unity
+    path: Assets/UI/UIScenes/Store.unity
   - enabled: 1
     path: Assets/Scenes/MatchScene.unity

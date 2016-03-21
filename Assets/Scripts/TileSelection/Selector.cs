@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class Selector : MonoBehaviour
 {
 
-    private Unit SelectedUnit;
+	public Unit SelectedUnit { get; private set; }
 
     public CursorState CurrentState { get; set; }
 

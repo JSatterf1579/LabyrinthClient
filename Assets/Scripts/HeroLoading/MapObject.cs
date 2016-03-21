@@ -66,4 +66,8 @@ public abstract class MapObject : MonoBehaviour {
         if (OnMouseEvent != null) OnMouseEvent(false);
     }
 
+
+	public bool Equals(MapObject other) {
+		return UUID.Equals(this.UUID);
+	}
 }
