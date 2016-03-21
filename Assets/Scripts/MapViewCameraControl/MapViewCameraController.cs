@@ -35,7 +35,7 @@ public class MapViewCameraController : MonoBehaviour {
         bool left = Input.GetKey(KeyCode.LeftArrow);
         bool right = Input.GetKey(KeyCode.RightArrow);
         bool shift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-        bool leftClick = Input.GetMouseButton(0);
+        bool leftClick = Input.GetMouseButton(2);
         bool rightClick = Input.GetMouseButton(1);
 
         float x = 0f;
