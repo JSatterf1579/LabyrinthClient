@@ -44,6 +44,7 @@ public class Map : MonoBehaviour {
 
 
     void Awake() {
+        Debug.Log("Map is awake");
         Current = this;
         Loaded = false;
         TileSet = new Dictionary<string, GameObject>();

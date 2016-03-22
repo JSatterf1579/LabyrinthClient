@@ -61,9 +61,7 @@ public class FindGame : MonoBehaviour
     {
         Debug.Log(e.data);
         SceneManager.LoadScene("MatchScene");
-        GameObject mm = new GameObject("MatchManager", typeof(MatchManager));
-        MatchManager manager = mm.GetComponent<MatchManager>();
-        manager.SetInitialMatchState(e.data);
+        MatchManager.SetInitialMatchState(e.data);
         GameManager.instance.InMatch = true;
     }
 }

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using SocketIO;
 
 public class MatchManager : MonoBehaviour
-{   
+{
+    public Map map;
+
     public HeroManager manager;
 
     public static MatchManager instance;
@@ -15,19 +17,17 @@ public class MatchManager : MonoBehaviour
 
     public int SeqNumber { get; private set; }
 
-    public string GameState { get; private set; }
-
     private SocketIOComponent socket;
 
     private Dictionary<int, JSONObject> queuedPackets;
 
     public Dictionary<string, MapObject> MapObjects = new Dictionary<string, MapObject>();
 
-    public JSONObject MatchState {
+    public static JSONObject MatchState {
         get; private set;
     }
 
-    public void SetInitialMatchState(JSONObject obj) {
+    public static void SetInitialMatchState(JSONObject obj) {
         if(instance != null) {
             Debug.LogError("Error: attempted to SetInitialMatchState but there is already an initalized MatchManager!");
             return;
@@ -36,7 +36,6 @@ public class MatchManager : MonoBehaviour
         MatchState = obj;
     }
 
-	// Use this for initialization
 	void Start () {
 	    if (GameManager.instance != null && MatchState != null)
 	    {
@@ -64,8 +63,7 @@ public class MatchManager : MonoBehaviour
 	
 	}
 
-    void Update()
-    {
+    void Update() {        
         if (queuedPackets.ContainsKey(SeqNumber + 1))
         {
             SeqNumber++;
