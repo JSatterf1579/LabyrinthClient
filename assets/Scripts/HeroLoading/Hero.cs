@@ -14,5 +14,14 @@ public class Hero : Unit
         int defense, int vision, int movement, Weapon weapon)
     {
         base.Init(ownerID, contrllerID, UUID, x, y, level, health, attack, defense, vision, movement, weapon);
+        MatchManager.instance.RegisterJSONChangeAction("/board_objects/" + UUID + "/action_points", ActionPointsChanged);
+    }
+
+    private void ActionPointsChanged(JSONChangeInfo info) {
+        if(info.Type != JSONChangeInfo.ChangeType.CHANGED) {
+            Debug.LogWarning("Non change event recieved?");
+            return;
+        }
+        Debug.Log(UUID + "'s Action Points were changed from " + info.OldValue.n + " to " + info.NewValue.n);
     }
 }

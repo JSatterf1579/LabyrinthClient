@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using SocketIO;
+using System;
 
 public class MatchManager : MonoBehaviour
 {
@@ -22,6 +23,8 @@ public class MatchManager : MonoBehaviour
     private Dictionary<int, JSONObject> queuedPackets;
 
     public Dictionary<string, MapObject> MapObjects = new Dictionary<string, MapObject>();
+
+    private Dictionary<string, List<Action<JSONChangeInfo>>> JSONChangeActions = new Dictionary<string, List<Action<JSONChangeInfo>>>();
 
     public static JSONObject MatchState {
         get; private set;
@@ -102,7 +105,6 @@ public class MatchManager : MonoBehaviour
         }
     }
 #pragma warning restore 162
-
     private void ProcessAction(JSONObject action)
     {
         if (action.GetField("type").str.Equals("move"))
@@ -127,23 +129,61 @@ public class MatchManager : MonoBehaviour
     }
 
     #region state diff handling
+    public void RegisterJSONChangeAction(string watchedElement, Action<JSONChangeInfo> del) {
+        if (!JSONChangeActions.ContainsKey(watchedElement)) {
+            JSONChangeActions.Add(watchedElement, new List<Action<JSONChangeInfo>>());
+        }
+
+        JSONChangeActions[watchedElement].Add(del);
+        Debug.Log("JSON change event registered for item " + watchedElement);
+    }
+
+    public void RemoveJSONChangeAction(string watchedElement, Action<JSONChangeInfo> del) {
+        if (!JSONChangeActions.ContainsKey(watchedElement)) {
+            Debug.LogError("Attempted to remove a JSON change action that does not exist");
+            return;
+        }
+        var list = JSONChangeActions[watchedElement];
+        if (!list.Contains(del)) {
+            Debug.LogError("Attempted to remove a JSON change action that does not exist");
+            return;
+        }
+        list.Remove(del);
+        if (list.Count == 0) {
+            JSONChangeActions.Remove(watchedElement);
+        }
+    }
+
+    private void FireJSONChangeEvent(JSONChangeInfo change) {
+        Debug.Log("Fireing JSON change event for element " + change.Path);
+        if (JSONChangeActions.ContainsKey(change.Path)) {
+            var list = JSONChangeActions[change.Path];
+            foreach (var action in list) {
+                action(change);
+            }
+        }
+    }
+
     private void ApplyDiff(JSONObject diff) {
         Debug.Log("applying diff...");
-        ApplyRemovals(diff["removed"], MatchState);
-        ApplyAdditions(diff["added"], MatchState);
-        ApplyChanges(diff["changed"], MatchState);
+        ApplyRemovals(diff["removed"], MatchState, "");
+        ApplyAdditions(diff["added"], MatchState, "");
+        ApplyChanges(diff["changed"], MatchState, "");
         Debug.Log("New match state: " + MatchState);
     }
 
-    private void ApplyRemovals(JSONObject diff, JSONObject master) {
+    private void ApplyRemovals(JSONObject diff, JSONObject master, string path) {
         if (diff.IsNull) return;
         if (diff.IsObject) {
             foreach (string key in diff.keys) {
                 JSONObject cur = diff[key];
                 if (cur.isContainer) {
-                    ApplyRemovals(cur, master[key]);
+                    ApplyRemovals(cur, master[key], path+"/"+key);
                 } else if (cur.IsString && cur.str == "DELETED") {
+                    JSONObject oldVal = master[key];
+                    var change = new JSONChangeInfo(JSONChangeInfo.ChangeType.DELETED, path + "/" + key, oldVal, null);
                     master.RemoveField(key);
+                    FireJSONChangeEvent(change);
                 } else {
                     Debug.LogError("Bad data encountered in JSON diff while applying removals");
                 }
@@ -155,18 +195,21 @@ public class MatchManager : MonoBehaviour
         }
     }
 
-    private void ApplyAdditions(JSONObject diff, JSONObject master) {
+    private void ApplyAdditions(JSONObject diff, JSONObject master, string path) {
         if (diff.IsNull) return;
         if (diff.IsObject) {
             foreach (string key in diff.keys) {
                 JSONObject cur = diff[key];
                 if (cur.IsObject) {
                     if (!master.HasField(key)) {
-                        master.AddField(key, new JSONObject());
+                        var nobj = new JSONObject();
+                        master.AddField(key, nobj);
+                        FireJSONChangeEvent(new JSONChangeInfo(JSONChangeInfo.ChangeType.ADDED, path + "/" + key, null, nobj));
                     }
-                    ApplyAdditions(cur, master[key]);
+                    ApplyAdditions(cur, master[key], path + "/" + key);
                 } else if (!master.HasField(key)) {
                     master.AddField(key, cur);
+                    FireJSONChangeEvent(new JSONChangeInfo(JSONChangeInfo.ChangeType.ADDED, path + "/" + key, null, cur));
                 } else {
                     Debug.LogError("Bad data encountered in JSON diff while applying additions");
                 }
@@ -178,18 +221,22 @@ public class MatchManager : MonoBehaviour
         }
     }
 
-    private void ApplyChanges(JSONObject diff, JSONObject master) {
+    private void ApplyChanges(JSONObject diff, JSONObject master, string path) {
         if (diff.IsNull) return;
         if (diff.IsObject) {
             foreach (string key in diff.keys) {
                 JSONObject cur = diff[key];
                 if (cur.IsObject) {
                     if (!master.HasField(key)) {
-                        master.AddField(key, new JSONObject());
+                        var nobj = new JSONObject();
+                        master.AddField(key, nobj);
+                        FireJSONChangeEvent(new JSONChangeInfo(JSONChangeInfo.ChangeType.ADDED, path + "/" + key, null, nobj));
                     }
-                    ApplyChanges(cur, master[key]);
+                    ApplyChanges(cur, master[key], path + "/" + key);
                 } else if (master.HasField(key)) {
+                    var oldVal = master[key];
                     master.SetField(key, cur);
+                    FireJSONChangeEvent(new JSONChangeInfo(JSONChangeInfo.ChangeType.CHANGED, path + "/" + key, oldVal, cur));
                 } else {
                     Debug.LogError("Bad data encountered in JSON diff while applying changes");
                 }

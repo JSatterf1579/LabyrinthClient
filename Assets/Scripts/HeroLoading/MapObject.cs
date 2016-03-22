@@ -44,11 +44,6 @@ public abstract class MapObject : MonoBehaviour {
         //TODO remove this
         BlocksMovement = false;
 
-        Debug.Log("Instantiating MapObject.  UUID=" + UUID);
-        Debug.Log("MatchManager.instance = " + MatchManager.instance);
-        Debug.Log("MatchManager.instance.MapObjects = " + MatchManager.instance.MapObjects);
-        
-
         MatchManager.instance.MapObjects.Add(UUID, this);
     }
 
