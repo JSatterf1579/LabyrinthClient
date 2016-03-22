@@ -59,8 +59,11 @@ public class FindGame : MonoBehaviour
 
     private void OnMatch(SocketIOEvent e)
     {
-        GameManager.instance.RecieveMatchData(e.data);
         Debug.Log(e.data);
         SceneManager.LoadScene("MatchScene");
+        GameObject mm = new GameObject("MatchManager", typeof(MatchManager));
+        MatchManager manager = mm.GetComponent<MatchManager>();
+        manager.SetInitialMatchState(e.data);
+        GameManager.instance.InMatch = true;
     }
 }

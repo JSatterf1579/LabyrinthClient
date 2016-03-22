@@ -1,15 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using SocketIO;
-using Debug = UnityEngine.Debug;
 
 public class MatchManager : MonoBehaviour
-{
-
-    public Map map;
-
+{   
     public HeroManager manager;
 
     public static MatchManager instance;
@@ -29,11 +23,22 @@ public class MatchManager : MonoBehaviour
 
     public Dictionary<string, MapObject> MapObjects = new Dictionary<string, MapObject>();
 
-    private JSONObject matchState;
+    public JSONObject MatchState {
+        get; private set;
+    }
+
+    public void SetInitialMatchState(JSONObject obj) {
+        if(instance != null) {
+            Debug.LogError("Error: attempted to SetInitialMatchState but there is already an initalized MatchManager!");
+            return;
+        }
+
+        MatchState = obj;
+    }
 
 	// Use this for initialization
 	void Start () {
-	    if (GameManager.instance != null && GameManager.instance.MatchData != null)
+	    if (GameManager.instance != null && MatchState != null)
 	    {
             if (instance != null) {
                 Debug.LogError("Something went wrong in match singleton creation");
@@ -44,15 +49,16 @@ public class MatchManager : MonoBehaviour
             }
             queuedPackets = new Dictionary<int, JSONObject>();
 	        socket = GameManager.instance.getSocket();
-	        MatchIdentifier = GameManager.instance.MatchData.GetField("match_identifier").str;
+	        MatchIdentifier = MatchState.GetField("match_identifier").str;
 
-	        JSONDecoder.DecodeMap(GameManager.instance.MatchData.GetField("map"), map);
-            JSONDecoder.DecodeHeroes(GameManager.instance.MatchData.GetField("board_objects"), manager);
+	        JSONDecoder.DecodeMap(MatchState.GetField("map"), Map.Current);
+            JSONDecoder.DecodeHeroes(MatchState.GetField("board_objects"), manager);
             socket.On("game_update", GameUpdate);
         }
 	    else
 	    {
             Debug.LogError("You got in here without a game manager or match start data! How did you do that!");
+            Destroy(this.gameObject);
             
 	    }
 	
@@ -80,6 +86,7 @@ public class MatchManager : MonoBehaviour
         Debug.Log(response);
     }
 
+#pragma warning disable 162
     private void GameUpdate(SocketIOEvent e)
     {
         JSONObject data = e.data;
@@ -88,7 +95,7 @@ public class MatchManager : MonoBehaviour
         {
             SeqNumber++;
             ProcessAction(data.GetField("action"));
-            GameManager.instance.ApplyDiff(data["new_state"]);
+            ApplyDiff(data["new_state"]);
         }
         else
         {
@@ -96,6 +103,7 @@ public class MatchManager : MonoBehaviour
             queuedPackets.Add((int)data.GetField("new_state").GetField("current_sequence").n, data);
         }
     }
+#pragma warning restore 162
 
     private void ProcessAction(JSONObject action)
     {
@@ -114,9 +122,85 @@ public class MatchManager : MonoBehaviour
         {
             int xPos = (int) path[i].GetField("x").n;
             int yPos = (int) path[i].GetField("y").n;
-            tiles.Add(map.GetTileAtPosition(xPos, yPos));
+            tiles.Add(Map.Current.GetTileAtPosition(xPos, yPos));
         }
         MapObject target = MapObjects[characterID];
-        map.MoveMapObject(target, tiles);
+        Map.Current.MoveMapObject(target, tiles);
     }
+
+    #region state diff handling
+    private void ApplyDiff(JSONObject diff) {
+        Debug.Log("applying diff...");
+        ApplyRemovals(diff["removed"], MatchState);
+        ApplyAdditions(diff["added"], MatchState);
+        ApplyChanges(diff["changed"], MatchState);
+        Debug.Log("New match state: " + MatchState);
+    }
+
+    private void ApplyRemovals(JSONObject diff, JSONObject master) {
+        if (diff.IsNull) return;
+        if (diff.IsObject) {
+            foreach (string key in diff.keys) {
+                JSONObject cur = diff[key];
+                if (cur.isContainer) {
+                    ApplyRemovals(cur, master[key]);
+                } else if (cur.IsString && cur.str == "DELETED") {
+                    master.RemoveField(key);
+                } else {
+                    Debug.LogError("Bad data encountered in JSON diff while applying removals");
+                }
+            }
+        } else if (diff.IsArray) {
+            Debug.LogError("Bad data encountered in JSON diff while applying removals; arrays are not allowed in diffs");
+        } else {
+            Debug.LogError("Bad data encountered in JSON diff while applying removals");
+        }
+    }
+
+    private void ApplyAdditions(JSONObject diff, JSONObject master) {
+        if (diff.IsNull) return;
+        if (diff.IsObject) {
+            foreach (string key in diff.keys) {
+                JSONObject cur = diff[key];
+                if (cur.IsObject) {
+                    if (!master.HasField(key)) {
+                        master.AddField(key, new JSONObject());
+                    }
+                    ApplyAdditions(cur, master[key]);
+                } else if (!master.HasField(key)) {
+                    master.AddField(key, cur);
+                } else {
+                    Debug.LogError("Bad data encountered in JSON diff while applying additions");
+                }
+            }
+        } else if (diff.IsArray) {
+            Debug.LogError("Bad data encountered in JSON diff while applying additions; arrays are not allowed in diffs");
+        } else {
+            Debug.LogError("Bad data encountered in JSON diff while applying additions");
+        }
+    }
+
+    private void ApplyChanges(JSONObject diff, JSONObject master) {
+        if (diff.IsNull) return;
+        if (diff.IsObject) {
+            foreach (string key in diff.keys) {
+                JSONObject cur = diff[key];
+                if (cur.IsObject) {
+                    if (!master.HasField(key)) {
+                        master.AddField(key, new JSONObject());
+                    }
+                    ApplyChanges(cur, master[key]);
+                } else if (master.HasField(key)) {
+                    master.SetField(key, cur);
+                } else {
+                    Debug.LogError("Bad data encountered in JSON diff while applying changes");
+                }
+            }
+        } else if (diff.IsArray) {
+            Debug.LogError("Bad data encountered in JSON diff while applying changes; arrays are not allowed in diffs");
+        } else {
+            Debug.LogError("Bad data encountered in JSON diff while applying changes");
+        }
+    }
+    #endregion
 }

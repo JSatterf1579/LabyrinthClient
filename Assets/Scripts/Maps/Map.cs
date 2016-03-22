@@ -44,6 +44,7 @@ public class Map : MonoBehaviour {
 
 
     void Awake() {
+        Current = this;
         Loaded = false;
         TileSet = new Dictionary<string, GameObject>();
         foreach(var pair in TileList) {
@@ -75,7 +76,6 @@ public class Map : MonoBehaviour {
         mapWidth = width;
         mapDepth = height;
         Loaded = true;
-        Current = this;
     }
 
     void OnDestroy() {
