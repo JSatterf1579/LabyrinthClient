@@ -131,7 +131,7 @@ public class HeroLoader : MonoBehaviour {
 
             string heroType = hero.GetField("hero_type").str;
 
-            Manager.InstantiateHero(heroType, owner, controller, UUID, xPos, yPos, health, level, attack, defense, vision, movement);
+            //Manager.InstantiateHero(heroType, owner, controller, UUID, xPos, yPos, health, level, attack, defense, vision, movement);
 
         }
         return heroes;

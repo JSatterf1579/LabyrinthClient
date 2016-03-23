@@ -19,3 +19,5 @@ EditorBuildSettings:
     path: Assets/UIScenes/Store.unity
   - enabled: 1
     path: Assets/Scenes/MatchScene.unity
+  - enabled: 1
+    path: Assets/Scenes/MatchSceneTestJoe.unity

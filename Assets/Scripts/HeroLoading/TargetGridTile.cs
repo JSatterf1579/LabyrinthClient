@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TargetGridTile
+public struct TargetGridTile
 {
 
-    int x;
-    int y;
-    int damagePercent;
+    public int x;
+    public int y;
+    public int damagePercent;
 
     public TargetGridTile(int x, int y, int damage)
     {

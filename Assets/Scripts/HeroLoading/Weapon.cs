@@ -1,37 +1,34 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-public class Weapon : MonoBehaviour
+public class Weapon
 {
-    private int attackModifier;
-    private int attackRange;
-    private AttackPattern pattern;
-    private string image;
-    private string name;
-    private string description;
+    public int AttackModifier;
+    public int AttackRange;
+    public int NumTargets;
+    public AttackPattern Pattern;
+    public string Image;
+    public string Name;
+    public string Description;
 
-    private int[,] damageMap;
 
 
-    public void Init(string name, string image, int attackModifier, int range, AttackPattern pattern, string description)
+    public Weapon(string name, string image, int attackModifier, int range,  string description, List<TargetGridTile> attackTiles, bool rotatable, int numTargets)
     {
-        this.name = name;
-        this.image = image;
-        this.description = description;
-        this.attackModifier = attackModifier;
-        attackRange = range;
-        this.pattern = pattern;
+        this.Name = name;
+        this.Image = image;
+        this.Description = description;
+        this.AttackModifier = attackModifier;
+        NumTargets = numTargets;
+        AttackRange = range;
+        Pattern = MakeDamageMap(attackTiles, rotatable);
     }
 
-    // Use this for initialization
-    void Start ()
+    private AttackPattern MakeDamageMap(List<TargetGridTile> pattern, bool rotatable)
     {
-	
-	}
-	
-	// Update is called once per frame
-	void Update ()
-    {
-	
-	}
+        AttackPattern p = new AttackPattern(pattern, rotatable);
+        return p;
+    }
+
 }

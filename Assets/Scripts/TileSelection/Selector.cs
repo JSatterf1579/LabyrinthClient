@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Linq;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class Selector : MonoBehaviour
 {
@@ -12,7 +13,11 @@ public class Selector : MonoBehaviour
 
     public MovementUI Mover;
 
+    public AttackUI Attacker;
+
     public Map GameMap;
+
+    public Button StartAttackButton;
 
     private float timer = 0;
     private static float debounce = 1.0f;
@@ -39,9 +44,11 @@ public class Selector : MonoBehaviour
 	                    SelectedUnit = (Unit) tempUnit;
 	                    if (SelectedUnit.controllerID == GameManager.instance.Username)
 	                    {
+                            StartAttackButton.gameObject.SetActive(true);
                             CurrentState = CursorState.Movement;
 	                        Mover.BeginMove(SelectedUnit);
 	                    }
+                        
 	                }
 	                else
 	                {
@@ -58,6 +65,27 @@ public class Selector : MonoBehaviour
 	}
 
     public void EndMovement()
+    {
+        CurrentState = CursorState.Selecting;
+        SelectedUnit = null;
+        StartAttackButton.gameObject.SetActive(false);
+    }
+
+    public void StartAttack()
+    {
+        if (SelectedUnit != null)
+        {
+            Unit attacker = SelectedUnit;
+            Mover.EndMove();
+            SelectedUnit = attacker;
+            CurrentState = CursorState.Attacking;
+            StartAttackButton.gameObject.SetActive(false);
+            Attacker.BeginAttack(SelectedUnit);
+            
+        }
+    }
+
+    public void EndAttack()
     {
         CurrentState = CursorState.Selecting;
         SelectedUnit = null;

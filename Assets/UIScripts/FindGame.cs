@@ -61,6 +61,6 @@ public class FindGame : MonoBehaviour
     {
         GameManager.instance.RecieveMatchData(e.data);
         Debug.Log(e.data);
-        SceneManager.LoadScene("MatchScene");
+        SceneManager.LoadScene("MatchSceneTestJoe");
     }
 }
