@@ -1,11 +1,14 @@
 using UnityEngine;
 using System.Collections.Generic;
+
+//this version of DebugHUD was last updated 3/22/2016
 [RequireComponent(typeof(GUIText))]
 public class DebugHUD : MonoBehaviour {
     private static Dictionary<string, object> list;
 
-    //RPAAEE change: removed tons of GetComponent calls
     private GUIText text;
+
+    public KeyCode ToggleKey = KeyCode.BackQuote;
 
     static DebugHUD() {
         list = new Dictionary<string, object>();
@@ -21,12 +24,7 @@ public class DebugHUD : MonoBehaviour {
         }
     }
 
-    //RPAAEE change: automatic boolean coloring
-    //public static void setValue(string key, bool value) {
-    //    setValue(key, value ? "<color=green>True</color>" : "<color=red>False</color>");
-    //}
-
-    public static void removeKey(string key) {
+    public static void RemoveKey(string key) {
         list.Remove(key);
     }
 
@@ -37,10 +35,11 @@ public class DebugHUD : MonoBehaviour {
         text.anchor = TextAnchor.UpperLeft;
         text.richText = true;
         text.enabled = Application.isEditor || Debug.isDebugBuild;
+        DontDestroyOnLoad(this);
     }
 
     void LateUpdate() {
-        if (Input.GetKeyDown(KeyCode.BackQuote)) {
+        if (Input.GetKeyDown(ToggleKey)) {
             text.enabled = !text.enabled;
         }
         string s = "";

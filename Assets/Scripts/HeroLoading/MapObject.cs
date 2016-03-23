@@ -43,6 +43,8 @@ public abstract class MapObject : MonoBehaviour {
         posY = y;
         //TODO remove this
         BlocksMovement = false;
+
+        MatchManager.instance.MapObjects.Add(UUID, this);
     }
 
     /// <summary>
@@ -70,4 +72,12 @@ public abstract class MapObject : MonoBehaviour {
 	public bool Equals(MapObject other) {
 		return UUID.Equals(this.UUID);
 	}
+
+    void OnDestroy() {
+        if(MatchManager.instance != null) {
+            MatchManager.instance.MapObjects.Remove(UUID);
+        }
+    }
+
+
 }

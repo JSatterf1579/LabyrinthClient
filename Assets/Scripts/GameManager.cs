@@ -9,11 +9,11 @@ public class GameManager : MonoBehaviour
 
     public string Username;
 
-    public bool InMatch { get; private set; }
-
-    public JSONObject MatchData { get; private set; }
+    public bool InMatch;
 
     public static GameManager instance;
+
+    private SocketIOComponent socket = null;
 
 	// Use this for initialization
 	void Awake () {
@@ -26,14 +26,11 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-    public void RecieveMatchData(JSONObject data)
-    {
-        InMatch = true;
-        MatchData = data;
-    }
-
 	public SocketIOComponent getSocket(){
-		GameObject s = GameObject.Find ("SocketIO");
-		return s.GetComponent<SocketIOComponent>();
+        if (socket == null) {
+            GameObject s = GameObject.Find("SocketIO");
+            socket = s.GetComponent<SocketIOComponent>();
+        }
+        return socket;
 	}
 }

@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
+using System;
 
 public class Map : MonoBehaviour {
 
@@ -42,6 +44,8 @@ public class Map : MonoBehaviour {
 
 
     void Awake() {
+        Debug.Log("Map is awake");
+        Current = this;
         Loaded = false;
         TileSet = new Dictionary<string, GameObject>();
         foreach(var pair in TileList) {
@@ -73,7 +77,6 @@ public class Map : MonoBehaviour {
         mapWidth = width;
         mapDepth = height;
         Loaded = true;
-        Current = this;
     }
 
     void OnDestroy() {
@@ -164,7 +167,15 @@ public class Map : MonoBehaviour {
         return null;
     }
 
-    public void MoveMapObject(Unit obj, int newX, int newY) {
+    internal void MoveMapObject(MapObject target, List<Tile> tiles) {
+        Vector3 curPosition = target.transform.position;
+        Tile lastTile = tiles[tiles.Count - 1];
+        MoveMapObject(target, lastTile.XPos, lastTile.YPos);
+        target.transform.position = curPosition;
+        StartCoroutine(AnimateMove(target.transform, tiles, 1, 1 / 60f));
+    }
+
+    public void MoveMapObject(MapObject obj, int newX, int newY) {
         if (!obj.PlacedInMap) {
             Debug.LogError("Error; attempted to move an object that has not yet been placed on the map!");
             return;
@@ -225,5 +236,25 @@ public class Map : MonoBehaviour {
 
     void Update() {
         DebugHUD.setValue("TileUnderMouse", GetTileAtMouse() as Tile);
+    }
+
+    IEnumerator AnimateMove(Transform t, List<Tile> path, float time, float updateDelay) {
+        float timePerSegment = time / path.Count;
+        float curSegmentTime = 0;
+        int pathIndex = 0;
+        Vector3 oldPos = t.position;
+        Vector3 targetPos;
+        while(pathIndex < path.Count) {
+            targetPos = path[pathIndex].OverlayTransform.position;
+            float delta = curSegmentTime / timePerSegment;
+            t.position = Vector3.Lerp(oldPos, targetPos, delta);
+            curSegmentTime += updateDelay;
+            if(curSegmentTime >= timePerSegment) {
+                curSegmentTime -= timePerSegment;
+                pathIndex++;
+                oldPos = targetPos;
+            }
+            yield return new WaitForSeconds(updateDelay);
+        }
     }
 }
