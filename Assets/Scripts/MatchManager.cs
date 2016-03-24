@@ -83,10 +83,14 @@ public class MatchManager : MonoBehaviour
             queuedPackets = new Dictionary<int, JSONObject>();
 	        socket = GameManager.instance.getSocket();
 	        MatchIdentifier = MatchState.GetField("match_identifier").str;
+
 			UpdatePlayers(MatchState);
 
-			UpdateTurn(MatchState);
-			UpdateGameState(MatchState);
+			GameState = MatchState["game_state"].str;
+			TurnNumber = (int)MatchState["turn_number"].n;
+			RegisterJSONChangeAction("/turn_number", UpdateTurn);
+			RegisterJSONChangeAction("/game_state", UpdateGameState);
+
 	        JSONDecoder.DecodeMap(MatchState.GetField("map"), Map.Current);
             JSONDecoder.DecodeHeroes(MatchState.GetField("board_objects"), manager);
             socket.On("game_update", GameUpdate);
@@ -283,12 +287,16 @@ public class MatchManager : MonoBehaviour
     }
 #endregion
 
-	private void UpdateGameState(JSONObject data) {
-		GameState = data.GetField("game_state").str;
+	private void UpdateGameState(JSONChangeInfo info) {
+		if (info.Type == JSONChangeInfo.ChangeType.CHANGED) {
+			GameState = info.NewValue.str;
+		}
 	}
 
-	private void UpdateTurn(JSONObject data) {
-		TurnNumber = (int)data.GetField("turn_number").n;
+	private void UpdateTurn(JSONChangeInfo info) {
+		if (info.Type == JSONChangeInfo.ChangeType.CHANGED) {
+			TurnNumber = (int)info.NewValue.n;
+		}
 	}
 
 	private void UpdatePlayers(JSONObject data) {

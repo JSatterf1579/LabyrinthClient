@@ -988,7 +988,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Mover: {fileID: 1568433441}
+  Attacker: {fileID: 0}
   GameMap: {fileID: 177063253}
+  StartAttackButton: {fileID: 1592888240}
 --- !u!4 &1158007037
 Transform:
   m_ObjectHideFlags: 0
@@ -1316,6 +1318,12 @@ RectTransform:
 GameObject:
   m_PrefabParentObject: {fileID: 148014, guid: 5fc80fecfe2924da9baed25943c7a9a6, type: 2}
   m_PrefabInternal: {fileID: 1592888237}
+--- !u!114 &1592888240 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 11446362, guid: 5fc80fecfe2924da9baed25943c7a9a6,
+    type: 2}
+  m_PrefabInternal: {fileID: 1592888237}
+  m_Script: {fileID: 1392445389, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 --- !u!1 &1753062888
 GameObject:
   m_ObjectHideFlags: 0
