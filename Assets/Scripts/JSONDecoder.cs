@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -56,12 +57,46 @@ public class JSONDecoder{
 
                 string heroType = hero.GetField("hero_type").str;
 
-                Manager.InstantiateHero(heroType, owner, controller, UUID, xPos, yPos, health, level, attack, defense,
-                    vision, movement);
+                Weapon weapon = null;
+
+                if (hero.GetField("weapon") != null)
+                {
+                    weapon = DecodeWeapon(hero.GetField("weapon"));
+                }
+
+                Manager.InstantiateHero(heroType, owner, controller, UUID, xPos, yPos, level, health, attack, defense,
+                    vision, movement, weapon);
             }
 
         }
         
+    }
+
+    public static Weapon DecodeWeapon(JSONObject serializedWeapon)
+    {
+        string name = serializedWeapon.GetField("name").str;
+        string image = serializedWeapon.GetField("image").str;
+        string description = serializedWeapon.GetField("description").str;
+        int damageMod = (int) serializedWeapon.GetField("damage_mod").n;
+        int range = (int) serializedWeapon.GetField("range").n;
+        List<TargetGridTile> pattern = DecodePatternTiles(serializedWeapon.GetField("attack_pattern"));
+        bool rotatable = serializedWeapon.GetField("attack_pattern").GetField("rotatable").b;
+        int numTargets = (int) serializedWeapon.GetField("attack_pattern").GetField("count").n;
+        return new Weapon(name, image, damageMod, range, description, pattern, rotatable, numTargets);
+    }
+
+    public static List<TargetGridTile> DecodePatternTiles(JSONObject serializedPatterns)
+    {
+        List<TargetGridTile> tiles = new List<TargetGridTile>();
+        List<JSONObject> serializedTiles = serializedPatterns.GetField("damage_map").list;
+        foreach (JSONObject tile in serializedTiles)
+        {
+            int damagePercent = (int) tile.GetField("damage_percent").n;
+            int x = (int) tile.GetField("x").n;
+            int y = (int) tile.GetField("y").n;
+            tiles.Add(new TargetGridTile(x, y, damagePercent));
+        }
+        return tiles;
     }
 
 

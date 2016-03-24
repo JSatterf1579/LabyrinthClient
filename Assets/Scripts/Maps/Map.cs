@@ -131,8 +131,8 @@ public class Map : MonoBehaviour {
     /// <param name="y"></param>
     /// <returns></returns>
     public Tile GetTileAtPosition(int x, int y) {
-        if (!Loaded) {
-            Debug.LogError("Attempted to read map before it was loaded");
+        if (!Loaded || !CheckCoordinates(x,y)) {
+            Debug.LogError("Read out of bounds map tile or Attempted to read map before it was loaded");
             return null;
         }
         return CurrentMap[x, y];

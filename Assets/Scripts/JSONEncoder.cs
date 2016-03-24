@@ -21,4 +21,20 @@ public class JSONEncoder {
         return data;
     }
 
+    public static JSONObject EncodeAttack(Unit unit, List<Tile> targets)
+    {
+        JSONObject data = new JSONObject();
+        data.AddField("attacker_id", unit.UUID);
+        JSONObject targetList = new JSONObject(JSONObject.Type.ARRAY);
+        data.AddField("targets", targetList);
+        foreach (Tile target in targets)
+        {
+            JSONObject targetPos = new JSONObject();
+            targetPos.AddField("x", target.XPos);
+            targetPos.AddField("y", target.YPos);
+            targetList.Add(targetPos);
+        }
+        return data;
+    }
+
 }
