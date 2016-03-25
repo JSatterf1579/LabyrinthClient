@@ -797,6 +797,26 @@ MonoBehaviour:
   PanWhenMouseAtEdge: 1
   MousePanBounds: 10
   CardinalPanSpeed: 10
+  MinZoomDistance: 5
+  MaxZoomDistance: 30
+  MinAngle: 20
+  MaxAngle: 80
+  MovementTimeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!224 &1004652626 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 22406750, guid: c9ee75055f64e4df8b2b67237894e819,
