@@ -6,11 +6,17 @@ public class MapViewCameraController : MonoBehaviour {
     //private Camera cam;
 
     private Vector3 target = Vector3.zero;
-    //private float distance;
+    private float distance;
+    private float orbitX = 0f; //since this parameter has no absolute bounds, we don't care what value it starts at
+    private float orbitY;
 
     public bool PanWhenMouseAtEdge = true;
     public float MousePanBounds = 10f;
     public float CardinalPanSpeed = 10f;
+    public float MinZoomDistance = 5f;
+    public float MaxZoomDistance = 30f;
+    public float MinAngle = 20f;
+    public float MaxAngle = 80f;
 
     void Awake() {
         //cam = GetComponent<Camera>();
@@ -19,11 +25,19 @@ public class MapViewCameraController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         transform.LookAt(target);
-        //distance = Vector3.Distance(transform.position, target);
+        distance = Vector3.Distance(transform.position, target);
+        orbitY = CalculateAngle();
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+#if UNITY_EDITOR
+    void OnDrawGizmosSelected() {
+        Gizmos.DrawSphere(target, 0.1f);
+    }
+
+#endif
+
+    // Update is called once per frame
+    void Update () {
         if (Input.GetKeyDown(KeyCode.M)) PanWhenMouseAtEdge = !PanWhenMouseAtEdge;
 
         DebugHUD.setValue("Mouse X", Input.GetAxis("Mouse X"));
@@ -52,11 +66,12 @@ public class MapViewCameraController : MonoBehaviour {
             y -= Input.GetAxis("Mouse Y");
             stateString += "Mouse Orbit, ";
         }
-        transform.RotateAround(target, transform.up, x);
-        transform.RotateAround(target, transform.right, y);
-        transform.LookAt(target,Vector3.up);
+        //transform.RotateAround(target, transform.up, x);
+        //transform.RotateAround(target, transform.right, y);
+        //transform.LookAt(target,Vector3.up);
+        ShiftOribitAngles(x, y);
 
-        transform.Translate(Vector3.forward * Input.mouseScrollDelta.y, Space.Self);
+        DoScrollZoom();
 
         DebugHUD.setValue("OrbitX", x);
         DebugHUD.setValue("OrbitY", y);
@@ -92,16 +107,53 @@ public class MapViewCameraController : MonoBehaviour {
 
 	}
 
+    private void ShiftOribitAngles(float x, float y) {
+        //SetOribitAngles(x + orbitX, y + orbitY);
+        float ny = y + orbitY;
+        if(ny > MaxAngle) {
+            float over = ny - MaxAngle;
+            y -= over;
+        } else if (ny < MinAngle) {
+            float over = MinAngle - ny;
+            y += over;
+        }
+        orbitY += y;
+        transform.RotateAround(target, transform.up, x);
+        transform.RotateAround(target, transform.right, y);
+        transform.LookAt(target, Vector3.up);
+    }
+
+    /// <summary>
+    /// reads the scroll wheel delta value for this frame and adjusts the current zoom level accordingly
+    /// </summary>
+    private void DoScrollZoom() {
+        float scroll = Input.mouseScrollDelta.y;
+        if(scroll != 0f) {
+            SetZoom(distance - scroll);
+        }
+    }
+
+    /// <summary>
+    /// Sets a new zoom (distance) value and moves the camera accordingly
+    /// </summary>
+    /// <param name="zoom"></param>
+    private void SetZoom(float zoom) {
+        zoom = Mathf.Clamp(zoom, MinZoomDistance, MaxZoomDistance);
+        if (zoom == distance) return; //there was no change
+        //by always moving the camera relative to its current position, we never have to recalculate the distance to the target
+        float delta = distance - zoom;
+        transform.Translate(Vector3.forward * delta, Space.Self);
+        distance = zoom;
+    }
+
     /// <summary>
     /// Given a vector with only x and z components, pans the camera along the board relative to the camera's rotation
     /// This normalizes and multiplies by Time.deltaTime for use with digital inputs
     /// </summary>
     /// <param name="movement"></param>
     private void MoveAlongBoardNormalized(Vector3 movement) {
-        Vector3 delta = transform.position - target;
         Vector3 mouseWorld = Vector3.Normalize(Vector3.ProjectOnPlane(transform.TransformDirection(movement), Vector3.up)) * CardinalPanSpeed * Time.deltaTime;
-        target += mouseWorld;
-        transform.position = target + delta;
+        SetTargetPosition(target + mouseWorld);
     }
 
     /// <summary>
@@ -109,9 +161,27 @@ public class MapViewCameraController : MonoBehaviour {
     /// </summary>
     /// <param name="movement"></param>
     private void MoveAlongBoardNonNormalized(Vector3 movement) {
-        Vector3 delta = transform.position - target;
         Vector3 mouseWorld = Vector3.ProjectOnPlane(transform.TransformDirection(movement), Vector3.up);
-        target += mouseWorld;
+        SetTargetPosition(target + mouseWorld);
+    }
+
+    private float CalculateAngle() {
+        Vector3 firstVector = transform.forward;
+        Vector3 secondVector = Vector3.ProjectOnPlane(firstVector, Vector3.up);
+        return Vector3.Angle(firstVector, secondVector);
+    }
+
+    /// <summary>
+    /// Moves the target to the given point and moves the camera accordingly
+    /// </summary>
+    /// <param name="newTargetPos"></param>
+    private void SetTargetPosition(Vector3 newTargetPos) {
+        //clamp to map bounds
+        newTargetPos.x = Mathf.Clamp(newTargetPos.x, Map.Current.MinXBound, Map.Current.MaxXBound);
+        newTargetPos.z = Mathf.Clamp(newTargetPos.z, Map.Current.MinZBound, Map.Current.MaxZBound);
+        newTargetPos.y = 0f;
+        Vector3 delta = transform.position - target;
+        target = newTargetPos;
         transform.position = target + delta;
     }
 }

@@ -37,6 +37,11 @@ public class Map : MonoBehaviour {
     public int Depth { get { return mapDepth; } }
     public int Height { get { return mapDepth; } }
 
+    public float MaxXBound { get { return -xOffset - 0.5f; } }
+    public float MinXBound { get { return xOffset - 0.5f; } }
+    public float MaxZBound { get { return -yOffset - 0.5f; } }
+    public float MinZBound { get { return yOffset - 0.5f; } }
+
     public bool Loaded {
         get;
         private set;
