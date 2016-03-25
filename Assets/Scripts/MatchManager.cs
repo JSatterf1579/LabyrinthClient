@@ -34,17 +34,17 @@ public class MatchManager : MonoBehaviour
 
 	public PlayerType MyPlayerType { get; private set; }
 
-	private string _GameState;
+	private GameState _gameState;
 
-	public string GameState { 
+	public GameState gameState { 
 		get {
-			return _GameState;
+			return _gameState;
 		} 
 		private set {
-			_GameState = value;
-			if ("hero_turn".Equals(value)) {
+			_gameState = value;
+			if (GameState.HeroTurn == value) {
 				PlayerTurn = PlayerType.Heroes;
-			} else if ("architect_turn".Equals(value)) {
+			} else if (GameState.ArchitectTurn == value) {
 				PlayerTurn = PlayerType.Architect;
 			}
 		} 
@@ -86,7 +86,13 @@ public class MatchManager : MonoBehaviour
 
 			UpdatePlayers(MatchState);
 
-			GameState = MatchState["game_state"].str;
+			string gstate = MatchState["game_state"].str;
+			if ("hero_turn".Equals(gstate)) {
+				gameState = GameState.HeroTurn;
+			} else if ("architect_turn".Equals(gstate)) {
+				gameState = GameState.ArchitectTurn;
+			}
+
 			TurnNumber = (int)MatchState["turn_number"].n;
 			RegisterJSONChangeAction("/turn_number", UpdateTurn);
 			RegisterJSONChangeAction("/game_state", UpdateGameState);
@@ -289,7 +295,12 @@ public class MatchManager : MonoBehaviour
 
 	private void UpdateGameState(JSONChangeInfo info) {
 		if (info.Type == JSONChangeInfo.ChangeType.CHANGED) {
-			GameState = info.NewValue.str;
+			string gState = info.NewValue.str;
+			if ("hero_turn".Equals(gstate)) {
+				gameState = GameState.HeroTurn;
+			} else if ("architect_turn".Equals(gstate)) {
+				gameState = GameState.ArchitectTurn;
+			}
 		}
 	}
 
@@ -314,3 +325,5 @@ public class MatchManager : MonoBehaviour
 }
 
 public enum PlayerType {Heroes, Architect, None};
+
+public enum GameState {HeroTurn, ArchitectTurn, GameOver};

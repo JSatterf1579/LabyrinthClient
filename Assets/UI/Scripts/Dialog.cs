@@ -26,11 +26,11 @@ public class Dialog : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (!hidden) {
-			if (Input.GetKey(KeyCode.Return)) {
+			if (Input.GetKeyDown(KeyCode.Return)) {
 				rightCallback.Invoke();
 				Hide();
 			}
-			if (Input.GetKey(KeyCode.Escape)) {
+			if (Input.GetKeyDown(KeyCode.Escape)) {
 				leftCallback.Invoke();
 				Hide();
 			}
@@ -43,7 +43,6 @@ public class Dialog : MonoBehaviour {
 	}
 
 	public void Show(string message, string rightOption, UnityAction rightCallback, string leftOption, UnityAction leftCallback) {
-		Debug.Log("Hello from dialog box!");
 		hidden = false;
 		gameObject.SetActive(true);
 		this.message.text = message;

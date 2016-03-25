@@ -40,7 +40,7 @@ public class InGame : MonoBehaviour {
 			if (selector.SelectedUnit) {
 				if (!selector.SelectedUnit.Equals(selectedUnit) || infoPanel.dismissButton.Dismissed) {
 					selectedUnit = selector.SelectedUnit;
-					updateSelectedInfo(selectedUnit);
+					infoPanel.updateSelectedInfo(selectedUnit);
 					infoPanel.gameObject.SetActive(true);
 					infoPanel.dismissButton.Dismissed = false;
 					alreadyDismissed = false;
@@ -62,21 +62,6 @@ public class InGame : MonoBehaviour {
 		selector.Mover.BeginMove(tempSelectedUnit);
 	}
 
-	private void updateSelectedInfo(Unit unit) {
-		infoPanel.name.text = "names aren't important";
-
-		// TODO: when we get health info use that instead of maxHealth
-		string stats = "H: " + unit.maxHealth + "/" + unit.maxHealth + " | A: " + unit.attack + 
-			" | D: " + unit.defense + " | V: " + unit.vision + " | M: " + unit.movement;
-
-		infoPanel.stats.text = stats;
-
-		infoPanel.equippedWeapon.text = "it might have a weapon. ask us tomorrow.";
-//		infoPanel.equippedWeapon.text = "Weapon: " + unit.weapon.name;
-
-		infoPanel.description.text = "we have no idea what this is.";
-	}
-
 	private void updateGameInfo() {
 		string opponent = match.OpponentName;
 		switch (match.OpponentType) {
@@ -91,7 +76,7 @@ public class InGame : MonoBehaviour {
 		}
 		int turn = match.TurnNumber;
 		bool myTurn = match.MyTurn;
-
+		// TODO: split bot's username on underscore
 		GameInfo.text = "vs " + opponent + " // turn #" + turn + " // " + (myTurn ? "your turn" : "their turn");
 	}
 }
