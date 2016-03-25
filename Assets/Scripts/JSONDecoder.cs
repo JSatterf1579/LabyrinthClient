@@ -88,10 +88,10 @@ public class JSONDecoder{
     public static List<TargetGridTile> DecodePatternTiles(JSONObject serializedPatterns)
     {
         List<TargetGridTile> tiles = new List<TargetGridTile>();
-        List<JSONObject> serializedTiles = serializedPatterns.GetField("damage_map").list;
+        List<JSONObject> serializedTiles = serializedPatterns.GetField("effect_map").list;
         foreach (JSONObject tile in serializedTiles)
         {
-            int damagePercent = (int) tile.GetField("damage_percent").n;
+            int damagePercent = (int) tile.GetField("effect_percent").n;
             int x = (int) tile.GetField("x").n;
             int y = (int) tile.GetField("y").n;
             tiles.Add(new TargetGridTile(x, y, damagePercent));
