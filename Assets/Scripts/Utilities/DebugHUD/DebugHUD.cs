@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-//this version of DebugHUD was last updated 3/22/2016
+//this version of DebugHUD was last updated 3/25/2016
 [RequireComponent(typeof(GUIText))]
 public class DebugHUD : MonoBehaviour {
     private static Dictionary<string, object> list;
@@ -9,6 +9,8 @@ public class DebugHUD : MonoBehaviour {
     private GUIText text;
 
     public KeyCode ToggleKey = KeyCode.BackQuote;
+
+    private static DebugHUD instance = null;
 
     static DebugHUD() {
         list = new Dictionary<string, object>();
@@ -29,6 +31,7 @@ public class DebugHUD : MonoBehaviour {
     }
 
     void Start() {
+        if (instance != null) Destroy(gameObject);
         transform.position = Vector3.up;
         text = GetComponent<GUIText>();
         text.alignment = TextAlignment.Left;
@@ -36,6 +39,7 @@ public class DebugHUD : MonoBehaviour {
         text.richText = true;
         text.enabled = Application.isEditor || Debug.isDebugBuild;
         DontDestroyOnLoad(this);
+        instance = this;
     }
 
     void LateUpdate() {
