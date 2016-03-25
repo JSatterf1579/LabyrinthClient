@@ -296,9 +296,9 @@ public class MatchManager : MonoBehaviour
 	private void UpdateGameState(JSONChangeInfo info) {
 		if (info.Type == JSONChangeInfo.ChangeType.CHANGED) {
 			string gState = info.NewValue.str;
-			if ("hero_turn".Equals(gstate)) {
+			if ("hero_turn".Equals(gState)) {
 				gameState = GameState.HeroTurn;
-			} else if ("architect_turn".Equals(gstate)) {
+			} else if ("architect_turn".Equals(gState)) {
 				gameState = GameState.ArchitectTurn;
 			}
 		}

@@ -23,7 +23,7 @@ public class InfoPanelSystem : MonoBehaviour {
 		string stats = "H: " + unit.maxHealth + "/" + unit.maxHealth + " | A: " + unit.attack + 
 			" | D: " + unit.defense + " | V: " + unit.vision + " | M: " + unit.movement;
 
-		stats.text = stats;
+		this.stats.text = stats;
 
 		equippedWeapon.text = "it might have a weapon. ask us tomorrow.";
 		//infoPanel.equippedWeapon.text = "Weapon: " + unit.weapon.name;

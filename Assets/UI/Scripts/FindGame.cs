@@ -60,7 +60,7 @@ public class FindGame : MonoBehaviour
     private void OnMatch(SocketIOEvent e)
     {
         Debug.Log(e.data);
-        SceneManager.LoadScene("MatchScene");
+        SceneManager.LoadScene("MatchSceneTestJoe");
         MatchManager.SetInitialMatchState(e.data);
         GameManager.instance.InMatch = true;
     }
