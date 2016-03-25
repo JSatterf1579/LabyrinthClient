@@ -7,7 +7,6 @@ public class MapViewCameraController : MonoBehaviour {
 
     private Vector3 target = Vector3.zero;
     private float distance;
-    private float orbitX = 0f; //since this parameter has no absolute bounds, we don't care what value it starts at
     private float orbitY;
 
     public bool PanWhenMouseAtEdge = true;
