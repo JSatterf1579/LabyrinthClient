@@ -256,5 +256,6 @@ public class Map : MonoBehaviour {
             }
             yield return new WaitForSeconds(updateDelay);
         }
+        t.localPosition = Vector3.zero;
     }
 }
