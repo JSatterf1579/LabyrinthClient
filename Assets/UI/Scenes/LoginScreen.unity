@@ -360,6 +360,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Username: 
+  InMatch: 0
 --- !u!1 &530952541
 GameObject:
   m_ObjectHideFlags: 0
