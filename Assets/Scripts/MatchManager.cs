@@ -313,11 +313,11 @@ public class MatchManager : MonoBehaviour
 	private void UpdatePlayers(JSONObject data) {
 		if (data.GetField("players").GetField("heroes").str.Equals(GameManager.instance.Username)) {
 			MyPlayerType = PlayerType.Heroes;
-			OpponentName = data.GetField("players").GetField("architect").str;
+			OpponentName = data.GetField("players").GetField("architect").str.Split('_')[0];
 			OpponentType = PlayerType.Architect;
 		} else {
 			MyPlayerType = PlayerType.Architect;
-			OpponentName = data.GetField("players").GetField("heroes").str;
+			OpponentName = data.GetField("players").GetField("heroes").str.Split('_')[0];
 			OpponentType = PlayerType.Heroes;
 		}
 		Debug.Log("Updated Players");
