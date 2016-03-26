@@ -25,8 +25,8 @@ public class InfoPanelSystem : MonoBehaviour {
 
 		this.stats.text = stats;
 
-		equippedWeapon.text = "it might have a weapon. ask us tomorrow.";
-		//infoPanel.equippedWeapon.text = "Weapon: " + unit.weapon.name;
+//		equippedWeapon.text = "it might have a weapon. ask us tomorrow."
+		equippedWeapon.text = "Weapon: " + unit.weapon.Name;
 
 		description.text = "we have no idea what this is.";
 	}
