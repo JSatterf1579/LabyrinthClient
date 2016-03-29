@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SocketIO;
 using System;
+using System.Linq;
 
 public class MatchManager : MonoBehaviour
 {
@@ -55,6 +56,14 @@ public class MatchManager : MonoBehaviour
     private Dictionary<int, JSONObject> queuedPackets;
 
     public Dictionary<string, MapObject> MapObjects = new Dictionary<string, MapObject>();
+
+    public IEnumerable<MapObject> AlliedMapObjects {
+        get {
+            return MapObjects.Where(x =>
+                x.Value.controllerID == GameManager.instance.Username
+            ).Select(x => x.Value);
+        }
+    }
 
     private Dictionary<string, List<Action<JSONChangeInfo>>> JSONChangeActions = new Dictionary<string, List<Action<JSONChangeInfo>>>();
 

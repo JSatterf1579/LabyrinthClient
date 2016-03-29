@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
-using System;
+using System.Linq;
 
 public class Map : MonoBehaviour {
 
@@ -177,7 +177,7 @@ public class Map : MonoBehaviour {
         Tile lastTile = tiles[tiles.Count - 1];
         MoveMapObject(target, lastTile.XPos, lastTile.YPos);
         target.transform.position = curPosition;
-        StartCoroutine(AnimateMove(target.transform, tiles, 1, 1 / 60f));
+        StartCoroutine(AnimateMove(target, tiles, 1, 1 / 60f));
     }
 
     public void MoveMapObject(MapObject obj, int newX, int newY) {
@@ -206,6 +206,7 @@ public class Map : MonoBehaviour {
         tile.AddMapObject(obj);
         obj.posX = tile.XPos;
         obj.posY = tile.YPos;
+        
     }
 
     /// <summary>
@@ -222,6 +223,12 @@ public class Map : MonoBehaviour {
         if (t != null) {
             putObjectAtTile(obj, t);
             obj.PlacedInMap = true;
+            if(obj is Unit) {
+                var unit = (Unit)obj;
+                Vision.PerformActionOnVisibleTilesInRange(unit.posX, unit.posY, unit.vision, x => {
+                    x.UnitCanSeeTile(unit.UUID);
+                });
+            }
         } else {
             Debug.LogError("Error; attempted to place a new object onto an invalid tile");
         }
@@ -239,28 +246,47 @@ public class Map : MonoBehaviour {
         public GameObject Prefab;
     }
 
+    Tile lastMouse = null;
+
     void Update() {
-        DebugHUD.setValue("TileUnderMouse", GetTileAtMouse() as Tile);
+        var t = GetTileAtMouse();
+        DebugHUD.setValue("TileUnderMouse", t as Tile);
+        /*
+        if (t != null) {
+            DebugHUD.setValue("LOS to 0,0", LineOfSight.Test(t, GetTileAtPosition(0, 0)));
+            foreach (var tile in Vision.GetVisibleTiles(t.XPos, t.YPos, 30)) {
+                tile.HighlightColor = Color.red;
+                tile.Highlighted = true;
+            }
+        }
+        if (t != lastMouse) {
+            foreach (var tile in CurrentMap) {
+                tile.Highlighted = false;
+            }
+        }
+        lastMouse = t;
+        */
     }
 
-    IEnumerator AnimateMove(Transform t, List<Tile> path, float time, float updateDelay) {
+    IEnumerator AnimateMove(MapObject t, List<Tile> path, float time, float updateDelay) {
         float timePerSegment = time / path.Count;
         float curSegmentTime = 0;
         int pathIndex = 0;
-        Vector3 oldPos = t.position;
+        Vector3 oldPos = t.transform.position;
         Vector3 targetPos;
         while(pathIndex < path.Count) {
             targetPos = path[pathIndex].OverlayTransform.position;
             float delta = curSegmentTime / timePerSegment;
-            t.position = Vector3.Lerp(oldPos, targetPos, delta);
+            t.transform.position = Vector3.Lerp(oldPos, targetPos, delta);
             curSegmentTime += updateDelay;
             if(curSegmentTime >= timePerSegment) {
                 curSegmentTime -= timePerSegment;
                 pathIndex++;
                 oldPos = targetPos;
+                if(pathIndex < path.Count) path[pathIndex].ApplyVisibilityToObject(t);
             }
             yield return new WaitForSeconds(updateDelay);
         }
-        t.localPosition = Vector3.zero;
+        t.transform.localPosition = Vector3.zero;
     }
 }

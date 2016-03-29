@@ -9,6 +9,24 @@ public class Tile : MonoBehaviour
     public string Type { get; private set; }
     public bool IsObstacle { get; private set; }
 
+
+    //private bool seenBefore = false;
+    //originally I was keeping track of whether or not this tile had been seen before, so that when
+    //the last unit is deregistered from UnitsInSight, I know wether to set Vision state to SEEN or HIDDEN,
+    //but then I realized that the only way to deregister a unit is if a unit was once registered, meaning that
+    //seenBefore would always be true when I need to check it, so I removed it.  
+
+    public VisionState VisionState { get; private set; }
+
+    /// <summary>
+    /// This hashset stores the UUIDS of all units that "see" this tile.
+    /// This is used to calculate the VisionState of the tile
+    /// </summary>
+    private HashSet<string> _UnitsInSight = new HashSet<string>();
+    public HashSet<string> UnitsInSight {
+        get { return _UnitsInSight; }
+    }
+
     public Renderer[] HighlihgtRenderers;
 
     public Color MouseOverColor;
@@ -82,6 +100,7 @@ public class Tile : MonoBehaviour
         this.Rotation = rotation;
         this.Type = type;
         this.IsObstacle = isObstacle;
+        VisionState = VisionState.HIDDEN;
     }
 
     void OnMouseEnter() {
@@ -134,22 +153,33 @@ public class Tile : MonoBehaviour
             SetEmissionColorForObject(obj, MouseOverColor);
         }
         calculateObstacleOnTile();
+        if (obj is Unit) {
+            var unit = (Unit)obj;
+            Vision.PerformActionOnVisibleTilesInRange(unit.posX, unit.posY, unit.vision, t => {
+                t.UnitCanSeeTile(unit.UUID);
+            });
+        }
     }
 
     public void RemoveMapObject(MapObject obj) {
-        RemoveMapObject(obj.UUID);
-    }
-
-    public void RemoveMapObject(string UUID) {
         try {
-            var obj = mapObjects[UUID];
             obj.OnMouseEvent -= ExternalMouseEvent;
             SetEmissionColorForObject(obj, Color.black);
-            mapObjects.Remove(UUID);
+            mapObjects.Remove(obj.UUID);
             calculateObstacleOnTile();
+            if (obj is Unit) {
+                var unit = (Unit)obj;
+                Vision.PerformActionOnTilesInRange(unit.posX, unit.posY, unit.vision, t => {
+                    t.UnitCannotSeeTile(unit.UUID);
+                });
+            }
         } catch (System.NullReferenceException e) {
             Debug.LogException(e);
         }
+    }
+
+    public void RemoveMapObject(string UUID) {
+        RemoveMapObject(mapObjects[UUID]);
     }
 
     public bool ContainsMapObject(string UUID) {
@@ -166,8 +196,64 @@ public class Tile : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// registers the given unit UUID as able to see this tile, updates VisionState accordingly
+    /// </summary>
+    /// <param name="UUID"></param>
+    public void UnitCanSeeTile(string UUID) { 
+        //seenBefore = true; //see comment at top
+        UpdateVisibility(VisionState.VISIBLE);
+        UnitsInSight.Add(UUID);
+    }
+
+    /// <summary>
+    /// deregisters the given unit UUID from UnitsInSight, updates VisionState accordingly
+    /// </summary>
+    /// <param name="UUID"></param>
+    public void UnitCannotSeeTile(string UUID) {
+        UnitsInSight.Remove(UUID);
+        if(UnitsInSight.Count == 0) {
+            UpdateVisibility(VisionState.SEEN);
+        }
+    }
+
+    private void UpdateVisibility(VisionState nvs) {
+        if(VisionState != nvs) {
+            VisionState = nvs;
+            switch (VisionState) {
+                case VisionState.VISIBLE:
+                case VisionState.SEEN:
+                    foreach (var r in GetComponentsInChildren<Renderer>()) r.enabled = true;
+                    break;
+                case VisionState.HIDDEN:
+                    foreach (var r in GetComponentsInChildren<Renderer>()) r.enabled = false;
+                    break;
+            }
+            foreach(var obj in mapObjects.Values) {
+                ApplyVisibilityToObject(obj);
+            }
+        }
+    }
+
+    public void ApplyVisibilityToObject(MapObject obj) {
+        var renderers = obj.GetComponentsInChildren<Renderer>();
+        switch (VisionState) {
+            case VisionState.VISIBLE:
+                foreach(var r in renderers) {
+                    r.enabled = true;
+                }
+                break;
+            case VisionState.SEEN:
+            case VisionState.HIDDEN:
+                foreach (var r in renderers) {
+                    r.enabled = false;
+                }
+                break;
+        }
+    }
+
     public override string ToString() {
-        return "Tile: " + Type + ": (" + XPos + ", " + YPos + ") r=" + Rotation + " IsObstacle="+IsObstacle + " IsValidForMovement="+IsValidForMovement;
+        return "Tile: " + Type + ": (" + XPos + ", " + YPos + ") r=" + Rotation + " IsObstacle="+IsObstacle + " IsValidForMovement="+IsValidForMovement + " VisionState="+VisionState;
     }
 
 }

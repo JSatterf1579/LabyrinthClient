@@ -31,5 +31,4 @@ public abstract class Unit : MapObject
         this.movement = movement;
         this.weapon = weapon;
     }
-
 }
