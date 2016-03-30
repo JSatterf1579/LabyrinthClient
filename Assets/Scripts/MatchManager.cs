@@ -208,7 +208,7 @@ public class MatchManager : MonoBehaviour
     }
 
     private void FireJSONChangeEvent(JSONChangeInfo change) {
-        Debug.Log("Fireing JSON change event for element " + change.Path);
+        Debug.Log("Firing JSON change event for element " + change.Path);
         if (JSONChangeActions.ContainsKey(change.Path)) {
             var list = JSONChangeActions[change.Path];
             foreach (var action in list) {

@@ -173,10 +173,10 @@ public class Map : MonoBehaviour {
     }
 
     internal void MoveMapObject(MapObject target, List<Tile> tiles) {
-        Vector3 curPosition = target.transform.position;
-        Tile lastTile = tiles[tiles.Count - 1];
-        MoveMapObject(target, lastTile.XPos, lastTile.YPos);
-        target.transform.position = curPosition;
+        //Vector3 curPosition = target.transform.position;
+        //Tile lastTile = tiles[tiles.Count - 1];
+        //MoveMapObject(target, lastTile.XPos, lastTile.YPos);
+        //target.transform.position = curPosition;
         StartCoroutine(AnimateMove(target, tiles, 1, 1 / 60f));
     }
 
@@ -196,6 +196,7 @@ public class Map : MonoBehaviour {
         }
         Tile src = GetTileAtPosition(obj.posX, obj.posY);
         src.RemoveMapObject(obj);
+        dest.AddMapObject(obj);
         putObjectAtTile(obj, dest);
     }
 
@@ -203,10 +204,8 @@ public class Map : MonoBehaviour {
         var mount = tile.OverlayTransform;
         obj.transform.parent = mount;
         obj.transform.localPosition = Vector3.zero;
-        tile.AddMapObject(obj);
         obj.posX = tile.XPos;
         obj.posY = tile.YPos;
-        
     }
 
     /// <summary>
@@ -221,14 +220,9 @@ public class Map : MonoBehaviour {
         }
         Tile t = GetTileAtPosition(obj.posX, obj.posY);
         if (t != null) {
+            t.AddMapObject(obj);
             putObjectAtTile(obj, t);
             obj.PlacedInMap = true;
-            if(obj is Unit) {
-                var unit = (Unit)obj;
-                Vision.PerformActionOnVisibleTilesInRange(unit.posX, unit.posY, unit.vision, x => {
-                    x.UnitCanSeeTile(unit.UUID);
-                });
-            }
         } else {
             Debug.LogError("Error; attempted to place a new object onto an invalid tile");
         }
@@ -251,6 +245,11 @@ public class Map : MonoBehaviour {
     void Update() {
         var t = GetTileAtMouse();
         DebugHUD.setValue("TileUnderMouse", t as Tile);
+        if (t != null) {
+            DebugHUD.setValue("UnitsInSightOfTile", "{" + string.Join(", ", t.UnitsInSight.ToArray()) + "}");
+        } else {
+            DebugHUD.setValue("UnitsInSightOfTile", "N/A");
+        }
         /*
         if (t != null) {
             DebugHUD.setValue("LOS to 0,0", LineOfSight.Test(t, GetTileAtPosition(0, 0)));
@@ -274,19 +273,28 @@ public class Map : MonoBehaviour {
         int pathIndex = 0;
         Vector3 oldPos = t.transform.position;
         Vector3 targetPos;
+        Tile tile = t.Tile;
+        bool pastMidpoint = false;
         while(pathIndex < path.Count) {
             targetPos = path[pathIndex].OverlayTransform.position;
             float delta = curSegmentTime / timePerSegment;
             t.transform.position = Vector3.Lerp(oldPos, targetPos, delta);
             curSegmentTime += updateDelay;
+            if(!pastMidpoint && delta >= 0.5f) {
+                Tile newTile = path[pathIndex];
+                tile.RemoveMapObject(t);
+                newTile.AddMapObject(t);
+                tile = newTile;
+                pastMidpoint = true;
+            }
             if(curSegmentTime >= timePerSegment) {
                 curSegmentTime -= timePerSegment;
                 pathIndex++;
                 oldPos = targetPos;
-                if(pathIndex < path.Count) path[pathIndex].ApplyVisibilityToObject(t);
+                pastMidpoint = false;
             }
             yield return new WaitForSeconds(updateDelay);
         }
-        t.transform.localPosition = Vector3.zero;
+        putObjectAtTile(t, tile);
     }
 }

@@ -100,7 +100,7 @@ public class Tile : MonoBehaviour
         this.Rotation = rotation;
         this.Type = type;
         this.IsObstacle = isObstacle;
-        VisionState = VisionState.HIDDEN;
+        UpdateVisibility(VisionState.HIDDEN);
     }
 
     void OnMouseEnter() {
@@ -153,9 +153,11 @@ public class Tile : MonoBehaviour
             SetEmissionColorForObject(obj, MouseOverColor);
         }
         calculateObstacleOnTile();
-        if (obj is Unit) {
+        ApplyVisibilityToObject(obj);
+        if (obj.controllerID == GameManager.instance.Username && obj is Unit) {
+            Debug.Log("Performing vision check on " + obj.UUID);
             var unit = (Unit)obj;
-            Vision.PerformActionOnVisibleTilesInRange(unit.posX, unit.posY, unit.vision, t => {
+            Vision.PerformActionOnVisibleTilesInRange(XPos, YPos, unit.vision, t => {
                 t.UnitCanSeeTile(unit.UUID);
             });
         }
@@ -167,9 +169,9 @@ public class Tile : MonoBehaviour
             SetEmissionColorForObject(obj, Color.black);
             mapObjects.Remove(obj.UUID);
             calculateObstacleOnTile();
-            if (obj is Unit) {
+            if (obj.controllerID == GameManager.instance.Username && obj is Unit) {
                 var unit = (Unit)obj;
-                Vision.PerformActionOnTilesInRange(unit.posX, unit.posY, unit.vision, t => {
+                Vision.PerformActionOnTilesInRange(XPos, YPos, unit.vision, t => {
                     t.UnitCannotSeeTile(unit.UUID);
                 });
             }

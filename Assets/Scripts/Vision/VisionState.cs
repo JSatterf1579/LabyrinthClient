@@ -1,5 +1,6 @@
 ﻿public enum VisionState : int {
-    HIDDEN = 0,
-    SEEN = 1,
-    VISIBLE = 2
+    UNSET = 0,
+    HIDDEN = 1,
+    SEEN = 2,
+    VISIBLE = 3
 }
