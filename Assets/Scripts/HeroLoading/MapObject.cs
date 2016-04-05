@@ -69,8 +69,19 @@ public abstract class MapObject : MonoBehaviour {
     }
 
 
-	public bool Equals(MapObject other) {
-		return UUID.Equals(this.UUID);
+	public override bool Equals(System.Object other) {
+	    if (other == null)
+	    {
+	        return false;
+	    }
+	    Unit u = other as Unit;
+	    if ((System.Object) u == null)
+	    {
+	        return false;
+	    }
+
+	    return UUID.Equals(u.UUID);
+	    //return UUID.Equals(other.UUID);
 	}
 
     void OnDestroy() {

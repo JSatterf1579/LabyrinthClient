@@ -54,6 +54,7 @@ public class JSONDecoder{
                 int defense = (int) hero.GetField("defense").n;
                 int vision = (int) hero.GetField("vision").n;
                 int movement = (int) hero.GetField("movement").n;
+                int ap = (int) hero.GetField("action_points").n;
 
                 string heroType = hero.GetField("hero_type").str;
 
@@ -65,7 +66,7 @@ public class JSONDecoder{
                 }
 
                 Manager.InstantiateHero(heroType, owner, controller, UUID, xPos, yPos, level, health, attack, defense,
-                    vision, movement, weapon);
+                    vision, movement, ap, weapon);
             }
 
         }

@@ -110,6 +110,19 @@ public class MatchManager : MonoBehaviour
 	
 	}
 
+    public void EndTurn()
+    {
+        foreach (MapObject o in MapObjects.Values)
+        {
+            if (o.ownerID == GameManager.instance.Username)
+            {
+                JSONObject payload = new JSONObject();
+                payload.AddField("character_id", o.UUID);
+                SendAction("pass", payload);
+            }
+        }
+    }
+
     void Update() {        
         if (queuedPackets.ContainsKey(SeqNumber + 1))
         {

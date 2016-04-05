@@ -42,12 +42,12 @@ public class Selector : MonoBehaviour
 	                if (tempUnit != null)
 	                {
 	                    SelectedUnit = (Unit) tempUnit;
-	                    if (SelectedUnit.controllerID == GameManager.instance.Username)
-	                    {
-//                            StartAttackButton.gameObject.SetActive(true);
-                            CurrentState = CursorState.Movement;
-	                        Mover.BeginMove(SelectedUnit);
-	                    }
+//	                    if (SelectedUnit.controllerID == GameManager.instance.Username)
+//	                    {
+////                            StartAttackButton.gameObject.SetActive(true);
+//                            CurrentState = CursorState.Movement;
+//	                        Mover.BeginMove(SelectedUnit);
+//	                    }
                         
 	                }
 	                else
@@ -64,6 +64,15 @@ public class Selector : MonoBehaviour
 	
 	}
 
+    public void StartMovement()
+    {
+        if (SelectedUnit != null && SelectedUnit.controllerID == GameManager.instance.Username && SelectedUnit.CurrentActionPoints > 0)
+        {
+            CurrentState = CursorState.Movement;
+            Mover.BeginMove(SelectedUnit);
+        }
+    }
+
     public void EndMovement()
     {
         CurrentState = CursorState.Selecting;
@@ -73,7 +82,7 @@ public class Selector : MonoBehaviour
 
     public void StartAttack()
     {
-        if (SelectedUnit != null)
+        if (SelectedUnit != null && SelectedUnit.controllerID == GameManager.instance.Username && SelectedUnit.CurrentActionPoints > 0)
         {
             Unit attacker = SelectedUnit;
             Mover.EndMove();
@@ -124,6 +133,7 @@ public class Selector : MonoBehaviour
     {
         Movement,
         Attacking,
-        Selecting
+        Selecting,
+        Selected
     };
 }
