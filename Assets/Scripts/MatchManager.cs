@@ -218,11 +218,11 @@ public class MatchManager : MonoBehaviour
     }
 
     private void ApplyDiff(JSONObject diff) {
-        Debug.Log("applying diff...");
+        //Debug.Log("applying diff...");
         ApplyRemovals(diff["removed"], MatchState, "");
         ApplyAdditions(diff["added"], MatchState, "");
         ApplyChanges(diff["changed"], MatchState, "");
-        Debug.Log("New match state: " + MatchState);
+        //Debug.Log("New match state: " + MatchState);
     }
 
     private void ApplyRemovals(JSONObject diff, JSONObject master, string path) {

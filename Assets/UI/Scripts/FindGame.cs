@@ -32,6 +32,8 @@ public class FindGame : MonoBehaviour
         JSONObject data = new JSONObject();
         Debug.Log(data);
         data.AddField("queue_with_passbot", true);
+        data.AddField("map_x", 50);
+        data.AddField("map_y", 50);
         socket.Emit("queue_up_heroes", data, HeroesQueue);
     }
 

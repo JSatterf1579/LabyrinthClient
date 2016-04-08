@@ -9,6 +9,8 @@ public class Tile : MonoBehaviour
     public string Type { get; private set; }
     public bool IsObstacle { get; private set; }
 
+    public GameObject VisibleObject, SeenObject, HiddenObject;
+
 
     //private bool seenBefore = false;
     //originally I was keeping track of whether or not this tile had been seen before, so that when
@@ -213,8 +215,7 @@ public class Tile : MonoBehaviour
     /// </summary>
     /// <param name="UUID"></param>
     public void UnitCannotSeeTile(string UUID) {
-        UnitsInSight.Remove(UUID);
-        if(UnitsInSight.Count == 0) {
+        if(UnitsInSight.Remove(UUID) && UnitsInSight.Count == 0) {
             UpdateVisibility(VisionState.SEEN);
         }
     }
@@ -222,15 +223,10 @@ public class Tile : MonoBehaviour
     private void UpdateVisibility(VisionState nvs) {
         if(VisionState != nvs) {
             VisionState = nvs;
-            switch (VisionState) {
-                case VisionState.VISIBLE:
-                case VisionState.SEEN:
-                    foreach (var r in GetComponentsInChildren<Renderer>()) r.enabled = true;
-                    break;
-                case VisionState.HIDDEN:
-                    foreach (var r in GetComponentsInChildren<Renderer>()) r.enabled = false;
-                    break;
-            }
+            if(VisibleObject) VisibleObject.SetActive(nvs == VisionState.VISIBLE);
+            if(HiddenObject) HiddenObject.SetActive(nvs == VisionState.HIDDEN);
+            if(SeenObject) SeenObject.SetActive(nvs == VisionState.SEEN);
+            //foreach (var r in GetComponentsInChildren<Renderer>()) r.enabled = (nvs != VisionState.HIDDEN);
             foreach(var obj in mapObjects.Values) {
                 ApplyVisibilityToObject(obj);
             }
