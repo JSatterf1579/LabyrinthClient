@@ -44,7 +44,7 @@ public class Selector : MonoBehaviour
 	                    SelectedUnit = (Unit) tempUnit;
 	                    if (SelectedUnit.controllerID == GameManager.instance.Username)
 	                    {
-                            StartAttackButton.gameObject.SetActive(true);
+//                            StartAttackButton.gameObject.SetActive(true);
                             CurrentState = CursorState.Movement;
 	                        Mover.BeginMove(SelectedUnit);
 	                    }
@@ -68,7 +68,7 @@ public class Selector : MonoBehaviour
     {
         CurrentState = CursorState.Selecting;
         SelectedUnit = null;
-        StartAttackButton.gameObject.SetActive(false);
+//        StartAttackButton.gameObject.SetActive(false);
     }
 
     public void StartAttack()
@@ -79,7 +79,7 @@ public class Selector : MonoBehaviour
             Mover.EndMove();
             SelectedUnit = attacker;
             CurrentState = CursorState.Attacking;
-            StartAttackButton.gameObject.SetActive(false);
+//            StartAttackButton.gameObject.SetActive(false);
             Attacker.BeginAttack(SelectedUnit);
             
         }
@@ -91,8 +91,21 @@ public class Selector : MonoBehaviour
         SelectedUnit = null;
     }
 
-	public void SelectUnit(Unit Unit) {
-		SelectedUnit = Unit;
+	public void SelectUnit(Unit unit) {
+		if (SelectedUnit) DeselectUnit(SelectedUnit);
+		SelectedUnit = unit;
+		Tile tile = unit.Tile;
+		tile.HighlightColor = Color.green;
+		tile.Highlighted = true;
+	}
+
+	public void DeselectUnit(Unit unit) {
+		if (unit) {
+			Tile tile = unit.Tile;
+			tile.Highlighted = false;
+			Mover.EndMove();
+		}
+		SelectedUnit = null;
 	}
 
     private MapObject SelectUnitUnderCursor()

@@ -11,6 +11,7 @@ GameObject:
   - 222: {fileID: 22263978}
   - 114: {fileID: 11424522}
   - 114: {fileID: 11446362}
+  - 114: {fileID: 11433320}
   m_Layer: 5
   m_Name: JumpButton
   m_TagString: Untagged
@@ -58,7 +59,7 @@ MonoBehaviour:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 14
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 10
     m_MaxSize: 40
     m_Alignment: 4
@@ -95,6 +96,23 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &11433320
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 148014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a821fd6444af3439ba86ea0fc8ec65f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  title: {fileID: 11423210}
+  anchorMin: {x: 0.01, y: 0.65}
+  anchorMax: {x: 0.0525, y: 0.719}
+  offset: 0.02
+  unit: {fileID: 0}
+  selector: {fileID: 0}
 --- !u!114 &11446362
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -133,7 +151,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 11424522}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 11433320}
+        m_MethodName: JumpToUnit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!222 &22263978
@@ -179,7 +208,7 @@ RectTransform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_AnchorMin: {x: 0.01, y: 0.65}
-  m_AnchorMax: {x: 0.065, y: 0.74}
+  m_AnchorMax: {x: 0.052575134, y: 0.719}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
