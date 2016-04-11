@@ -7,9 +7,7 @@ using System.Runtime.Serialization;
 
 public class AttackUI : MonoBehaviour
 {
-
-    public Button ConfirmButton;
-    public Button CancelButton;
+	public Dialog dialogBox;
 
     public Selector Selector;
 
@@ -55,7 +53,7 @@ public class AttackUI : MonoBehaviour
         AttackSource = Map.Current.GetTileAtPosition(x, y);
         AttackRange = range;
         Active = true;
-        CancelButton.gameObject.SetActive(true);
+		dialogBox.ShowLeft(null, "CANCEL", this.EndAttack);
         ClearValidTiles();
         HighlightTargettableTiles(AttackSource, range);
     }
@@ -145,8 +143,7 @@ public class AttackUI : MonoBehaviour
         ClearValidTiles();
         Active = false;
         Frozen = false;
-        ConfirmButton.gameObject.SetActive(false);
-        CancelButton.gameObject.SetActive(false);
+		dialogBox.Hide();
         Selector.EndAttack();
     }
 
@@ -181,11 +178,11 @@ public class AttackUI : MonoBehaviour
 
 	            if (TargetTiles.Count == SelectedUnit.weapon.NumTargets)
 	            {
-	                ConfirmButton.gameObject.SetActive(true);
+					dialogBox.ShowRight(null, "CONFIRM", this.ConfirmAttack);
 	            }
 	            else
 	            {
-	                ConfirmButton.gameObject.SetActive(false);
+					dialogBox.HideRight();
 	            }
 	        }
 	    }
@@ -204,7 +201,5 @@ public class AttackUI : MonoBehaviour
         MatchManager.instance.SendAction("basic_attack", data);
         Debug.Log(data);
         EndAttack();
-        ConfirmButton.gameObject.SetActive(false);
-        CancelButton.gameObject.SetActive(false);
     }
 }

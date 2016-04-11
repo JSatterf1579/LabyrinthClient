@@ -14,13 +14,20 @@ public class InfoPanelSystem : MonoBehaviour {
 
 	public InfoDismissButton dismissButton;
 
+	private Unit currentUnit;
 
+	void Update() {
+		updateSelectedInfo(currentUnit);
+	}
 
 	public void updateSelectedInfo(Unit unit) {
+
+		currentUnit = unit;
+
 		name.text = "names aren't important";
 
 		
-		string stats = "H: " + unit.currentHealth + "/" + unit.maxHealth + " | A: " + unit.attack + 
+		string stats = "AP: " + unit.CurrentActionPoints + "/" + unit.MaxActionPoints + " | H: " + unit.currentHealth + "/" + unit.maxHealth + " | A: " + unit.attack + 
 			" | D: " + unit.defense + " | V: " + unit.vision + " | M: " + unit.movement;
 
 		this.stats.text = stats;
