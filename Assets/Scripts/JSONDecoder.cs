@@ -86,7 +86,7 @@ public class JSONDecoder{
                 int movement = (int)hero.GetField("movement").n;
                 int ap = (int)hero.GetField("max_action_points").n;
 
-                //string heroType = hero.GetField("hero_type").str;
+                string monsterName = hero.GetField("name").str;
 
                 Weapon weapon = null;
 
@@ -94,6 +94,10 @@ public class JSONDecoder{
                 {
                     weapon = DecodeWeapon(hero.GetField("weapon"));
                 }
+
+                Manager.InstantiateMonster(monsterName, owner, controller, UUID, xPos, yPos, health, attack, defense, vision, movement, ap, weapon);
+
+
             }
 
         }

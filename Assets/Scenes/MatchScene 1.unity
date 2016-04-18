@@ -1135,6 +1135,9 @@ MonoBehaviour:
     Prefab: {fileID: 185560, guid: ee24d6c37eaea294785d271e6fb19186, type: 2}
   - Name: roguemage
     Prefab: {fileID: 185560, guid: f5ac7819c1d83f1438dd3aa902a2d265, type: 2}
+  monsterPrefab:
+  - Name: Goblin
+    Prefab: {fileID: 187752, guid: 00611a129d3bf1247b2b45d4e7e0e1af, type: 2}
   GameMap: {fileID: 177063253}
 --- !u!4 &878191716
 Transform:

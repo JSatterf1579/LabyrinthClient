@@ -164,7 +164,7 @@ public class Map : MonoBehaviour {
         RaycastHit hit;
         if(Physics.Raycast(ray, out hit, float.PositiveInfinity, LayerMask.GetMask("MapTile", "Hero"))) {
             if (hit.transform.CompareTag("Hero")) {
-                var hero = hit.transform.GetComponent<Hero>();
+                var hero = hit.transform.GetComponent<Unit>();
                 return GetTileAtPosition(hero.posX, hero.posY);
             }
             return hit.collider.GetComponent<Tile>();
