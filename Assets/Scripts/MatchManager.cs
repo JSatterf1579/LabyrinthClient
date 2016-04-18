@@ -168,6 +168,13 @@ public class MatchManager : MonoBehaviour
         {
             MoveCharacter(action);
         }
+        else if (action.GetField("type").str.Equals("end_game"))
+        {
+            if (action.GetField("winner").str.Equals(GameManager.instance.Username))
+            {
+                Debug.Log("You Win!");
+            }
+        }
     }
 
     private void MoveCharacter(JSONObject move)
