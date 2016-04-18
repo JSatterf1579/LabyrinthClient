@@ -98,7 +98,7 @@ public class MatchManager : MonoBehaviour
 			RegisterJSONChangeAction("/game_state", UpdateGameState);
 
 	        JSONDecoder.DecodeMap(MatchState.GetField("map"), Map.Current);
-            JSONDecoder.DecodeHeroes(MatchState.GetField("board_objects"), manager);
+            JSONDecoder.DecodeMapObjects(MatchState.GetField("board_objects"), manager);
             socket.On("game_update", GameUpdate);
         }
 	    else

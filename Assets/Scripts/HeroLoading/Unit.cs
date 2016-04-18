@@ -6,7 +6,8 @@ using UnityEditor;
 public abstract class Unit : MapObject
 {
 
-    public int level;
+
+    
     public int maxHealth;
     public int currentHealth;
     public int attack;
@@ -21,10 +22,10 @@ public abstract class Unit : MapObject
     public Object[] abilities;
 
 
-    public void Init(string ownerID, string contrllerID, string UUID, int x, int y, int level, int health, int attack, int defense, int vision, int movement, int ap, Weapon weapon)
+    public void Init(string name, string ownerID, string contrllerID, string UUID, int x, int y, int health, int attack, int defense, int vision, int movement, int ap, Weapon weapon)
     {
-        Init(ownerID, contrllerID, UUID, x, y);
-        this.level = level;
+        Init(name, ownerID, contrllerID, UUID, x, y);
+        //this.level = level;
         this.maxHealth = health;
         this.currentHealth = health;
         this.attack = attack;

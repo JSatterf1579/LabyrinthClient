@@ -10,9 +10,12 @@ public class Hero : Unit
 
     public Object passive;
 
-    public new void Init(string ownerID, string contrllerID, string UUID, int x, int y, int level, int health, int attack,
+    public int level;
+
+    public void Init(string name, string ownerID, string contrllerID, string UUID, int x, int y, int level, int health, int attack,
         int defense, int vision, int movement, int ap, Weapon weapon)
     {
-        base.Init(ownerID, contrllerID, UUID, x, y, level, health, attack, defense, vision, movement, ap, weapon);
+        this.level = level;
+        base.Init(name, ownerID, contrllerID, UUID, x, y, health, attack, defense, vision, movement, ap, weapon);
     }
 }

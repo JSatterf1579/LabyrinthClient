@@ -31,8 +31,9 @@ public class JSONDecoder{
         }
     }
 
-    public static void DecodeHeroes(JSONObject serializedHeroes, HeroManager Manager)
+    public static void DecodeMapObjects(JSONObject serializedHeroes, HeroManager Manager)
     {
+        Debug.Log(serializedHeroes);
         List<JSONObject> heroList = serializedHeroes.list;
         GameObject[] heroes = new GameObject[heroList.Count];
         foreach (JSONObject hero in heroList)
@@ -49,12 +50,12 @@ public class JSONDecoder{
 
 
                 int level = (int) hero.GetField("level").n;
-                int health = (int) hero.GetField("health").n;
+                int health = (int) hero.GetField("max_health").n;
                 int attack = (int) hero.GetField("attack").n;
                 int defense = (int) hero.GetField("defense").n;
                 int vision = (int) hero.GetField("vision").n;
                 int movement = (int) hero.GetField("movement").n;
-                int ap = (int) hero.GetField("action_points").n;
+                int ap = (int) hero.GetField("max_action_points").n;
 
                 string heroType = hero.GetField("hero_type").str;
 
@@ -67,6 +68,32 @@ public class JSONDecoder{
 
                 Manager.InstantiateHero(heroType, owner, controller, UUID, xPos, yPos, level, health, attack, defense,
                     vision, movement, ap, weapon);
+            }
+            else if (hero.GetField("type").str == "monster")
+            {
+                string UUID = hero.GetField("id").str;
+                string owner = hero.GetField("owner_id").str;
+                string controller = hero.GetField("controller_id").str;
+                int xPos = (int)hero.GetField("x").n;
+                int yPos = (int)hero.GetField("y").n;
+
+
+                //int level = (int)hero.GetField("level").n;
+                int health = (int)hero.GetField("health").n;
+                int attack = (int)hero.GetField("attack").n;
+                int defense = (int)hero.GetField("defense").n;
+                int vision = (int)hero.GetField("vision").n;
+                int movement = (int)hero.GetField("movement").n;
+                int ap = (int)hero.GetField("max_action_points").n;
+
+                //string heroType = hero.GetField("hero_type").str;
+
+                Weapon weapon = null;
+
+                if (hero.GetField("weapon") != null)
+                {
+                    weapon = DecodeWeapon(hero.GetField("weapon"));
+                }
             }
 
         }
@@ -99,6 +126,31 @@ public class JSONDecoder{
         }
         return tiles;
     }
+
+    public static List<HeroCardData> DecodeHeroCards(JSONObject serializedHeroes)
+    {
+        List<HeroCardData> heroes = new List<HeroCardData>();
+        foreach (JSONObject hero in serializedHeroes.GetField("heroes").list)
+        {
+            string name = hero.GetField("hero_type").str;
+            string ownerID = hero.GetField("owner_id").str;
+            string UUID = hero.GetField("id").str;
+
+            int health = (int)hero.GetField("max_health").n;
+            int attack = (int)hero.GetField("attack").n;
+            int defense = (int)hero.GetField("defense").n;
+            int vision = (int)hero.GetField("vision").n;
+            int movement = (int)hero.GetField("movement").n;
+            int actionPoints = (int)hero.GetField("max_action_points").n;
+            int level = (int)hero.GetField("level").n;
+            Weapon wep = DecodeWeapon(hero.GetField("weapon"));
+
+            HeroCardData hcard = new HeroCardData();
+            hcard.init(name, ownerID, UUID, health, attack, defense, vision, movement, actionPoints, wep, level);
+            heroes.Add(hcard);
+        }
+        return heroes;
+    } 
 
 
 }

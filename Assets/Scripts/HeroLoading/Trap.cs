@@ -1,15 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Trap : MonoBehaviour {
+public class Trap : MapObject
+{
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    public int damage;
+    public Object[] effect;
+    public int radius;
+    public bool triggered;
+
+    public AttackPattern pattern;
+
+    public void Init(string name, string ownerID, string contrllerID, string UUID, int x, int y, int damage, int radius,
+        bool triggered, AttackPattern pattern)
+    {
+        Init(name, ownerID, contrllerID, UUID, x, y);
+        this.damage = damage;
+        this.radius = radius;
+        this.triggered = triggered;
+        this.pattern = pattern;
+    }
 }

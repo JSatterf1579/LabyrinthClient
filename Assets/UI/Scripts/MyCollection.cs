@@ -146,7 +146,7 @@ public class MyCollection : MonoBehaviour {
 	}
 		
 	private void makeCollection() {
-		collection = new TempCard[16];
+		collection = new TempCard[32];
 		for (int i = 0; i < collection.Length; i++) {
 			bool ismonster = i % 3 != 0;
 			string name = ismonster ? "Monster " + (i + 1) : "Trap " + (i + 1);

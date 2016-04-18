@@ -3,6 +3,7 @@ using System.Collections;
 
 public abstract class MapObject : MonoBehaviour {
 
+    public string MOName;
     public string ownerID;
     public string controllerID;
     public string UUID;
@@ -34,8 +35,9 @@ public abstract class MapObject : MonoBehaviour {
     [System.NonSerialized]
     public bool PlacedInMap = false;
 
-    public void Init(string ownerID, string contrllerID, string UUID, int x, int y)
+    public void Init(string name, string ownerID, string contrllerID, string UUID, int x, int y)
     {
+        this.MOName = name;
         this.ownerID = ownerID;
         this.controllerID = contrllerID;
         this.UUID = UUID;

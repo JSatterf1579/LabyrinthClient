@@ -6,6 +6,8 @@ public class HeroManager : MonoBehaviour
 {
 
     public Map.PrefabNamePair[] heroPrefabs;
+    public Map.PrefabNamePair[] monsterPrefab;
+    private Dictionary<string, GameObject> monsterPrefabDict; 
     private Dictionary<string, GameObject> heroPrefabDict; 
 
     public Map GameMap;
@@ -20,6 +22,13 @@ public class HeroManager : MonoBehaviour
 	    {
 	        heroPrefabDict.Add(pair.Name.ToUpper(), pair.Prefab);
 	    }
+
+//        monsterPrefabDict = new Dictionary<string, GameObject>();
+//
+//	    foreach (var pair in monsterPrefab)
+//	    {
+//	        monsterPrefabDict.Add(pair.Name.ToUpper(), pair.Prefab);
+//	    }
 	}
 
     public void InstantiateHero(string heroID, string ownerID, string controllerID, string UUID, int x, int y, int level, int health, int attack,
@@ -46,7 +55,7 @@ public class HeroManager : MonoBehaviour
             }
             else
             {
-                hero.Init(ownerID, controllerID, UUID, x, y, level, health, attack, defense, vision, movement, ap, weapon);
+                hero.Init(heroType, ownerID, controllerID, UUID, x, y, level, health, attack, defense, vision, movement, ap, weapon);
                 if (GameMap.Loaded)
                 {
                     GameMap.PlaceNewObjectIntoMap(hero);
