@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SocketIO;
 using System;
+using UnityEngine.SceneManagement;
 
 public class MatchManager : MonoBehaviour
 {
@@ -190,6 +191,22 @@ public class MatchManager : MonoBehaviour
         }
         MapObject target = MapObjects[characterID];
         Map.Current.MoveMapObject(target, tiles);
+    }
+
+    public void RequestEndMatch()
+    {
+        
+        socket.Emit("leave_match", new JSONObject(), RecieveLeaveStatus);
+    }
+
+    private void RecieveLeaveStatus(JSONObject response)
+    {
+        Debug.Log(response);
+        if (response.list[0].GetField("status").n == 200)
+        {
+            SceneManager.LoadScene("FindGame"); 
+        }
+
     }
 
     #region state diff handling
