@@ -1757,6 +1757,9 @@ MonoBehaviour:
     Prefab: {fileID: 154226, guid: ca355873498724de39ad2f3dd75cb904, type: 2}
   - Name: roguemage
     Prefab: {fileID: 150882, guid: e1afabe9167c44232b8841ae517492b4, type: 2}
+  monsterPrefab:
+  - Name: Goblin
+    Prefab: {fileID: 187752, guid: 00611a129d3bf1247b2b45d4e7e0e1af, type: 2}
   GameMap: {fileID: 177063253}
 --- !u!4 &878191716
 Transform:
@@ -2732,8 +2735,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1076433174}
-        m_MethodName: 
+      - m_Target: {fileID: 1076433176}
+        m_MethodName: RequestEndMatch
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
