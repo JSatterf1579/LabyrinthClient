@@ -10,6 +10,7 @@ public class Tile : MonoBehaviour
     public bool IsObstacle { get; private set; }
 
     public GameObject VisibleObject, SeenObject, HiddenObject;
+	public ParticleSystem SeenParticleSystem, HiddenParticleSystem;
 
 
     //private bool seenBefore = false;
@@ -29,7 +30,8 @@ public class Tile : MonoBehaviour
         get { return _UnitsInSight; }
     }
 
-    public Renderer[] HighlihgtRenderers;
+	[UnityEngine.Serialization.FormerlySerializedAs("HighlihgtRenderers")]
+    public Renderer[] HighlightRenderers;
 
     public Color MouseOverColor;
     public Color HighlightColor;
@@ -72,7 +74,7 @@ public class Tile : MonoBehaviour
     }
 
     private void SetTileEmissionColor(Color c) {
-        foreach (var r in HighlihgtRenderers) {
+        foreach (var r in HighlightRenderers) {
             r.material.SetColor("_EmissionColor", c);
         }
     }
@@ -226,12 +228,36 @@ public class Tile : MonoBehaviour
             if(VisibleObject) VisibleObject.SetActive(nvs == VisionState.VISIBLE);
             if(HiddenObject) HiddenObject.SetActive(nvs == VisionState.HIDDEN);
             if(SeenObject) SeenObject.SetActive(nvs == VisionState.SEEN);
+            UpdateParticleSystems(nvs);
             //foreach (var r in GetComponentsInChildren<Renderer>()) r.enabled = (nvs != VisionState.HIDDEN);
             foreach(var obj in mapObjects.Values) {
                 ApplyVisibilityToObject(obj);
             }
         }
     }
+
+	private void UpdateParticleSystems(VisionState nvs) {
+		switch (nvs) {
+		case VisionState.HIDDEN:
+			if (HiddenParticleSystem && !HiddenParticleSystem.isPlaying)
+				HiddenParticleSystem.Play();
+			if (SeenParticleSystem && SeenParticleSystem.isPlaying)
+				SeenParticleSystem.Stop();
+			break;
+		case VisionState.SEEN:
+                if (HiddenParticleSystem && HiddenParticleSystem.isPlaying)
+                    HiddenParticleSystem.Stop();
+                if (SeenParticleSystem && !SeenParticleSystem.isPlaying)
+                    SeenParticleSystem.Play();
+                break;
+		case VisionState.VISIBLE:
+                if (HiddenParticleSystem && HiddenParticleSystem.isPlaying)
+                    HiddenParticleSystem.Stop();
+                if (SeenParticleSystem && SeenParticleSystem.isPlaying)
+                    SeenParticleSystem.Stop();
+                break;
+		}
+	}
 
     public void ApplyVisibilityToObject(MapObject obj) {
         var renderers = obj.GetComponentsInChildren<Renderer>();
@@ -249,6 +275,15 @@ public class Tile : MonoBehaviour
                 break;
         }
     }
+
+
+    //public VisionState newVisionState;
+    //void Update() {
+    //    if(VisionState != newVisionState) {
+    //        Debug.Log("Visibility changed!");
+    //        UpdateVisibility(newVisionState);
+    //    }
+    //}
 
     public override string ToString() {
         return "Tile: " + Type + ": (" + XPos + ", " + YPos + ") r=" + Rotation + " IsObstacle="+IsObstacle + " IsValidForMovement="+IsValidForMovement + " VisionState="+VisionState;
