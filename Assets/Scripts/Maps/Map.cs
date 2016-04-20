@@ -228,6 +228,33 @@ public class Map : MonoBehaviour {
     }
 
     /// <summary>
+    /// returns an IEnumerable containing first the tile the target is on, then the remaining tiles in the path
+    /// </summary>
+    /// <param name="target"></param>
+    /// <param name="path"></param>
+    /// <returns></returns>
+    private IEnumerable<Tile> GetTilesInPath(MapObject target, List<Tile> path) {
+        yield return target.Tile;
+        foreach(Tile t in path) {
+            yield return t;
+        }
+    }
+
+    public void SetTilesLockedState(IEnumerable<Tile> tiles, bool locked) {
+        foreach(Tile t in tiles) {
+            t.Locked = locked;
+        }
+    }
+
+    public void LockTiles(IEnumerable<Tile> tiles) {
+        SetTilesLockedState(tiles, true);
+    }
+
+    public void UnlockTiles(IEnumerable<Tile> tiles) {
+        SetTilesLockedState(tiles, false);
+    }
+
+    /// <summary>
     /// Forcibly teleports a mapObject to new coordinates without any animation (and without traveling over any tiles in between)
     /// </summary>
     /// <param name="obj"></param>
@@ -330,7 +357,11 @@ public class Map : MonoBehaviour {
     /// <param name="time"> How long the animation should take (in seconds) </param>
     /// <param name="updateDelay"> The number of seconds between updates to the position of the object (I recommend just passing in "1/60f" for 60fps)</param>
     /// <returns></returns>
-    IEnumerator AnimateMove(MapObject t, List<Tile> path, float time, float updateDelay) {
+    private IEnumerator AnimateMove(MapObject t, List<Tile> path, float time, float updateDelay) {
+        List<Tile> allTiles = GetTilesInPath(t, path).ToList(); //we make it a list to force evaluation immediately
+        LockTiles(allTiles);
+        t.Tile.RemoveMapObjectLogically(t);
+        path.Last().AddMapObjectLogically(t);
         float timePerSegment = time / path.Count;
         float curSegmentTime = 0;
         int pathIndex = 0;
@@ -345,8 +376,9 @@ public class Map : MonoBehaviour {
             curSegmentTime += updateDelay;
             if(!pastMidpoint && delta >= 0.5f) {
                 Tile newTile = path[pathIndex];
-                tile.RemoveMapObject(t);
-                newTile.AddMapObject(t);
+                tile.RemoveMapObjectVisibly(t);
+                tile.Locked = false;
+                newTile.AddMapObjectVisibly(t);
                 tile = newTile;
                 pastMidpoint = true;
             }
@@ -359,5 +391,6 @@ public class Map : MonoBehaviour {
             yield return new WaitForSeconds(updateDelay);
         }
         putObjectAtTile(t, tile);
+        UnlockTiles(allTiles);
     }
 }
