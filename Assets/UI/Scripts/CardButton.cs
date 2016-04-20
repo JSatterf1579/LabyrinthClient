@@ -10,7 +10,7 @@ public class CardButton : MonoBehaviour {
 
 	public void UpdateView() {
 		name.text = cardInfo.Name;
-		costQty.text = 1 + " | x" + cardInfo.count;
+		costQty.text = cardInfo.cost + " | x" + cardInfo.count;
 	}
 
     public bool IsMonster()

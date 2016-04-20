@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 public class MyCollection : MonoBehaviour {
 
-	//private TempCard[] collection;
+	
     private List<MonsterCardData> collection;
 	private CardButton[] buttons;
 	private List<CardButton> displayed = new List<CardButton>();
