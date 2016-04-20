@@ -11,9 +11,9 @@ public class Hero : Unit
     public Object passive;
 
     public new void Init(string ownerID, string contrllerID, string UUID, int x, int y, int level, int health, int attack,
-        int defense, int vision, int movement, Weapon weapon, bool blocksMovement)
+        int defense, int vision, int movement, int ap, Weapon weapon, bool blocksMovement)
     {
-        base.Init(ownerID, contrllerID, UUID, x, y, level, health, attack, defense, vision, movement, weapon, blocksMovement);
+        base.Init(ownerID, contrllerID, UUID, x, y, level, health, attack, defense, vision, movement, ap, weapon, blocksMovement);
         MatchManager.instance.RegisterJSONChangeAction("/board_objects/" + UUID + "/action_points", ActionPointsChanged);
     }
 

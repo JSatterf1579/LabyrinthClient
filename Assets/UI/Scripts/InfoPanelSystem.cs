@@ -19,8 +19,8 @@ public class InfoPanelSystem : MonoBehaviour {
 	public void updateSelectedInfo(Unit unit) {
 		name.text = "names aren't important";
 
-		// TODO: when we get health info use that instead of maxHealth
-		string stats = "H: " + unit.maxHealth + "/" + unit.maxHealth + " | A: " + unit.attack + 
+		
+		string stats = "H: " + unit.currentHealth + "/" + unit.maxHealth + " | A: " + unit.attack + 
 			" | D: " + unit.defense + " | V: " + unit.vision + " | M: " + unit.movement;
 
 		this.stats.text = stats;
