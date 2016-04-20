@@ -67,7 +67,7 @@ public class JSONDecoder{
                 }
 
                 Manager.InstantiateHero(heroType, owner, controller, UUID, xPos, yPos, level, health, attack, defense,
-                    vision, ap, movement, weapon);
+                    vision, movement, ap, weapon, blocksMovement);
             }
 
         }
