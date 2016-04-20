@@ -29,7 +29,7 @@ public class InGame : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		match = MatchManager.instance;
-		infoPanel.gameObject.SetActive(false);
+//		infoPanel.gameObject.SetActive(false);
 		alreadyDismissed = false;
 		tempSelectedUnit = selector.SelectedUnit;
 		canvas = gameObject.GetComponent<Canvas>();
@@ -42,21 +42,21 @@ public class InGame : MonoBehaviour {
 		DebugHUD.setValue("Is dismissed", infoPanel.dismissButton.Dismissed);
 		if (match) {
 			updateGameInfo();
-			if (selector.SelectedUnit) {
-				if (!selector.SelectedUnit.Equals(selectedUnit) || infoPanel.dismissButton.Dismissed) {
+//			if (selector.SelectedUnit) {
+//				if (!selector.SelectedUnit.Equals(selectedUnit) || infoPanel.dismissButton.Dismissed) {
 					selectedUnit = selector.SelectedUnit;
 					infoPanel.updateSelectedInfo(selectedUnit);
-					infoPanel.gameObject.SetActive(true);
-					infoPanel.dismissButton.Dismissed = false;
-					alreadyDismissed = false;
-				}
-			} else {
-//				infoPanel.gameObject.SetActive(false);
-				if (!alreadyDismissed) {
-					infoPanel.dismissButton.Dismissed = true;
-					alreadyDismissed = true;
-				}
-			}
+//					infoPanel.gameObject.SetActive(true);
+//					infoPanel.dismissButton.Dismissed = false;
+//					alreadyDismissed = false;
+//				}
+//			} else {
+////				infoPanel.gameObject.SetActive(false);
+//				if (!alreadyDismissed) {
+//					infoPanel.dismissButton.Dismissed = true;
+//					alreadyDismissed = true;
+//				}
+//			}
 		} else {
 			match = MatchManager.instance;
 			displayHeroes();
@@ -78,7 +78,8 @@ public class InGame : MonoBehaviour {
 			rt.offsetMin = Vector2.zero;
 			rt.offsetMax = Vector2.zero;
 			count++;
-			jb.title.text = "Hero " + count;
+			//TODO: Joe
+			//jb.title.text = hero.herotype;
 		}
 	}
 

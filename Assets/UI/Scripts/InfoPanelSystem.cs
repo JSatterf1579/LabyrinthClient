@@ -22,6 +22,13 @@ public class InfoPanelSystem : MonoBehaviour {
 
 	public void updateSelectedInfo(Unit unit) {
 
+		if (!unit) {
+			name.text = "";
+			this.stats.text = "";
+			equippedWeapon.text = "";
+			return;
+		}
+
 		currentUnit = unit;
 
 		name.text = "names aren't important";
@@ -34,7 +41,5 @@ public class InfoPanelSystem : MonoBehaviour {
 
 //		equippedWeapon.text = "it might have a weapon. ask us tomorrow."
 		equippedWeapon.text = "Weapon: " + unit.weapon.Name;
-
-		description.text = "we have no idea what this is.";
 	}
 }

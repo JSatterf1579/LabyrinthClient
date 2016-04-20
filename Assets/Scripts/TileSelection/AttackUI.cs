@@ -53,7 +53,7 @@ public class AttackUI : MonoBehaviour
         AttackSource = Map.Current.GetTileAtPosition(x, y);
         AttackRange = range;
         Active = true;
-		dialogBox.ShowLeft(null, "CANCEL", this.EndAttack);
+		dialogBox.ShowLeft(null, "C A N C E L", this.EndAttack);
         ClearValidTiles();
         HighlightTargettableTiles(AttackSource, range);
     }
@@ -178,7 +178,7 @@ public class AttackUI : MonoBehaviour
 
 	            if (TargetTiles.Count == SelectedUnit.weapon.NumTargets)
 	            {
-					dialogBox.ShowRight(null, "CONFIRM", this.ConfirmAttack);
+					dialogBox.ShowRight(null, "C O N F I R M", this.ConfirmAttack);
 	            }
 	            else
 	            {

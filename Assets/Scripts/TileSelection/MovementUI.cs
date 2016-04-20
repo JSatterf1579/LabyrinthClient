@@ -181,7 +181,7 @@ public class MovementUI : MonoBehaviour {
             else
             {
                 Freeze();
-				ConfirmPanel.Show(null, "CONFIRM", this.ConfirmMove, "CANCEL", this.EndMove);
+				ConfirmPanel.Show(null, "C O N F I R M", this.ConfirmMove, "C A N C E L", this.EndMove);
             }
         }
 
