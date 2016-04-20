@@ -1057,6 +1057,7 @@ MonoBehaviour:
   loginButton: {fileID: 601387705}
   errorMessage: {fileID: 1516396692}
   fieldErrorColor: {r: 0.77205884, g: 0.1873378, b: 0.1873378, a: 1}
+  fieldSuccessColor: {r: 0.11942189, g: 0.375, b: 0.11029411, a: 1}
 --- !u!1 &768173824
 GameObject:
   m_ObjectHideFlags: 0

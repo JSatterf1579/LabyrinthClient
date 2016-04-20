@@ -16,6 +16,7 @@ public class AuthPanelSystem : MonoBehaviour {
 	public Button loginButton;
 	public Text errorMessage;
 	public Color fieldErrorColor;
+	public Color fieldSuccessColor;
 
 	private Color defaultFieldColor;
 	private Image passImage;
@@ -88,6 +89,8 @@ public class AuthPanelSystem : MonoBehaviour {
         if (status == 200)
         {
             GameManager.instance.Username = this.username;
+			string message = "Successfully registered " + this.username + ".";
+			success(message);
 		} else {
 			string message = response.list[0].GetField("message").str;
 			error(message, usernameField);
@@ -108,10 +111,16 @@ public class AuthPanelSystem : MonoBehaviour {
 	}
 
 	private void error(string message, InputField field) {
+		errorMessage.color = fieldErrorColor;
 		errorMessage.text = message;
 		field.text = "";
 		field.ActivateInputField();
 		field.GetComponent<Image>().color = fieldErrorColor;
+	}
+
+	private void success(string message) {
+		errorMessage.color = fieldSuccessColor;
+		errorMessage.text = message;
 	}
 
 	private void clearError() {

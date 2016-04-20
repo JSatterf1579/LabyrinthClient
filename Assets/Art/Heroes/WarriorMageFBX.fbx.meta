@@ -1,0 +1,239 @@
+fileFormatVersion: 2
+guid: 64662dc0f7c1f481cbfe6ba5c0c401d3
+timeCreated: 1460335065
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: "Antilabe  \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE_001"
+    100004: "Antilabe  \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE_002"
+    100006: "Antilabe  \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE_003"
+    100008: "Antilabe  \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE_004"
+    100010: "Antilabe  \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE_005"
+    100012: "Antilabe  \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE_006"
+    100014: "Antilabe \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE  holder_001"
+    100016: "Aspis  \u0386\u03C3\u03C0\u03B9\u03C2_001"
+    100018: "Corinthian helmet  \u039A\u03BF\u03C1\u03B9\u03BD\u03B8\u03B9\u03B1\u03BA\u03CC
+      \u03BA\u03C1\u03AC\u03BD\u03BF\u03C2_001"
+    100020: greave_001
+    100022: greave_004
+    100024: greek_hero_w#5_001
+    100026: group_0.060_001
+    100028: Group_001
+    100030: Group_002
+    100032: Group_003
+    100034: Group_004
+    100036: Group_005
+    100038: Group_006
+    100040: Group_007
+    100042: Group_008
+    100044: Gruppe#14_001
+    100046: Gruppe#14_002
+    100048: Gruppe#14_003
+    100050: Gruppe#14_004
+    100052: Gruppe#4_001
+    100054: Gruppe#4_003
+    100056: Gruppe#4_005
+    100058: Gruppe#4_007
+    100060: Gruppe#5_001
+    100062: Gruppe#5_003
+    100064: Porpax_001
+    400000: //RootNode
+    400002: "Antilabe  \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE_001"
+    400004: "Antilabe  \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE_002"
+    400006: "Antilabe  \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE_003"
+    400008: "Antilabe  \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE_004"
+    400010: "Antilabe  \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE_005"
+    400012: "Antilabe  \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE_006"
+    400014: "Antilabe \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE  holder_001"
+    400016: "Aspis  \u0386\u03C3\u03C0\u03B9\u03C2_001"
+    400018: "Corinthian helmet  \u039A\u03BF\u03C1\u03B9\u03BD\u03B8\u03B9\u03B1\u03BA\u03CC
+      \u03BA\u03C1\u03AC\u03BD\u03BF\u03C2_001"
+    400020: greave_001
+    400022: greave_004
+    400024: greek_hero_w#5_001
+    400026: group_0.060_001
+    400028: Group_001
+    400030: Group_002
+    400032: Group_003
+    400034: Group_004
+    400036: Group_005
+    400038: Group_006
+    400040: Group_007
+    400042: Group_008
+    400044: Gruppe#14_001
+    400046: Gruppe#14_002
+    400048: Gruppe#14_003
+    400050: Gruppe#14_004
+    400052: Gruppe#4_001
+    400054: Gruppe#4_003
+    400056: Gruppe#4_005
+    400058: Gruppe#4_007
+    400060: Gruppe#5_001
+    400062: Gruppe#5_003
+    400064: Porpax_001
+    2300000: "Antilabe  \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE_001"
+    2300002: "Antilabe  \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE_002"
+    2300004: "Antilabe  \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE_003"
+    2300006: "Antilabe  \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE_004"
+    2300008: "Antilabe  \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE_005"
+    2300010: "Antilabe  \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE_006"
+    2300012: "Antilabe \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE  holder_001"
+    2300014: "Aspis  \u0386\u03C3\u03C0\u03B9\u03C2_001"
+    2300016: "Corinthian helmet  \u039A\u03BF\u03C1\u03B9\u03BD\u03B8\u03B9\u03B1\u03BA\u03CC
+      \u03BA\u03C1\u03AC\u03BD\u03BF\u03C2_001"
+    2300018: greave_001
+    2300020: greave_004
+    2300022: greek_hero_w#5_001
+    2300024: group_0.060_001
+    2300026: Group_001
+    2300028: Group_002
+    2300030: Group_003
+    2300032: Group_004
+    2300034: Group_005
+    2300036: Group_006
+    2300038: Group_007
+    2300040: Group_008
+    2300042: Gruppe#14_001
+    2300044: Gruppe#14_002
+    2300046: Gruppe#14_003
+    2300048: Gruppe#14_004
+    2300050: Gruppe#4_001
+    2300052: Gruppe#4_003
+    2300054: Gruppe#4_005
+    2300056: Gruppe#4_007
+    2300058: Gruppe#5_001
+    2300060: Gruppe#5_003
+    2300062: Porpax_001
+    3300000: "Antilabe  \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE_001"
+    3300002: "Antilabe  \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE_002"
+    3300004: "Antilabe  \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE_003"
+    3300006: "Antilabe  \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE_004"
+    3300008: "Antilabe  \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE_005"
+    3300010: "Antilabe  \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE_006"
+    3300012: "Antilabe \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE  holder_001"
+    3300014: "Aspis  \u0386\u03C3\u03C0\u03B9\u03C2_001"
+    3300016: "Corinthian helmet  \u039A\u03BF\u03C1\u03B9\u03BD\u03B8\u03B9\u03B1\u03BA\u03CC
+      \u03BA\u03C1\u03AC\u03BD\u03BF\u03C2_001"
+    3300018: greave_001
+    3300020: greave_004
+    3300022: greek_hero_w#5_001
+    3300024: group_0.060_001
+    3300026: Group_001
+    3300028: Group_002
+    3300030: Group_003
+    3300032: Group_004
+    3300034: Group_005
+    3300036: Group_006
+    3300038: Group_007
+    3300040: Group_008
+    3300042: Gruppe#14_001
+    3300044: Gruppe#14_002
+    3300046: Gruppe#14_003
+    3300048: Gruppe#14_004
+    3300050: Gruppe#4_001
+    3300052: Gruppe#4_003
+    3300054: Gruppe#4_005
+    3300056: Gruppe#4_007
+    3300058: Gruppe#5_001
+    3300060: Gruppe#5_003
+    3300062: Porpax_001
+    4300000: "Corinthian helmet  \u039A\u03BF\u03C1\u03B9\u03BD\u03B8\u03B9\u03B1\u03BA\u03CC
+      \u03BA\u03C1\u03AC\u03BD\u03BF\u03C2_001"
+    4300002: "Antilabe  \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE_006"
+    4300004: "Antilabe  \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE_005"
+    4300006: "Antilabe  \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE_004"
+    4300008: "Antilabe  \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE_003"
+    4300010: "Antilabe  \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE_002"
+    4300012: "Antilabe  \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE_001"
+    4300014: "Antilabe \u03B1\u03BD\u03C4\u03B9\u03BB\u03B1\u03B2\u03AE  holder_001"
+    4300016: Porpax_001
+    4300018: "Aspis  \u0386\u03C3\u03C0\u03B9\u03C2_001"
+    4300020: greek_hero_w#5_001
+    4300022: greave_004
+    4300024: greave_001
+    4300026: Group_008
+    4300028: Gruppe#14_004
+    4300030: Group_007
+    4300032: Gruppe#14_003
+    4300034: Group_006
+    4300036: Gruppe#14_002
+    4300038: Group_005
+    4300040: Gruppe#14_001
+    4300042: Gruppe#5_003
+    4300044: Gruppe#5_001
+    4300046: group_0.060_001
+    4300048: Group_004
+    4300050: Gruppe#4_007
+    4300052: Group_003
+    4300054: Gruppe#4_005
+    4300056: Group_002
+    4300058: Gruppe#4_003
+    4300060: Group_001
+    4300062: Gruppe#4_001
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
