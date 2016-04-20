@@ -26,6 +26,8 @@ public class Dialog : MonoBehaviour {
 		gameObject.SetActive(false);
 		leftHidden = true;
 		rightHidden = true;
+        right.onClick.AddListener(this.ExecuteRight);
+        left.onClick.AddListener(this.ExecuteLeft);
 	}
 	
 	// Update is called once per frame
@@ -43,6 +45,12 @@ public class Dialog : MonoBehaviour {
 			}
 		}
 	}
+
+    void OnDestroy()
+    {
+        right.onClick.RemoveAllListeners();
+        left.onClick.RemoveAllListeners();
+    }
 
 	public void Hide() {
 		leftHidden = true;
@@ -72,11 +80,8 @@ public class Dialog : MonoBehaviour {
 		right.gameObject.SetActive(!rightHidden);
 
 		if (message != null && this.message != null) this.message.text = message;
-
-		if (rightCallback != null) {
-			this.rightCallback = rightCallback;
-			right.onClick.AddListener(rightCallback);
-		}
+        
+		this.rightCallback = rightCallback;
 
 		if (rightOption != null) rightTextBox.text = rightOption;
 	}
@@ -88,12 +93,25 @@ public class Dialog : MonoBehaviour {
 		right.gameObject.SetActive(!rightHidden);
 
 		if (message != null && this.message != null) this.message.text = message;
-
-		if (leftCallback != null) {
-			this.leftCallback = leftCallback;
-			left.onClick.AddListener(leftCallback);
-		}
+        
+		this.leftCallback = leftCallback;
 
 		if (leftOption != null) leftTextBox.text = leftOption;
 	}
+
+    public void ExecuteRight()
+    {
+        if (rightCallback != null)
+        {
+            rightCallback.Invoke();
+        }
+    }
+
+    public void ExecuteLeft()
+    {
+        if (leftCallback != null)
+        {
+            leftCallback.Invoke();
+        }
+    }
 }

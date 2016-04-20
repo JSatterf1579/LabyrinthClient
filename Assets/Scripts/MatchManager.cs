@@ -51,6 +51,8 @@ public class MatchManager : MonoBehaviour
 		} 
 	}
 
+    public Dialog dialogBox;
+
     private SocketIOComponent socket;
 
     private Dictionary<int, JSONObject> queuedPackets;
@@ -195,7 +197,14 @@ public class MatchManager : MonoBehaviour
 
     public void RequestEndMatch()
     {
-        
+        if (dialogBox != null)
+        {
+            dialogBox.Show("Are you sure you want to leave the game?", "Yes", this.RequestLeave, "No", dialogBox.Hide);
+        }
+    }
+    
+    public void RequestLeave()
+    {
         socket.Emit("leave_match", new JSONObject(), RecieveLeaveStatus);
     }
 

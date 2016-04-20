@@ -53,7 +53,7 @@ public class AttackUI : MonoBehaviour
         AttackSource = Map.Current.GetTileAtPosition(x, y);
         AttackRange = range;
         Active = true;
-		dialogBox.ShowLeft(null, "C A N C E L", this.EndAttack);
+        dialogBox.ShowLeft(null, "C A N C E L", this.EndAttack);
         ClearValidTiles();
         HighlightTargettableTiles(AttackSource, range);
     }

@@ -67,6 +67,7 @@ public class MovementUI : MonoBehaviour {
 
     public void BeginMove(Unit moveTarget)
     {
+        ConfirmPanel.ShowLeft(null, "C A N C E L", this.EndMove);
         selectedUnit = moveTarget;
         BeginMove(moveTarget.posX, moveTarget.posY, moveTarget.movement);
     }
@@ -180,8 +181,11 @@ public class MovementUI : MonoBehaviour {
             }
             else
             {
-                Freeze();
-				ConfirmPanel.Show(null, "C O N F I R M", this.ConfirmMove, "C A N C E L", this.EndMove);
+                if (MatchManager.instance.map.GetTileAtMouse() != null)
+                {
+                    Freeze();
+                    ConfirmPanel.Show(null, "C O N F I R M", this.ConfirmMove, "C A N C E L", this.EndMove);
+                }
             }
         }
 

@@ -17,7 +17,7 @@ public class InfoPanelSystem : MonoBehaviour {
 	private Unit currentUnit;
 
 	void Update() {
-		updateSelectedInfo(currentUnit);
+		//updateSelectedInfo(currentUnit);
 	}
 
 	public void updateSelectedInfo(Unit unit) {
