@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 
 public class InfoPanelSystem : MonoBehaviour {
 
-	public Text name;
+    [UnityEngine.Serialization.FormerlySerializedAs("name")]
+	public Text Name;
 
 	public Text stats;
 
@@ -16,14 +16,10 @@ public class InfoPanelSystem : MonoBehaviour {
 
 	private Unit currentUnit;
 
-	void Update() {
-		//updateSelectedInfo(currentUnit);
-	}
-
 	public void updateSelectedInfo(Unit unit) {
 
 		if (!unit) {
-			name.text = "";
+			Name.text = "";
 			this.stats.text = "";
 			equippedWeapon.text = "";
 			return;
@@ -31,7 +27,7 @@ public class InfoPanelSystem : MonoBehaviour {
 
 		currentUnit = unit;
 
-		name.text = "names aren't important";
+		Name.text = "names aren't important";
 
 		
 		string stats = "AP: " + unit.CurrentActionPoints + "/" + unit.MaxActionPoints + " | H: " + unit.currentHealth + "/" + unit.maxHealth + " | A: " + unit.attack + 

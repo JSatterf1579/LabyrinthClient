@@ -5,6 +5,9 @@ using System.Linq;
 
 public class Map : MonoBehaviour {
 
+    /// <summary>
+    /// Map is a singleton
+    /// </summary>
     public static Map Current = null;
 
     /// <summary>
@@ -18,12 +21,10 @@ public class Map : MonoBehaviour {
     /// </summary>
     private Dictionary<string, GameObject> TileSet;
 
+    /// <summary>
+    /// This stores the tiles in the map
+    /// </summary>
     private Tile[,] CurrentMap;
-
-    public Tile TileUnderMouse {
-        get;
-        private set;
-    }
 
     /// <summary>
     /// width is on the x axis
@@ -33,13 +34,34 @@ public class Map : MonoBehaviour {
 
     private float xOffset, yOffset;
 
+    /// <summary>
+    /// The number of tiles wide this map is (x axis)
+    /// </summary>
     public int Width { get { return mapWidth; } }
+    /// <summary>
+    /// The number of tiles deep/tall this map is (y axis)
+    /// </summary>
     public int Depth { get { return mapDepth; } }
+    /// <summary>
+    /// The number of tiles deep/tall this map is (y axis)
+    /// </summary>
     public int Height { get { return mapDepth; } }
 
+    /// <summary>
+    /// The +x coordinate of the edge of the map.
+    /// </summary>
     public float MaxXBound { get { return -xOffset - 0.5f; } }
+    /// <summary>
+    /// The -X coordinate of the edge of the map.
+    /// </summary>
     public float MinXBound { get { return xOffset - 0.5f; } }
+    /// <summary>
+    /// The +Z coordinate of the edge of the map.
+    /// </summary>
     public float MaxZBound { get { return -yOffset - 0.5f; } }
+    /// <summary>
+    /// The -Z coordinate of the edge of the map.
+    /// </summary>
     public float MinZBound { get { return yOffset - 0.5f; } }
 
     public bool Loaded {
@@ -59,7 +81,8 @@ public class Map : MonoBehaviour {
     }
 
     /// <summary>
-    /// Initalizes a map of the given size
+    /// Initalizes a map of the given size.
+    /// This must be called prior to using the map.
     /// </summary>
     /// <param name="width"></param>
     /// <param name="height"></param>
@@ -69,7 +92,8 @@ public class Map : MonoBehaviour {
 
 
     /// <summary>
-    /// Initalizes the map with the given x and y offset overrides
+    /// Initalizes the map with the given x and y offset overrides.  
+    /// This must be called prior to using the map.
     /// </summary>
     /// <param name="width"></param>
     /// <param name="height"></param>
@@ -88,7 +112,15 @@ public class Map : MonoBehaviour {
         if (Current == this) Current = null;
     }
 
-
+    /// <summary>
+    /// Instantiates a tile into the map
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="type"></param>
+    /// <param name="rotation"></param>
+    /// <param name="isObstacle"></param>
+    /// <returns></returns>
     public Tile InstantiateTile(int x, int y, string type, int rotation, bool isObstacle) {
         if (!Loaded) {
             Debug.LogError("Tried to instantiate a tile on a Map that has not been initalized yet");
@@ -119,6 +151,9 @@ public class Map : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// destroys the map.  allows the same instance to be reused
+    /// </summary>
     public void DestroyMap() {
         if (!Loaded) return;
         foreach(Tile t in CurrentMap) {
@@ -130,7 +165,7 @@ public class Map : MonoBehaviour {
 
 
     /// <summary>
-    /// returns the game object representing the given map space
+    /// returns the tile at the given coordinates
     /// </summary>
     /// <param name="x"></param>
     /// <param name="y"></param>
@@ -143,6 +178,13 @@ public class Map : MonoBehaviour {
         return CurrentMap[x, y];
     }
 
+
+    /// <summary>
+    /// returns true if the given coordinates are within the bounds of the current map
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <returns></returns>
     public bool CheckCoordinates(int x, int y) {
         if (x < 0) {
             return false;
@@ -159,6 +201,10 @@ public class Map : MonoBehaviour {
         return true;
     }
 
+    /// <summary>
+    /// returns the current tile that is under the mouse, or null if there is none.  If there is a mapobject under the mouse, the tile that the object is on will be returned
+    /// </summary>
+    /// <returns></returns>
     public Tile GetTileAtMouse() {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
@@ -172,14 +218,21 @@ public class Map : MonoBehaviour {
         return null;
     }
 
-    internal void MoveMapObject(MapObject target, List<Tile> tiles) {
-        //Vector3 curPosition = target.transform.position;
-        //Tile lastTile = tiles[tiles.Count - 1];
-        //MoveMapObject(target, lastTile.XPos, lastTile.YPos);
-        //target.transform.position = curPosition;
+    /// <summary>
+    /// Moves the given MapObject along the specified path.  This is the function you should be calling to move an object
+    /// </summary>
+    /// <param name="target"></param>
+    /// <param name="tiles"></param>
+    public void MoveMapObject(MapObject target, List<Tile> tiles) {
         StartCoroutine(AnimateMove(target, tiles, 1, 1 / 60f));
     }
 
+    /// <summary>
+    /// Forcibly teleports a mapObject to new coordinates without any animation (and without traveling over any tiles in between)
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="newX"></param>
+    /// <param name="newY"></param>
     public void MoveMapObject(MapObject obj, int newX, int newY) {
         if (!obj.PlacedInMap) {
             Debug.LogError("Error; attempted to move an object that has not yet been placed on the map!");
@@ -200,6 +253,13 @@ public class Map : MonoBehaviour {
         putObjectAtTile(obj, dest);
     }
 
+
+    /// <summary>
+    /// Updates the transform of the object to place it physically on the given tile.  
+    /// Odds are, you should not be calling this function.  It does NOT update anything other than the MapObject's transform!
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="tile"></param>
     private void putObjectAtTile(MapObject obj, Tile tile) {
         var mount = tile.OverlayTransform;
         obj.transform.parent = mount;
@@ -227,21 +287,31 @@ public class Map : MonoBehaviour {
             Debug.LogError("Error; attempted to place a new object onto an invalid tile");
         }
     }
-
+    /// <summary>
+    /// Shorthand for GetTileAtPosition(x, y)
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <returns></returns>
     public Tile this[int x, int y] {
         get {
             return GetTileAtPosition(x, y);
         }
     }
 
+
+    /// <summary>
+    /// This struct is used to build the prefab mappings so that they can be set in the editor
+    /// </summary>
     [System.Serializable]
     public struct PrefabNamePair {
         public string Name;
         public GameObject Prefab;
     }
 
-    Tile lastMouse = null;
-
+    /// <summary>
+    /// update just contains some non-essential debug code
+    /// </summary>
     void Update() {
         var t = GetTileAtMouse();
         DebugHUD.setValue("TileUnderMouse", t as Tile);
@@ -250,23 +320,16 @@ public class Map : MonoBehaviour {
         } else {
             DebugHUD.setValue("UnitsInSightOfTile", "N/A");
         }
-        /*
-        if (t != null) {
-            DebugHUD.setValue("LOS to 0,0", LineOfSight.Test(t, GetTileAtPosition(0, 0)));
-            foreach (var tile in Vision.GetVisibleTiles(t.XPos, t.YPos, 30)) {
-                tile.HighlightColor = Color.red;
-                tile.Highlighted = true;
-            }
-        }
-        if (t != lastMouse) {
-            foreach (var tile in CurrentMap) {
-                tile.Highlighted = false;
-            }
-        }
-        lastMouse = t;
-        */
     }
 
+    /// <summary>
+    /// Co-Routine to animate the movement of a map object along a path
+    /// </summary>
+    /// <param name="t"> The MapObject to move </param>
+    /// <param name="path"> The path it should take </param>
+    /// <param name="time"> How long the animation should take (in seconds) </param>
+    /// <param name="updateDelay"> The number of seconds between updates to the position of the object (I recommend just passing in "1/60f" for 60fps)</param>
+    /// <returns></returns>
     IEnumerator AnimateMove(MapObject t, List<Tile> path, float time, float updateDelay) {
         float timePerSegment = time / path.Count;
         float curSegmentTime = 0;
