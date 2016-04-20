@@ -82,8 +82,11 @@ public abstract class MapObject : MonoBehaviour {
 	    }
 
 	    return UUID.Equals(u.UUID);
-	    //return UUID.Equals(other.UUID);
 	}
+
+    public override int GetHashCode() {
+        return UUID.GetHashCode();
+    }
 
     void OnDestroy() {
         if(MatchManager.instance != null) {

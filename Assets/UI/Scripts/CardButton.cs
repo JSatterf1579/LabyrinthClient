@@ -5,11 +5,13 @@ using System.Collections;
 public class CardButton : MonoBehaviour {
 
 	public MonsterCardData cardInfo;
-	public Text name;
+
+    [UnityEngine.Serialization.FormerlySerializedAs("name")]
+	public Text Name;
 	public Text costQty;
 
 	public void UpdateView() {
-		name.text = cardInfo.Name;
+		Name.text = cardInfo.Name;
 		costQty.text = cardInfo.cost + " | x" + cardInfo.count;
 	}
 

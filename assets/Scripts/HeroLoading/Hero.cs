@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
-using UnityEditor;
 
 public class Hero : Unit
 {
@@ -12,7 +10,7 @@ public class Hero : Unit
 
 
     public int level;
-    public new void Init(string name, string ownerID, string contrllerID, string UUID, int x, int y, int level, int health, int attack,
+    public void Init(string name, string ownerID, string contrllerID, string UUID, int x, int y, int level, int health, int attack,
         int defense, int vision, int movement, int ap, Weapon weapon, bool blocksMovement)
     {
         this.level = level;

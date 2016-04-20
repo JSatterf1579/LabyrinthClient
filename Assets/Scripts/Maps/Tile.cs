@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class Tile : MonoBehaviour
-{
+public class Tile : MonoBehaviour {
     public int YPos { get; private set; }
     public int XPos { get; private set; }
     public int Rotation { get; private set; }
@@ -10,7 +9,7 @@ public class Tile : MonoBehaviour
     public bool IsObstacle { get; private set; }
 
     public GameObject VisibleObject, SeenObject, HiddenObject;
-	public ParticleSystem SeenParticleSystem, HiddenParticleSystem;
+    public ParticleSystem SeenParticleSystem, HiddenParticleSystem;
 
 
     //private bool seenBefore = false;
@@ -30,7 +29,7 @@ public class Tile : MonoBehaviour
         get { return _UnitsInSight; }
     }
 
-	[UnityEngine.Serialization.FormerlySerializedAs("HighlihgtRenderers")]
+    [UnityEngine.Serialization.FormerlySerializedAs("HighlihgtRenderers")]
     public Renderer[] HighlightRenderers;
 
     public Color MouseOverColor;
@@ -40,7 +39,7 @@ public class Tile : MonoBehaviour
     public Transform OverlayTransform;
 
     private Dictionary<string, MapObject> mapObjects = new Dictionary<string, MapObject>();
-    
+
     public bool IsMouseOver {
         get;
         private set;
@@ -64,7 +63,7 @@ public class Tile : MonoBehaviour
 
         set {
             forceHighlighted = value;
-            if(!IsMouseOver) SetEmissionColor(value ? HighlightColor : Color.black);
+            if (!IsMouseOver) SetEmissionColor(value ? HighlightColor : Color.black);
         }
     }
 
@@ -80,7 +79,7 @@ public class Tile : MonoBehaviour
     }
 
     private void SetMapObjectEmissionColor(Color c) {
-        foreach(var obj in MapObjects) {
+        foreach (var obj in MapObjects) {
             SetEmissionColorForObject(obj, c);
         }
     }
@@ -126,7 +125,7 @@ public class Tile : MonoBehaviour
     /// </summary>
     private void calculateObstacleOnTile() {
         obstacleOnTile = false;
-        foreach(var obj in mapObjects) {
+        foreach (var obj in mapObjects) {
             if (obj.Value.BlocksMovement) {
                 obstacleOnTile = true;
                 return;
@@ -206,7 +205,7 @@ public class Tile : MonoBehaviour
     /// registers the given unit UUID as able to see this tile, updates VisionState accordingly
     /// </summary>
     /// <param name="UUID"></param>
-    public void UnitCanSeeTile(string UUID) { 
+    public void UnitCanSeeTile(string UUID) {
         //seenBefore = true; //see comment at top
         UpdateVisibility(VisionState.VISIBLE);
         UnitsInSight.Add(UUID);
@@ -217,53 +216,53 @@ public class Tile : MonoBehaviour
     /// </summary>
     /// <param name="UUID"></param>
     public void UnitCannotSeeTile(string UUID) {
-        if(UnitsInSight.Remove(UUID) && UnitsInSight.Count == 0) {
+        if (UnitsInSight.Remove(UUID) && UnitsInSight.Count == 0) {
             UpdateVisibility(VisionState.SEEN);
         }
     }
 
     private void UpdateVisibility(VisionState nvs) {
-        if(VisionState != nvs) {
+        if (VisionState != nvs) {
             VisionState = nvs;
-            if(VisibleObject) VisibleObject.SetActive(nvs == VisionState.VISIBLE);
-            if(HiddenObject) HiddenObject.SetActive(nvs == VisionState.HIDDEN);
-            if(SeenObject) SeenObject.SetActive(nvs == VisionState.SEEN);
+            if (VisibleObject) VisibleObject.SetActive(nvs == VisionState.VISIBLE);
+            if (HiddenObject) HiddenObject.SetActive(nvs == VisionState.HIDDEN);
+            if (SeenObject) SeenObject.SetActive(nvs == VisionState.SEEN);
             UpdateParticleSystems(nvs);
             //foreach (var r in GetComponentsInChildren<Renderer>()) r.enabled = (nvs != VisionState.HIDDEN);
-            foreach(var obj in mapObjects.Values) {
+            foreach (var obj in mapObjects.Values) {
                 ApplyVisibilityToObject(obj);
             }
         }
     }
 
-	private void UpdateParticleSystems(VisionState nvs) {
-		switch (nvs) {
-		case VisionState.HIDDEN:
-			if (HiddenParticleSystem && !HiddenParticleSystem.isPlaying)
-				HiddenParticleSystem.Play();
-			if (SeenParticleSystem && SeenParticleSystem.isPlaying)
-				SeenParticleSystem.Stop();
-			break;
-		case VisionState.SEEN:
+    private void UpdateParticleSystems(VisionState nvs) {
+        switch (nvs) {
+            case VisionState.HIDDEN:
+                if (HiddenParticleSystem && !HiddenParticleSystem.isPlaying)
+                    HiddenParticleSystem.Play();
+                if (SeenParticleSystem && SeenParticleSystem.isPlaying)
+                    SeenParticleSystem.Stop();
+                break;
+            case VisionState.SEEN:
                 if (HiddenParticleSystem && HiddenParticleSystem.isPlaying)
                     HiddenParticleSystem.Stop();
                 if (SeenParticleSystem && !SeenParticleSystem.isPlaying)
                     SeenParticleSystem.Play();
                 break;
-		case VisionState.VISIBLE:
+            case VisionState.VISIBLE:
                 if (HiddenParticleSystem && HiddenParticleSystem.isPlaying)
                     HiddenParticleSystem.Stop();
                 if (SeenParticleSystem && SeenParticleSystem.isPlaying)
                     SeenParticleSystem.Stop();
                 break;
-		}
-	}
+        }
+    }
 
     public void ApplyVisibilityToObject(MapObject obj) {
         var renderers = obj.GetComponentsInChildren<Renderer>();
         switch (VisionState) {
             case VisionState.VISIBLE:
-                foreach(var r in renderers) {
+                foreach (var r in renderers) {
                     r.enabled = true;
                 }
                 break;
@@ -286,7 +285,7 @@ public class Tile : MonoBehaviour
     //}
 
     public override string ToString() {
-        return "Tile: " + Type + ": (" + XPos + ", " + YPos + ") r=" + Rotation + " IsObstacle="+IsObstacle + " IsValidForMovement="+IsValidForMovement + " VisionState="+VisionState;
+        return "Tile: " + Type + ": (" + XPos + ", " + YPos + ") r=" + Rotation + " IsObstacle=" + IsObstacle + " IsValidForMovement=" + IsValidForMovement + " VisionState=" + VisionState;
     }
 
 }
