@@ -4,12 +4,17 @@ using System.Collections;
 
 public class CardButton : MonoBehaviour {
 
-	public TempCard cardInfo;
+	public MonsterCardData cardInfo;
 	public Text name;
 	public Text costQty;
 
 	public void UpdateView() {
 		name.text = cardInfo.Name;
-		costQty.text = cardInfo.Cost + " | x" + cardInfo.Quantity;
+		costQty.text = 1 + " | x" + cardInfo.count;
 	}
+
+    public bool IsMonster()
+    {
+        return true;
+    }
 }

@@ -154,6 +154,26 @@ public class JSONDecoder{
             heroes.Add(hcard);
         }
         return heroes;
+    }
+
+    public static List<MonsterCardData> DecodeMonsterCards(JSONObject serializedMonsters)
+    {
+        List<MonsterCardData> monsters = new List<MonsterCardData>();
+        foreach (JSONObject monster in serializedMonsters.list)
+        {
+            string name = monster.GetField("name").str;
+            int id = (int)monster.GetField("id").n;
+            int health = (int) monster.GetField("health").n;
+            int attack = (int) monster.GetField("attack").n;
+            int defense = (int) monster.GetField("defense").n;
+            int movement = (int)monster.GetField("movement").n;
+            int vision = (int)monster.GetField("vision").n;
+
+            Weapon wep = DecodeWeapon(monster.GetField("weapon"));
+            int count = (int)monster.GetField("quantity").n;
+            monsters.Add(new MonsterCardData(name, id, health, attack, defense, movement, vision, wep, count));
+        }
+        return monsters;
     } 
 
 

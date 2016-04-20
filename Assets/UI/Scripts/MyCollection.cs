@@ -3,11 +3,13 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using SocketIO;
 using UnityEngine.SceneManagement;
 
 public class MyCollection : MonoBehaviour {
 
-	private TempCard[] collection;
+	//private TempCard[] collection;
+    private List<MonsterCardData> collection;
 	private CardButton[] buttons;
 	private List<CardButton> displayed = new List<CardButton>();
 	public GameObject buttonPrefab;
@@ -15,13 +17,17 @@ public class MyCollection : MonoBehaviour {
 	public InputField searchBox;
 	public enum SortingOptions {CostIncreasing = 0, CostDecreasing, Alphabetical};
 	private SortingOptions curSort = SortingOptions.CostIncreasing;
+    private SocketIOComponent socket;
 
 	// Use this for initialization
 	void Start () {
 		makeCollection();
-		makeButtons();
-		OnAll(true);
 	}
+
+    void Awake()
+    {
+        socket = GameManager.instance.getSocket();
+    }
 	
 	public void OnBack() {
 		SceneManager.LoadScene("MainMenu");
@@ -39,7 +45,7 @@ public class MyCollection : MonoBehaviour {
 		if (!on) return;
 		searchBox.text = "";
 		displayed.Clear();
-		displayed = buttons.Where(o => o.cardInfo.IsMonster).ToList();
+		displayed = buttons.Where(o => o.IsMonster()).ToList();
 		RefreshDisplay(displayed);
 	}
 
@@ -47,7 +53,7 @@ public class MyCollection : MonoBehaviour {
 		if (!on) return;
 		searchBox.text = "";
 		displayed.Clear();
-		displayed = buttons.Where(o => !o.cardInfo.IsMonster).ToList();
+		displayed = buttons.Where(o => !o.IsMonster()).ToList();
 		RefreshDisplay(displayed);
 	}
 
@@ -86,7 +92,7 @@ public class MyCollection : MonoBehaviour {
 	}
 
 	private List<CardButton> CostIncreasing(List<CardButton> toSort) {
-		List<CardButton> sorted = toSort.OrderBy(o=>o.cardInfo.Cost).ToList();
+		List<CardButton> sorted = toSort.OrderBy(o=>o.cardInfo.cost).ToList();
 		return sorted;
 	}
 
@@ -135,8 +141,9 @@ public class MyCollection : MonoBehaviour {
 	}
 
 	private void makeButtons() {
-		buttons = new CardButton[collection.Length];
-		for (int i = 0; i < collection.Length; i++) {
+		buttons = new CardButton[collection.Count];
+		for (int i = 0; i < collection.Count; i++)
+        {
 			GameObject b = Instantiate(buttonPrefab);
 			buttons[i] = b.GetComponent<CardButton>();
 			buttons[i].cardInfo = collection[i];
@@ -146,11 +153,23 @@ public class MyCollection : MonoBehaviour {
 	}
 		
 	private void makeCollection() {
-		collection = new TempCard[32];
-		for (int i = 0; i < collection.Length; i++) {
-			bool ismonster = i % 3 != 0;
-			string name = ismonster ? "Monster " + (i + 1) : "Trap " + (i + 1);
-			collection[i] = new TempCard(name, (int)Random.Range(100, 500), ismonster, (int)Random.Range(1, 10));
-		}
+        socket.Emit("get_monsters", new JSONObject(), MonstersCallback);
+		//collection = new TempCard[32];
+		//for (int i = 0; i < collection.Length; i++) {
+		//	bool ismonster = i % 3 != 0;
+		//	string name = ismonster ? "Monster " + (i + 1) : "Trap " + (i + 1);
+		//	collection[i] = new TempCard(name, (int)Random.Range(100, 500), ismonster, (int)Random.Range(1, 10));
+		//}
 	}
+
+    private void MonstersCallback(JSONObject response)
+    {
+        Debug.Log(response);
+        if (response.list[0].GetField("status").n == 200)
+        {
+            collection = JSONDecoder.DecodeMonsterCards(response.list[0].GetField("monsters"));
+            makeButtons();
+            OnAll(true);
+        }
+    }
 }
