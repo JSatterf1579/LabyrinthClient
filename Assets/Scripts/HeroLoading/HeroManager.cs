@@ -32,7 +32,7 @@ public class HeroManager : MonoBehaviour
 	}
 
     public void InstantiateHero(string heroID, string ownerID, string controllerID, string UUID, int x, int y, int level, int health, int attack,
-        int defense, int vision, int movement, int ap, Weapon weapon)
+        int defense, int vision, int movement, int ap, Weapon weapon, bool blocksMovement)
     {
         Debug.Log("Instantiating a hero");
         string heroType = heroID.ToUpper().Trim();
@@ -55,7 +55,7 @@ public class HeroManager : MonoBehaviour
             }
             else
             {
-                hero.Init(heroType, ownerID, controllerID, UUID, x, y, level, health, attack, defense, vision, movement, ap, weapon);
+                hero.Init(heroType, ownerID, controllerID, UUID, x, y, level, health, attack, defense, vision, movement, ap, weapon, blocksMovement);
                 if (GameMap.Loaded)
                 {
                     GameMap.PlaceNewObjectIntoMap(hero);
@@ -63,7 +63,7 @@ public class HeroManager : MonoBehaviour
             }
         }
     }
-
+	
     public void InstantiateMonster(string monsterID, string ownerID, string controllerID, string UUID, int x, int y, int health, int attack,
         int defense, int vision, int movement, int ap, Weapon weapon)
     {
@@ -98,5 +98,5 @@ public class HeroManager : MonoBehaviour
     }
 
 
-
+	
 }

@@ -35,7 +35,7 @@ public abstract class MapObject : MonoBehaviour {
     [System.NonSerialized]
     public bool PlacedInMap = false;
 
-    public void Init(string name, string ownerID, string contrllerID, string UUID, int x, int y)
+    public void Init(string name, string ownerID, string contrllerID, string UUID, int x, int y, bool blocksMovement)
     {
         this.MOName = name;
         this.ownerID = ownerID;
@@ -43,8 +43,7 @@ public abstract class MapObject : MonoBehaviour {
         this.UUID = UUID;
         posX = x;
         posY = y;
-        //TODO remove this
-        BlocksMovement = false;
+        BlocksMovement = blocksMovement;
 
         MatchManager.instance.MapObjects.Add(UUID, this);
     }

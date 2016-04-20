@@ -22,9 +22,9 @@ public abstract class Unit : MapObject
     public Object[] abilities;
 
 
-    public void Init(string name, string ownerID, string contrllerID, string UUID, int x, int y, int health, int attack, int defense, int vision, int movement, int ap, Weapon weapon)
+    public void Init(string name, string ownerID, string contrllerID, string UUID, int x, int y, int health, int attack, int defense, int vision, int movement, int ap, Weapon weapon, bool blocksMovement)
     {
-        Init(name, ownerID, contrllerID, UUID, x, y);
+        base.Init(name, ownerID, contrllerID, UUID, x, y, blocksMovement);
         //this.level = level;
         this.maxHealth = health;
         this.currentHealth = health;

@@ -14,7 +14,7 @@ public class Trap : MapObject
     public void Init(string name, string ownerID, string contrllerID, string UUID, int x, int y, int damage, int radius,
         bool triggered, AttackPattern pattern)
     {
-        Init(name, ownerID, contrllerID, UUID, x, y);
+        Init(name, ownerID, contrllerID, UUID, x, y, false);
         this.damage = damage;
         this.radius = radius;
         this.triggered = triggered;

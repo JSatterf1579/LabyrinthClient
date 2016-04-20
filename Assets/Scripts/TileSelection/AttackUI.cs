@@ -87,7 +87,7 @@ public class AttackUI : MonoBehaviour
             traversed.Add(node.tile);
             if (node.count >= 0)
             {
-                if (node.tile.IsValidForMovement)
+                if (!node.tile.IsObstacle)
                 {
                     TargetableTiles.Add(node.tile);
                     node.tile.HighlightColor = HighlightColorTargetable;

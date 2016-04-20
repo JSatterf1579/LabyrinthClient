@@ -56,7 +56,7 @@ public class JSONDecoder{
                 int vision = (int) hero.GetField("vision").n;
                 int movement = (int) hero.GetField("movement").n;
                 int ap = (int) hero.GetField("max_action_points").n;
-
+                bool blocksMovement = hero["blocks_movement"].b;
                 string heroType = hero.GetField("hero_type").str;
 
                 Weapon weapon = null;
@@ -67,7 +67,7 @@ public class JSONDecoder{
                 }
 
                 Manager.InstantiateHero(heroType, owner, controller, UUID, xPos, yPos, level, health, attack, defense,
-                    vision, movement, ap, weapon);
+                    vision, movement, ap, weapon, blocksMovement);
             }
             else if (hero.GetField("type").str == "monster")
             {
@@ -93,12 +93,12 @@ public class JSONDecoder{
                 if (hero.GetField("weapon") != null)
                 {
                     weapon = DecodeWeapon(hero.GetField("weapon"));
-                }
-
+        }
+        
                 Manager.InstantiateMonster(monsterName, owner, controller, UUID, xPos, yPos, health, attack, defense, vision, movement, ap, weapon);
 
 
-            }
+    }
 
         }
         

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
-using System;
+using System.Linq;
 
 public class Map : MonoBehaviour {
 
@@ -173,11 +173,11 @@ public class Map : MonoBehaviour {
     }
 
     internal void MoveMapObject(MapObject target, List<Tile> tiles) {
-        Vector3 curPosition = target.transform.position;
-        Tile lastTile = tiles[tiles.Count - 1];
-        MoveMapObject(target, lastTile.XPos, lastTile.YPos);
-        target.transform.position = curPosition;
-        StartCoroutine(AnimateMove(target.transform, tiles, 1, 1 / 60f));
+        //Vector3 curPosition = target.transform.position;
+        //Tile lastTile = tiles[tiles.Count - 1];
+        //MoveMapObject(target, lastTile.XPos, lastTile.YPos);
+        //target.transform.position = curPosition;
+        StartCoroutine(AnimateMove(target, tiles, 1, 1 / 60f));
     }
 
     public void MoveMapObject(MapObject obj, int newX, int newY) {
@@ -196,6 +196,7 @@ public class Map : MonoBehaviour {
         }
         Tile src = GetTileAtPosition(obj.posX, obj.posY);
         src.RemoveMapObject(obj);
+        dest.AddMapObject(obj);
         putObjectAtTile(obj, dest);
     }
 
@@ -203,7 +204,6 @@ public class Map : MonoBehaviour {
         var mount = tile.OverlayTransform;
         obj.transform.parent = mount;
         obj.transform.localPosition = Vector3.zero;
-        tile.AddMapObject(obj);
         obj.posX = tile.XPos;
         obj.posY = tile.YPos;
     }
@@ -220,6 +220,7 @@ public class Map : MonoBehaviour {
         }
         Tile t = GetTileAtPosition(obj.posX, obj.posY);
         if (t != null) {
+            t.AddMapObject(obj);
             putObjectAtTile(obj, t);
             obj.PlacedInMap = true;
         } else {
@@ -239,28 +240,61 @@ public class Map : MonoBehaviour {
         public GameObject Prefab;
     }
 
+    Tile lastMouse = null;
+
     void Update() {
-        DebugHUD.setValue("TileUnderMouse", GetTileAtMouse() as Tile);
+        var t = GetTileAtMouse();
+        DebugHUD.setValue("TileUnderMouse", t as Tile);
+        if (t != null) {
+            DebugHUD.setValue("UnitsInSightOfTile", "{" + string.Join(", ", t.UnitsInSight.ToArray()) + "}");
+        } else {
+            DebugHUD.setValue("UnitsInSightOfTile", "N/A");
+        }
+        /*
+        if (t != null) {
+            DebugHUD.setValue("LOS to 0,0", LineOfSight.Test(t, GetTileAtPosition(0, 0)));
+            foreach (var tile in Vision.GetVisibleTiles(t.XPos, t.YPos, 30)) {
+                tile.HighlightColor = Color.red;
+                tile.Highlighted = true;
+            }
+        }
+        if (t != lastMouse) {
+            foreach (var tile in CurrentMap) {
+                tile.Highlighted = false;
+            }
+        }
+        lastMouse = t;
+        */
     }
 
-    IEnumerator AnimateMove(Transform t, List<Tile> path, float time, float updateDelay) {
+    IEnumerator AnimateMove(MapObject t, List<Tile> path, float time, float updateDelay) {
         float timePerSegment = time / path.Count;
         float curSegmentTime = 0;
         int pathIndex = 0;
-        Vector3 oldPos = t.position;
+        Vector3 oldPos = t.transform.position;
         Vector3 targetPos;
+        Tile tile = t.Tile;
+        bool pastMidpoint = false;
         while(pathIndex < path.Count) {
             targetPos = path[pathIndex].OverlayTransform.position;
             float delta = curSegmentTime / timePerSegment;
-            t.position = Vector3.Lerp(oldPos, targetPos, delta);
+            t.transform.position = Vector3.Lerp(oldPos, targetPos, delta);
             curSegmentTime += updateDelay;
+            if(!pastMidpoint && delta >= 0.5f) {
+                Tile newTile = path[pathIndex];
+                tile.RemoveMapObject(t);
+                newTile.AddMapObject(t);
+                tile = newTile;
+                pastMidpoint = true;
+            }
             if(curSegmentTime >= timePerSegment) {
                 curSegmentTime -= timePerSegment;
                 pathIndex++;
                 oldPos = targetPos;
+                pastMidpoint = false;
             }
             yield return new WaitForSeconds(updateDelay);
         }
-        t.localPosition = Vector3.zero;
+        putObjectAtTile(t, tile);
     }
 }

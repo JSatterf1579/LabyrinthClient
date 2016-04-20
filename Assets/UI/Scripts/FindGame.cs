@@ -114,7 +114,7 @@ public class FindGame : MonoBehaviour
             HeroConfirmButton.SetActive(false);
         }
 
-    }
+        }
 
     private void calcRect(ref RectTransform rt, int i)
     {

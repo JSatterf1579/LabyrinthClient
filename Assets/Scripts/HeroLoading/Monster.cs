@@ -10,6 +10,6 @@ public class Monster : Unit
         int defense, int vision, int movement, int ap, Weapon weapon, string name)
     {
         
-        base.Init(name, ownerID, contrllerID, UUID, x, y, health, attack, defense, vision, movement, ap, weapon);
+        base.Init(name, ownerID, contrllerID, UUID, x, y, health, attack, defense, vision, movement, ap, weapon, true);
     }
 }

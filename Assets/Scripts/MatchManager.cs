@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SocketIO;
 using System;
+using System.Linq;
 using UnityEngine.SceneManagement;
 
 public class MatchManager : MonoBehaviour
@@ -58,6 +59,14 @@ public class MatchManager : MonoBehaviour
     private Dictionary<int, JSONObject> queuedPackets;
 
     public Dictionary<string, MapObject> MapObjects = new Dictionary<string, MapObject>();
+
+    public IEnumerable<MapObject> AlliedMapObjects {
+        get {
+            return MapObjects.Where(x =>
+                x.Value.controllerID == GameManager.instance.Username
+            ).Select(x => x.Value);
+        }
+    }
 
     private Dictionary<string, List<Action<JSONChangeInfo>>> JSONChangeActions = new Dictionary<string, List<Action<JSONChangeInfo>>>();
 
@@ -176,7 +185,7 @@ public class MatchManager : MonoBehaviour
             if (action.GetField("winner").str.Equals(GameManager.instance.Username))
             {
                 Debug.Log("You Win!");
-            }
+    }
         }
     }
 
@@ -245,7 +254,7 @@ public class MatchManager : MonoBehaviour
     }
 
     private void FireJSONChangeEvent(JSONChangeInfo change) {
-        Debug.Log("Fireing JSON change event for element " + change.Path);
+        Debug.Log("Firing JSON change event for element " + change.Path);
         if (JSONChangeActions.ContainsKey(change.Path)) {
             var list = JSONChangeActions[change.Path];
             foreach (var action in list) {
@@ -255,11 +264,11 @@ public class MatchManager : MonoBehaviour
     }
 
     private void ApplyDiff(JSONObject diff) {
-        Debug.Log("applying diff...");
+        //Debug.Log("applying diff...");
         ApplyRemovals(diff["removed"], MatchState, "");
         ApplyAdditions(diff["added"], MatchState, "");
         ApplyChanges(diff["changed"], MatchState, "");
-        Debug.Log("New match state: " + MatchState);
+        //Debug.Log("New match state: " + MatchState);
     }
 
     private void ApplyRemovals(JSONObject diff, JSONObject master, string path) {
