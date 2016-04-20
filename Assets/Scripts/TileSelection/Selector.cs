@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using System.Linq;
 using UnityEngine.EventSystems;
@@ -41,7 +42,11 @@ public class Selector : MonoBehaviour
 	            {
 	                if (tempUnit != null)
 	                {
-	                    SelectedUnit = (Unit) tempUnit;
+	                    if (SelectedUnit != null)
+	                    {
+	                        DeselectUnit(SelectedUnit);
+	                    }
+	                    SelectUnit((Unit) tempUnit);
 //	                    if (SelectedUnit.controllerID == GameManager.instance.Username)
 //	                    {
 ////                            StartAttackButton.gameObject.SetActive(true);
@@ -83,7 +88,7 @@ public class Selector : MonoBehaviour
     {
 
         CurrentState = CursorState.Selecting;
-        SelectedUnit = null;
+        DeselectUnit(SelectedUnit);
 
 //        StartAttackButton.gameObject.SetActive(false);
     }
@@ -108,12 +113,26 @@ public class Selector : MonoBehaviour
     public void EndAttack()
     {
         CurrentState = CursorState.Selecting;
-        SelectedUnit = null;
+        DeselectUnit(SelectedUnit);
     }
 
 	public void SelectUnit(Unit unit) {
-		if (SelectedUnit) DeselectUnit(SelectedUnit);
-		SelectedUnit = unit;
+	    if (SelectedUnit)
+	    {
+	        if (CurrentState == CursorState.Attacking)
+	        {
+	            Attacker.EndAttack();
+	        }
+            else if (CurrentState == CursorState.Movement)
+            {
+                Mover.EndMove();
+            }
+            else
+            {
+                DeselectUnit(SelectedUnit);
+            }
+	    }
+	    SelectedUnit = unit;
 		Tile tile = unit.Tile;
 		tile.HighlightColor = Color.green;
 		tile.Highlighted = true;
@@ -123,7 +142,7 @@ public class Selector : MonoBehaviour
 		if (unit) {
 			Tile tile = unit.Tile;
 			tile.Highlighted = false;
-			Mover.EndMove();
+			//Mover.EndMove();
 		}
 		SelectedUnit = null;
 	}
