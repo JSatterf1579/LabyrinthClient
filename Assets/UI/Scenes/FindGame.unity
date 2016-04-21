@@ -1076,9 +1076,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 3
-  m_Text: But we don't want to give too much away! See for yourself the unrivaled
-    beauty and competition that defines the Rod Pacers Anniversary Edition experience.
-    So grab some friends, a controller or two, and Pace On!
+  m_Text: Rig the labryinth with monsters to stop the heroes from completeing the
+    objective!
 --- !u!222 &545717178
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1568,8 +1567,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 3
-  m_Text: Glide across the ground, racing against your friends (local multiplayer
-    only) in the fastest, most dangerous game ever created!
+  m_Text: Play as a team of four heroes to fight your way through the labryinth and
+    complete the objective!
 --- !u!222 &884872603
 CanvasRenderer:
   m_ObjectHideFlags: 0
