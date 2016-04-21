@@ -1,15 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Objective : MonoBehaviour {
+public class Objective : MapObject {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    public void Init(string id, int x, int y, bool blocksMovement)
+    {
+        Init("Artifact", null, null, id, x, y, blocksMovement);
+    }
 }

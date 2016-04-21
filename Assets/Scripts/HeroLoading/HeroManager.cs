@@ -7,6 +7,7 @@ public class HeroManager : MonoBehaviour
 
     public Map.PrefabNamePair[] heroPrefabs;
     public Map.PrefabNamePair[] monsterPrefab;
+    public GameObject ObjectivePrefab;
     private Dictionary<string, GameObject> monsterPrefabDict; 
     private Dictionary<string, GameObject> heroPrefabDict; 
 
@@ -92,6 +93,31 @@ public class HeroManager : MonoBehaviour
                 if (GameMap.Loaded)
                 {
                     GameMap.PlaceNewObjectIntoMap(monster);
+                }
+            }
+        }
+    }
+
+    public void InstantiateObjective(string id, int x, int y, bool blocksMovement)
+    {
+        //We only have 1 objective so we can shortcut a bit here
+        Debug.Log("Creating objective");
+        if (ObjectivePrefab != null)
+        {
+            GameObject instance = Instantiate(ObjectivePrefab, Vector3.zero, Quaternion.identity) as GameObject;
+            instance.name = "Capture Objective";
+            var objective = instance.GetComponent<Objective>();
+            if (objective == null)
+            {
+                Debug.LogError("Prebab did not come with objective");
+                Destroy(instance);
+            }
+            else
+            {
+                objective.Init(id, x, y, blocksMovement);
+                if (GameMap.Loaded)
+                {
+                    GameMap.PlaceNewObjectIntoMap(objective);
                 }
             }
         }

@@ -148,6 +148,7 @@ public class FindGame : MonoBehaviour
             {
                 heroes.Add(uuid);
             }
+            data.AddField("game_mode", "obj");
             socket.Emit("queue_up_heroes", data, HeroesQueue);
         }
     }

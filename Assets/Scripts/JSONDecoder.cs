@@ -45,17 +45,17 @@ public class JSONDecoder{
                 string UUID = hero.GetField("id").str;
                 string owner = hero.GetField("owner_id").str;
                 string controller = hero.GetField("controller_id").str;
-                int xPos = (int) hero.GetField("x").n;
-                int yPos = (int) hero.GetField("y").n;
+                int xPos = (int)hero.GetField("x").n;
+                int yPos = (int)hero.GetField("y").n;
 
 
-                int level = (int) hero.GetField("level").n;
-                int health = (int) hero.GetField("max_health").n;
-                int attack = (int) hero.GetField("attack").n;
-                int defense = (int) hero.GetField("defense").n;
-                int vision = (int) hero.GetField("vision").n;
-                int movement = (int) hero.GetField("movement").n;
-                int ap = (int) hero.GetField("max_action_points").n;
+                int level = (int)hero.GetField("level").n;
+                int health = (int)hero.GetField("max_health").n;
+                int attack = (int)hero.GetField("attack").n;
+                int defense = (int)hero.GetField("defense").n;
+                int vision = (int)hero.GetField("vision").n;
+                int movement = (int)hero.GetField("movement").n;
+                int ap = (int)hero.GetField("max_action_points").n;
                 bool blocksMovement = hero["blocks_movement"].b;
                 string heroType = hero.GetField("hero_type").str;
 
@@ -93,15 +93,21 @@ public class JSONDecoder{
                 if (hero.GetField("weapon") != null)
                 {
                     weapon = DecodeWeapon(hero.GetField("weapon"));
-        }
-        
+                }
+
                 Manager.InstantiateMonster(monsterName, owner, controller, UUID, xPos, yPos, health, attack, defense, vision, movement, ap, weapon);
-
-
-    }
+            }
+            else if (hero.GetField("type").str == "objective")
+            {
+                string UUID = hero.GetField("id").str;
+                int xPos = (int) hero.GetField("x").n;
+                int yPos = (int) hero.GetField("y").n;
+                bool blocksMovement = hero.GetField("blocks_movement").b;
+                Manager.InstantiateObjective(UUID, xPos, yPos, blocksMovement);
+            }
 
         }
-        
+
     }
 
     public static Weapon DecodeWeapon(JSONObject serializedWeapon)

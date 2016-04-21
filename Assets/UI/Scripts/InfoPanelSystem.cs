@@ -14,9 +14,9 @@ public class InfoPanelSystem : MonoBehaviour {
 
 	public InfoDismissButton dismissButton;
 
-	private Unit currentUnit;
+	private MapObject currentUnit;
 
-	public void updateSelectedInfo(Unit unit) {
+	public void updateSelectedInfo(MapObject unit) {
 
 		if (!unit) {
 			Name.text = "";
@@ -27,15 +27,25 @@ public class InfoPanelSystem : MonoBehaviour {
 
 		currentUnit = unit;
 
-		Name.text = "names aren't important";
+		Name.text = unit.MOName;
 
-		
-		string stats = "AP: " + unit.CurrentActionPoints + "/" + unit.MaxActionPoints + " | H: " + unit.currentHealth + "/" + unit.maxHealth + " | A: " + unit.attack + 
-			" | D: " + unit.defense + " | V: " + unit.vision + " | M: " + unit.movement;
+	    if (unit is Unit)
+	    {
+	        Unit u = (Unit) unit;
+	        string stats = "AP: " + u.CurrentActionPoints + "/" + u.MaxActionPoints + " | H: " + u.currentHealth +
+	                       "/" + u.maxHealth + " | A: " + u.attack +
+	                       " | D: " + u.defense + " | V: " + u.vision + " | M: " + u.movement;
 
-		this.stats.text = stats;
+	        this.stats.text = stats;
 
-//		equippedWeapon.text = "it might have a weapon. ask us tomorrow."
-		equippedWeapon.text = "Weapon: " + unit.weapon.Name;
+            
+	        equippedWeapon.text = "Weapon: " + u.weapon.Name;
+	    }
+        else if (unit is Objective)
+        {
+            string stats = "This is the objecive. \r\n Capture it to win";
+            this.stats.text = stats;
+            equippedWeapon.text = "";
+        }
 	}
 }

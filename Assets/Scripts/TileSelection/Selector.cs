@@ -46,13 +46,10 @@ public class Selector : MonoBehaviour
 	                    {
 	                        DeselectUnit(SelectedUnit);
 	                    }
-	                    SelectUnit((Unit) tempUnit);
-//	                    if (SelectedUnit.controllerID == GameManager.instance.Username)
-//	                    {
-////                            StartAttackButton.gameObject.SetActive(true);
-//                            CurrentState = CursorState.Movement;
-//	                        Mover.BeginMove(SelectedUnit);
-//	                    }
+	                    if (tempUnit is Unit)
+	                    {
+	                        SelectUnit((Unit) tempUnit);
+	                    }
                         
 	                }
 	                else
