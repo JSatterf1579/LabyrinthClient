@@ -15,6 +15,11 @@ public class FindGame : MonoBehaviour
     public GameObject CardPrefab;
     public GameObject HeroConfirmButton;
 
+	public Vector2 cardPosition = new Vector2(55, -70);
+	public Vector2 widthHeight = new Vector2(90, 120);
+	public Vector2 margin = new Vector2(10, 10);
+	public int numColumns = 6;
+
     public Color selectedColor;
     public Color unselectedColor;
 
@@ -118,11 +123,11 @@ public class FindGame : MonoBehaviour
 
     private void calcRect(ref RectTransform rt, int i)
     {
-        rt.anchorMin = new Vector2(0.04f + 0.24f * i, 0.56f);
-        rt.anchorMax = new Vector2(rt.anchorMin.x + 0.2f, rt.anchorMin.y + 0.4f);
-        rt.offsetMin = Vector2.zero;
-        rt.offsetMax = Vector2.zero;
-        rt.localScale = Vector3.one;
+		rt.anchorMin = new Vector2(0, 1);
+		rt.anchorMax = new Vector2(0, 1);
+		Vector2 temp = cardPosition + new Vector2((widthHeight.x + margin.x) * (i % numColumns), -(widthHeight.y + margin.y) * (int)(i / numColumns));
+		rt.localPosition = new Vector3(temp.x, temp.y, 0);
+		rt.sizeDelta = widthHeight;
     }
 
     public void OnArchitect()
