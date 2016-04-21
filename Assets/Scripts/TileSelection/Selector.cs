@@ -10,15 +10,21 @@ public class Selector : MonoBehaviour
 
 	public Unit SelectedUnit { get; private set; }
 
+    public InGame UI;
+
     public CursorState CurrentState { get; set; }
 
     public MovementUI Mover;
 
     public AttackUI Attacker;
 
+    public CaptureUI Capture;
+
     public Map GameMap;
 
-    public Button StartAttackButton;
+    public GameObject MoveButton;
+    public GameObject AttackButton;
+    public GameObject CaptureButton;
 
     private float timer = 0;
     private static float debounce = 1.0f;
@@ -50,6 +56,10 @@ public class Selector : MonoBehaviour
 	                    {
 	                        SelectUnit((Unit) tempUnit);
 	                    }
+	                    else
+	                    {
+	                        UI.selectedUnit = tempUnit;
+	                    }
                         
 	                }
 	                else
@@ -76,6 +86,14 @@ public class Selector : MonoBehaviour
                 Attacker.EndAttack();
                 SelectedUnit = movingUnit;
             }
+
+            if (CurrentState == CursorState.Capturing)
+            {
+                Unit attacker = SelectedUnit;
+                Capture.EndCapture();
+                SelectedUnit = attacker;
+            }
+
             CurrentState = CursorState.Movement;
             Mover.BeginMove(SelectedUnit);
         }
@@ -100,6 +118,13 @@ public class Selector : MonoBehaviour
                 Mover.EndMove();
                 SelectedUnit = attacker;
             }
+
+            if (CurrentState == CursorState.Capturing)
+            {
+                Unit attacker = SelectedUnit;
+                Capture.EndCapture();
+                SelectedUnit = attacker;
+            }
             CurrentState = CursorState.Attacking;
 //            StartAttackButton.gameObject.SetActive(false);
             Attacker.BeginAttack(SelectedUnit);
@@ -108,6 +133,36 @@ public class Selector : MonoBehaviour
     }
 
     public void EndAttack()
+    {
+        CurrentState = CursorState.Selecting;
+        DeselectUnit(SelectedUnit);
+    }
+
+    public void StartCapture()
+    {
+        if (SelectedUnit != null && SelectedUnit.controllerID == GameManager.instance.Username && SelectedUnit.controllerID == MatchManager.instance.HeroPlayer &&
+            SelectedUnit.CurrentActionPoints > 0 && CurrentState != CursorState.Attacking)
+        {
+            if (CurrentState == CursorState.Movement)
+            {
+                Unit capturer = SelectedUnit;
+                Mover.EndMove();
+                SelectedUnit = capturer;
+            }
+
+            if (CurrentState == CursorState.Attacking)
+            {
+                Unit capturer = SelectedUnit;
+                Attacker.EndAttack();
+                SelectedUnit = capturer;
+            }
+
+            CurrentState = CursorState.Capturing;
+            Capture.BeginCapture(SelectedUnit);
+        }
+    }
+
+    public void EndCapture()
     {
         CurrentState = CursorState.Selecting;
         DeselectUnit(SelectedUnit);
@@ -124,6 +179,10 @@ public class Selector : MonoBehaviour
             {
                 Mover.EndMove();
             }
+            else if (CurrentState == CursorState.Capturing)
+            {
+                Capture.EndCapture();
+            }
             else
             {
                 DeselectUnit(SelectedUnit);
@@ -133,6 +192,16 @@ public class Selector : MonoBehaviour
 		Tile tile = unit.Tile;
 		tile.HighlightColor = Color.green;
 		tile.Highlighted = true;
+	    UI.selectedUnit = SelectedUnit;
+	    if (unit.CurrentActionPoints > 0 && unit.controllerID == GameManager.instance.Username)
+	    {
+	        MoveButton.SetActive(true);
+            AttackButton.SetActive(true);
+	        if (Capture.IsObjectiveCaptureable(SelectedUnit) && SelectedUnit.controllerID == MatchManager.instance.HeroPlayer)
+	        {
+	            CaptureButton.SetActive(true);
+	        }
+	    }
 	}
 
 	public void DeselectUnit(Unit unit) {
@@ -142,7 +211,11 @@ public class Selector : MonoBehaviour
 			//Mover.EndMove();
 		}
 		SelectedUnit = null;
-	}
+	    UI.selectedUnit = null;
+        MoveButton.SetActive(false);
+        AttackButton.SetActive(false);
+        CaptureButton.SetActive(false);
+    }
 
     private MapObject SelectUnitUnderCursor()
     {
@@ -161,6 +234,7 @@ public class Selector : MonoBehaviour
         Movement,
         Attacking,
         Selecting,
+        Capturing,
         Selected
     };
 }

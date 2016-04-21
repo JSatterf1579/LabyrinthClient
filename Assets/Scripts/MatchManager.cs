@@ -95,8 +95,10 @@ public class MatchManager : MonoBehaviour
             queuedPackets = new Dictionary<int, JSONObject>();
 	        socket = GameManager.instance.getSocket();
 	        MatchIdentifier = MatchState.GetField("match_identifier").str;
+	        HeroPlayer = MatchState.GetField("players").GetField("heroes").str;
+            ArchitectPlayer = MatchState.GetField("players").GetField("architect").str;
 
-			UpdatePlayers(MatchState);
+            UpdatePlayers(MatchState);
 
 			string gstate = MatchState["game_state"].str;
 			if ("hero_turn".Equals(gstate)) {

@@ -12,7 +12,7 @@ public class InGame : MonoBehaviour {
 	public GameObject jumpButtonPrefab;
 
 	[System.NonSerialized]
-	public Unit selectedUnit;
+	public MapObject selectedUnit;
 
 	public Selector selector;
 
@@ -44,7 +44,7 @@ public class InGame : MonoBehaviour {
 			updateGameInfo();
 //			if (selector.SelectedUnit) {
 //				if (!selector.SelectedUnit.Equals(selectedUnit) || infoPanel.dismissButton.Dismissed) {
-					selectedUnit = selector.SelectedUnit;
+					//selectedUnit = selector.SelectedUnit;
 					infoPanel.updateSelectedInfo(selectedUnit);
 //					infoPanel.gameObject.SetActive(true);
 //					infoPanel.dismissButton.Dismissed = false;

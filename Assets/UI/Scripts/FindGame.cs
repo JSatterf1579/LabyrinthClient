@@ -163,6 +163,19 @@ public class FindGame : MonoBehaviour
             queued = true;
             QueueingModal.SetActive(true);
         }
+        else if (response.list[0].GetField("status").n == 422)
+        {
+            socket.Emit("leave_match", new JSONObject(), AutoLeaveMatch);
+        }
+    }
+
+    private void AutoLeaveMatch(JSONObject response)
+    {
+        Debug.Log(response.list[0]);
+        if (response.list[0].GetField("status").n == 200)
+        {
+            OnConfirmHero();
+        }
     }
 
     public void OnCancelHero()

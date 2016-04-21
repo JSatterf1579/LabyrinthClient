@@ -29,7 +29,7 @@ public class AttackUI : MonoBehaviour
     private bool Frozen = false;
 
     private float Timer = 0;
-    private static float Debounce = 0.5f;
+    private static float Debounce = 0.05f;
 
     public void Freeze()
     {

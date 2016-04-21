@@ -37,4 +37,12 @@ public class JSONEncoder {
         return data;
     }
 
+    public static JSONObject EncodeCapture(Unit unit, Objective objective)
+    {
+        JSONObject data = new JSONObject();
+        data.AddField("character_id", unit.UUID);
+        data.AddField("objective_id", objective.UUID);
+        return data;
+    }
+
 }

@@ -43,7 +43,7 @@ public class InfoPanelSystem : MonoBehaviour {
 	    }
         else if (unit is Objective)
         {
-            string stats = "This is the objecive. \r\n Capture it to win";
+            string stats = "This is the objecive. Capture it to win";
             this.stats.text = stats;
             equippedWeapon.text = "";
         }
