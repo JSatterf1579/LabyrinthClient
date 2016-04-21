@@ -104,7 +104,9 @@ public class MovementUI : MonoBehaviour {
         while(q.Count > 0) {
             BFSNode node = q.Dequeue();
             seen.Add(node.tile);
-            if(node.count >= 0 && node.tile.IsValidForMovement) {
+            //I'm not sure how I feel about the dark magic of using > with enum values...
+            //In this case, the last condition says "the tile's visiblility state is more visible than the 'hidden' state"
+            if(node.count >= 0 && node.tile.IsValidForMovement && node.tile.VisionState > VisionState.HIDDEN) {
                 validTiles.Add(node.tile);
                 node.tile.HighlightColor = highlightColor;
                 node.tile.Highlighted = true;

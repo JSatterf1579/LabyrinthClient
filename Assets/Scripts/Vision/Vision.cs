@@ -5,19 +5,19 @@ public static class Vision {
     
     public static IEnumerable<Tile> GetVisibleTiles(int xPos, int yPos, int vision) {
         HashSet<Tile> tiles = new HashSet<Tile>();
-        PerformActionOnVisibleTilesInRange(xPos, yPos, vision, t => tiles.Add(t));
+        ForEachVisibleTileInRange(xPos, yPos, vision, t => tiles.Add(t));
         return tiles;
     }
 
-    public static void PerformActionOnVisibleTilesInRange(int xPos, int yPos, int vision, System.Action<Tile> func) {
-        PerformActionOnTilesInRange(xPos, yPos, vision, t => {
+    public static void ForEachVisibleTileInRange(int xPos, int yPos, int vision, System.Action<Tile> func) {
+        ForEachTileInRange(xPos, yPos, vision, t => {
             if (LineOfSight.Test(xPos, yPos, t.XPos, t.YPos)) {
                 func(t);
             }
         });
     }
 
-    public static void PerformActionOnTilesInRange(int xPos, int yPos, int vision, System.Action<Tile> func) {
+    public static void ForEachTileInRange(int xPos, int yPos, int vision, System.Action<Tile> func) {
         var map = Map.Current;
         var visionSq = vision * vision;
         for (int xd = -vision; xd < xPos + vision; xd++) {
