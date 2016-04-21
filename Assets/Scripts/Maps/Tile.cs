@@ -10,7 +10,6 @@ public class Tile : MonoBehaviour {
     public string Type { get; private set; }
     public bool IsObstacle { get; private set; }
 
-
     private bool _Locked = false;
     public bool Locked {
         get {
@@ -136,6 +135,10 @@ public class Tile : MonoBehaviour {
         this.IsObstacle = isObstacle;
         UpdateVisibility(VisionState.HIDDEN);
         RefreshEmission();
+
+        if (Map.Current.DisableVision) {
+            UpdateVisibility(VisionState.VISIBLE);
+        }
     }
 
     void OnMouseEnter() {
@@ -199,13 +202,15 @@ public class Tile : MonoBehaviour {
         if (IsMouseOver) {
             SetEmissionColorForObject(obj, MouseOverColor);
         }
-        ApplyVisibilityToObject(obj);
-        if (obj.controllerID == GameManager.instance.Username && obj is Unit) {
-            Debug.Log("Performing vision check on " + obj.UUID);
-            var unit = (Unit)obj;
-            Vision.ForEachVisibleTileInRange(XPos, YPos, unit.vision, t => {
-                t.UnitCanSeeTile(unit.UUID);
-            });
+        if (!Map.Current.DisableVision) {
+            ApplyVisibilityToObject(obj);
+            if (obj.controllerID == GameManager.instance.Username && obj is Unit) {
+                Debug.Log("Performing vision check on " + obj.UUID);
+                var unit = (Unit)obj;
+                Vision.ForEachVisibleTileInRange(XPos, YPos, unit.vision, t => {
+                    t.UnitCanSeeTile(unit.UUID);
+                });
+            }
         }
     }
 
@@ -224,11 +229,13 @@ public class Tile : MonoBehaviour {
         try {
             SetEmissionColorForObject(obj, Color.black);
 
-            if (obj.controllerID == GameManager.instance.Username && obj is Unit) {
-                var unit = (Unit)obj;
-                Vision.ForEachTileInRange(XPos, YPos, unit.vision, t => {
-                    t.UnitCannotSeeTile(unit.UUID);
-                });
+            if (!Map.Current.DisableVision) {
+                if (obj.controllerID == GameManager.instance.Username && obj is Unit) {
+                    var unit = (Unit)obj;
+                    Vision.ForEachTileInRange(XPos, YPos, unit.vision, t => {
+                        t.UnitCannotSeeTile(unit.UUID);
+                    });
+                }
             }
         } catch (System.NullReferenceException e) {
             Debug.LogException(e);
@@ -237,6 +244,10 @@ public class Tile : MonoBehaviour {
 
     public bool ContainsMapObject(string UUID) {
         return mapObjects.ContainsKey(UUID);
+    }
+
+    public bool IsEmpty {
+        get { return mapObjects.Count == 0; }
     }
 
     public bool ContainsMapObject(MapObject obj) {

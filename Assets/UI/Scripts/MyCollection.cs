@@ -1,17 +1,16 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using SocketIO;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
 public class MyCollection : MonoBehaviour {
 
-	
-    private List<MonsterCardData> collection;
+    public List<MonsterCardData> collection { get; private set; }
 //	private TempCard[] collection;
-	private CardButton[] buttons;
+	public CardButton[] buttons { get; private set; }
 	private List<CardButton> displayed = new List<CardButton>();
 	public GameObject buttonPrefab;
 	public GameObject contentParent;
@@ -23,6 +22,12 @@ public class MyCollection : MonoBehaviour {
 	public int numColumns;
 	private SortingOptions curSort = SortingOptions.CostIncreasing;
     private SocketIOComponent socket;
+
+    [System.Serializable]
+    public class ButtonPressedEvent : UnityEvent<CardButton> { }
+    public ButtonPressedEvent OnButtonPressed;
+
+    public bool DisplayRemaining = false;
 
 	// Use this for initialization
 	void Start () {
@@ -142,10 +147,11 @@ public class MyCollection : MonoBehaviour {
 	private void calcRect(ref RectTransform rt, int i) {
 //		rt.anchorMin = new Vector2(0.04f + 0.24f * (i % 4), 0.56f - 0.44f * (int)(i / 4));
 //		rt.anchorMax = new Vector2(rt.anchorMin.x + 0.2f, rt.anchorMin.y + 0.4f);
-//		rt.anchorMin = new Vector2(0, 1);
-//		rt.anchorMax = new Vector2(0, 1);
+		//rt.anchorMin = new Vector2(0, 1);
+		//rt.anchorMax = new Vector2(0, 1);
 		Vector2 temp = cardPosition + new Vector2((widthHeight.x + margin.x) * (i % numColumns), -(widthHeight.y + margin.y) * (int)(i / numColumns));
 		rt.localPosition = new Vector3(temp.x, temp.y, 0);
+        //rt.localScale = new Vector3(widthHeight.x, widthHeight.y, 0);
 //		Debug.Log(rt.offsetMin)
 //		rt.offsetMax = rt.offsetMin + widthHeight;
 //		rt.localScale = Vector3.one;
@@ -156,12 +162,22 @@ public class MyCollection : MonoBehaviour {
 		for (int i = 0; i < collection.Count; i++)
         {
 			GameObject b = Instantiate(buttonPrefab);
-			buttons[i] = b.GetComponent<CardButton>();
-			buttons[i].cardInfo = collection[i];
-			buttons[i].UpdateView();
-			buttons[i].gameObject.SetActive(false);
+            var card = b.GetComponent<CardButton>();
+            buttons[i] = card;
+			card.cardInfo = collection[i];
+			card.UpdateView();
+			card.gameObject.SetActive(false);
+            card.button.onClick.AddListener(new UnityAction(() => { ButtonPressedCallback(card); }));
+            card.DisplayRemaining = DisplayRemaining;
+            card.Remaining = card.cardInfo.count;
 		}
 	}
+
+    private void ButtonPressedCallback(CardButton data) {
+        if(OnButtonPressed != null) {
+            OnButtonPressed.Invoke(data);
+        }
+    }
 		
 	private void makeCollection() {
         socket.Emit("get_monsters", new JSONObject(), MonstersCallback);

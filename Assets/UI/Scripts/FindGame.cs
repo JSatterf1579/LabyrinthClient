@@ -127,7 +127,15 @@ public class FindGame : MonoBehaviour
 
     public void OnArchitect()
     {
-        throw new NotImplementedException();
+        JSONObject data = new JSONObject();
+        data["map_id"] = new JSONObject(1);
+        socket.Emit("map", data, (x) => {
+            Debug.Log(x);
+            Debug.Log(x.type);
+            MonsterPlacementManager.InitialMap = x[0]["map"];
+            SceneManager.LoadScene("ArchSetupScene");
+        });
+
     }
 
     public void OnDequeue()

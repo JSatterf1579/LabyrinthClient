@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class DebugConsole : MonoBehaviour {
     public Text OutputText;
+    private string outputString;
     public InputField InputText;
     public Canvas ConsoleCanvas;
     public Scrollbar scrollbar;
@@ -79,8 +80,13 @@ public class DebugConsole : MonoBehaviour {
     }
 
     public void Print(string msg) {
-        OutputText.text += msg;
+        outputString += msg;
         if (scrollbar) scrollbar.value = 0f;
+        if(outputString.Length > 16000) {
+            outputString = outputString.Substring(outputString.Length - 16000);
+        }
+        OutputText.text = outputString;
+
     }
 
     public void Print(string msg, string color) {
