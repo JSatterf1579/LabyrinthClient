@@ -9,7 +9,8 @@ public class InGame : MonoBehaviour {
 
 	public Button ConfirmAction;
 
-	public GameObject jumpButtonPrefab;
+	public GameObject jumpButtonYouPrefab;
+	public GameObject jumpButtonThemPrefab;
 
 	[System.NonSerialized]
 	public Unit selectedUnit;
@@ -17,6 +18,7 @@ public class InGame : MonoBehaviour {
 	public Selector selector;
 
 	public InfoPanelSystem infoPanel;
+	public GameObject actionButtons;
 
 	private MatchManager match;
 
@@ -44,8 +46,9 @@ public class InGame : MonoBehaviour {
 			updateGameInfo();
 //			if (selector.SelectedUnit) {
 //				if (!selector.SelectedUnit.Equals(selectedUnit) || infoPanel.dismissButton.Dismissed) {
-					selectedUnit = selector.SelectedUnit;
-					infoPanel.updateSelectedInfo(selectedUnit);
+			selectedUnit = selector.SelectedUnit;
+			actionButtons.SetActive(selectedUnit != null && selectedUnit.ownerID == GameManager.instance.Username);
+			infoPanel.updateSelectedInfo(selectedUnit);
 //					infoPanel.gameObject.SetActive(true);
 //					infoPanel.dismissButton.Dismissed = false;
 //					alreadyDismissed = false;
@@ -65,13 +68,24 @@ public class InGame : MonoBehaviour {
 
 	public void displayJumpButtons() {
 		int count = 0;
-		foreach (Hero hero in match.MapObjects.Values.Where(x => x is Hero && x.ownerID == GameManager.instance.Username)) {
-			GameObject jumpButton = Instantiate(jumpButtonPrefab);
+		int monsterCount = 0;
+		foreach (Unit unit in match.MapObjects.Values.Where(x => x is Unit)) {
+			GameObject jumpButton;
+			if (unit.ownerID == GameManager.instance.Username) {
+				jumpButton = Instantiate(jumpButtonYouPrefab);
+			} else {
+				bool isVisible = unit.Tile.VisionState.Equals(VisionState.VISIBLE);
+				if (isVisible) {
+					jumpButton = Instantiate(jumpButtonThemPrefab);
+				} else {
+					continue;
+				}
+			}
 			jumpButton.transform.SetParent(canvas.transform);
 			JumpButton jb = jumpButton.GetComponent<JumpButton>();
 			RectTransform rt = (RectTransform)jumpButton.transform;
 			jb.selector = selector;
-			jb.unit = hero;
+			jb.unit = unit;
 			float height = jb.anchorMax.y - jb.anchorMin.y;
 			rt.anchorMin = new Vector2(jb.anchorMin.x, jb.anchorMin.y - (height + jb.offset) * count);
 			rt.anchorMax = new Vector2(jb.anchorMax.x, jb.anchorMax.y - (height + jb.offset) * count);
@@ -79,7 +93,7 @@ public class InGame : MonoBehaviour {
 			rt.offsetMax = Vector2.zero;
 			count++;
 			string title;
-			switch(hero.MOName.ToLower()) {
+			switch(unit.MOName.ToLower()) {
 			case "warrior":
 				title = "W";
 				break;
@@ -99,7 +113,8 @@ public class InGame : MonoBehaviour {
 				title = "R/M";
 				break;
 			default:
-				title = "H";
+				monsterCount++;
+				title = "M" + monsterCount;
 				break;
 			}
 			jb.title.text = title;

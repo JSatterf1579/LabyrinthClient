@@ -206,10 +206,11 @@ public class MatchManager : MonoBehaviour
 
     public void RequestEndMatch()
     {
-        if (dialogBox != null)
-        {
+//        if (dialogBox != null)
+//        {
+		Debug.Log("hello from leave game");
             dialogBox.Show("Are you sure you want to leave the game?", "Yes", this.RequestLeave, "No", dialogBox.Hide);
-        }
+//        }
     }
     
     public void RequestLeave()
