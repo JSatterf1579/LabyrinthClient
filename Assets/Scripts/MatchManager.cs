@@ -186,8 +186,12 @@ public class MatchManager : MonoBehaviour
         {
             if (action.GetField("winner").str.Equals(GameManager.instance.Username))
             {
-                Debug.Log("You Win!");
-    }
+                dialogBox.Show("Congratulations! You Win! \n Leave Game?", "No", dialogBox.Hide, "Yes", this.RequestLeave);
+            }
+            else
+            {
+                dialogBox.Show("You have been defeated. \n Leave Game?", "No", dialogBox.Hide, "Yes", this.RequestLeave);
+            }
         }
     }
 
