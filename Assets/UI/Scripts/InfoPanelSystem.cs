@@ -37,14 +37,14 @@ public class InfoPanelSystem : MonoBehaviour {
 	                       " | D: " + u.defense + " | V: " + u.vision + " | M: " + u.movement;
 
 	        this.stats.text = stats;
+		
 
-            
 	        equippedWeapon.text = "Weapon: " + u.weapon.Name;
 	    }
         else if (unit is Objective)
         {
             string stats = "This is the objecive. Capture it to win";
-            this.stats.text = stats;
+		this.stats.text = stats;
             equippedWeapon.text = "";
         }
 	}

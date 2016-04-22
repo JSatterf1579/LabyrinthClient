@@ -9,7 +9,8 @@ public class InGame : MonoBehaviour {
 
 	public Button ConfirmAction;
 
-	public GameObject jumpButtonPrefab;
+	public GameObject jumpButtonYouPrefab;
+	public GameObject jumpButtonThemPrefab;
 
 	[System.NonSerialized]
 	public MapObject selectedUnit;
@@ -17,6 +18,7 @@ public class InGame : MonoBehaviour {
 	public Selector selector;
 
 	public InfoPanelSystem infoPanel;
+	public GameObject actionButtons;
 
 	private MatchManager match;
 
@@ -33,7 +35,7 @@ public class InGame : MonoBehaviour {
 		alreadyDismissed = false;
 		tempSelectedUnit = selector.SelectedUnit;
 		canvas = gameObject.GetComponent<Canvas>();
-		if (match) displayHeroes();
+		if (match) displayJumpButtons();
 	}
 	
 	// Update is called once per frame
@@ -59,28 +61,64 @@ public class InGame : MonoBehaviour {
 //			}
 		} else {
 			match = MatchManager.instance;
-			displayHeroes();
+			displayJumpButtons();
 		}
 	}
 
-	public void displayHeroes() {
+	public void displayJumpButtons() {
 		int count = 0;
-		foreach (Hero hero in match.MapObjects.Values.Where(x => x is Hero && x.ownerID == GameManager.instance.Username)) {
-			GameObject jumpButton = Instantiate(jumpButtonPrefab);
+		int monsterCount = 0;
+		foreach (Unit unit in match.MapObjects.Values.Where(x => x is Unit)) {
+			GameObject jumpButton;
+			if (unit.ownerID == GameManager.instance.Username) {
+				jumpButton = Instantiate(jumpButtonYouPrefab);
+			} else {
+				bool isVisible = unit.Tile.VisionState.Equals(VisionState.VISIBLE);
+				if (isVisible) {
+					jumpButton = Instantiate(jumpButtonThemPrefab);
+				} else {
+					continue;
+				}
+			}
 			jumpButton.transform.SetParent(canvas.transform);
 			JumpButton jb = jumpButton.GetComponent<JumpButton>();
 			RectTransform rt = (RectTransform)jumpButton.transform;
 			jb.selector = selector;
-			jb.unit = hero;
+			jb.unit = unit;
 			float height = jb.anchorMax.y - jb.anchorMin.y;
 			rt.anchorMin = new Vector2(jb.anchorMin.x, jb.anchorMin.y - (height + jb.offset) * count);
 			rt.anchorMax = new Vector2(jb.anchorMax.x, jb.anchorMax.y - (height + jb.offset) * count);
 			rt.offsetMin = Vector2.zero;
 			rt.offsetMax = Vector2.zero;
 			count++;
-			//TODO: Joe
-			//jb.title.text = hero.herotype;
+			string title;
+			switch(unit.MOName.ToLower()) {
+			case "warrior":
+				title = "W";
+				break;
+			case "mage":
+				title = "M";
+				break;
+			case "rogue":
+				title = "R";
+				break;
+			case "warriorrogue":
+				title = "W/R";
+				break;
+			case "warriormage":
+				title = "W/M";
+				break;
+			case "roguemage":
+				title = "R/M";
+				break;
+			default:
+				monsterCount++;
+				title = "M" + monsterCount;
+				break;
+			}
+			jb.title.text = title;
 		}
+
 	}
 
 	private void updateGameInfo() {
