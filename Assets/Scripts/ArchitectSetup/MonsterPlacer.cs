@@ -7,6 +7,7 @@ public class MonsterPlacer : MonoBehaviour {
     public MonsterSelector selector;
     public HeroManager manager;
     public MonsterEditor editor;
+    public MonsterPlacementManager placementManager;
 
 	// Use this for initialization
 	void Start () {
@@ -17,19 +18,22 @@ public class MonsterPlacer : MonoBehaviour {
 	void Update () {
         if (Input.GetMouseButtonDown(0) && EventSystem.current.currentSelectedGameObject == null) {
             var tile = Map.Current.GetTileAtMouse();
-            if (tile != null && !tile.IsObstacle) {
+            if (placementManager.IsValidTileForPlacement(tile)) {
                 if (tile.IsEmpty) {
                     var card = selector.GetCurrentlySelectedMonster();
                     if (card != null) {
                         var monsterInfo = card.cardInfo;
                         if (monsterInfo != null) {
-                            manager.InstantiateMonster(monsterInfo.Name, GameManager.instance.Username, GameManager.instance.Username, System.Guid.NewGuid().ToString(), tile.XPos, tile.YPos, monsterInfo.health, monsterInfo.attack, monsterInfo.defense, monsterInfo.vision, monsterInfo.movement, 0, monsterInfo.weapon);
+                            var monster = manager.InstantiateMonster(monsterInfo.Name, GameManager.instance.Username, GameManager.instance.Username, System.Guid.NewGuid().ToString(), tile.XPos, tile.YPos, monsterInfo.health, monsterInfo.attack, monsterInfo.defense, monsterInfo.vision, monsterInfo.movement, 0, monsterInfo.weapon);
                             selector.MonsterPlaced(card);
                         }
                     }
                 } else {
-                    Monster m = (Monster)tile.MapObjects.First();
-                    editor.EditMonster(m);
+                    var obj = tile.MapObjects.First();
+                    if (obj is Monster) {
+                        Monster m = (Monster)obj;
+                        editor.EditMonster(m);
+                    }
                 }
             } else {
                 editor.EditMonster(null);

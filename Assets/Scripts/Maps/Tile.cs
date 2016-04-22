@@ -9,6 +9,9 @@ public class Tile : MonoBehaviour {
     public int Rotation { get; private set; }
     public string Type { get; private set; }
     public bool IsObstacle { get; private set; }
+    public bool BlocksVision { get; private set; }
+
+    public bool HighlightOverrideLock { get; set; }
 
     private bool _Locked = false;
     public bool Locked {
@@ -19,7 +22,12 @@ public class Tile : MonoBehaviour {
         set {
             _Locked = value;
             if (value) {
-                SetEmissionColor(Color.black);
+                IsMouseOver = false;
+                if (HighlightOverrideLock && Highlighted) {
+                    SetEmissionColor(HighlightColor);
+                } else {
+                    SetEmissionColor(Color.black);
+                }
             } else {
                 RefreshEmission();
             }
@@ -83,7 +91,7 @@ public class Tile : MonoBehaviour {
 
         set {
             forceHighlighted = value;
-            if (Locked) return;
+            if (Locked && !HighlightOverrideLock) return;
             RefreshEmission();
         }
     }
@@ -127,12 +135,13 @@ public class Tile : MonoBehaviour {
         SetEmissionColor(Color.black);
     }
 
-    public void Init(int xPos, int yPos, int rotation, string type, bool isObstacle) {
+    public void Init(int xPos, int yPos, int rotation, string type, bool isObstacle, bool blocksVision) {
         this.XPos = xPos;
         this.YPos = yPos;
         this.Rotation = rotation;
         this.Type = type;
         this.IsObstacle = isObstacle;
+        this.BlocksVision = blocksVision;
         UpdateVisibility(VisionState.HIDDEN);
         RefreshEmission();
 

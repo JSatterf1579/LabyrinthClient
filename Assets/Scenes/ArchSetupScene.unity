@@ -442,6 +442,7 @@ MonoBehaviour:
   selector: {fileID: 1228900779}
   manager: {fileID: 878191715}
   editor: {fileID: 1525393645}
+  placementManager: {fileID: 2040986097}
 --- !u!4 &101877342
 Transform:
   m_ObjectHideFlags: 0
@@ -741,7 +742,6 @@ Canvas:
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
-  m_SortingBucketNormalizedSize: 0
   m_SortingLayerID: 0
   m_SortingOrder: 1
   m_TargetDisplay: 0
@@ -805,7 +805,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: MyCollection+ButtonPressedEvent, Assembly-CSharp, Version=1.0.2.40916,
+    m_TypeName: MyCollection+ButtonPressedEvent, Assembly-CSharp, Version=1.0.2.31800,
       Culture=neutral, PublicKeyToken=null
   DisplayRemaining: 1
 --- !u!1 &177063252
@@ -2539,8 +2539,9 @@ MonoBehaviour:
   - Name: roguemage
     Prefab: {fileID: 150882, guid: e1afabe9167c44232b8841ae517492b4, type: 2}
   monsterPrefab:
-  - Name: Goblin
+  - Name: Skeleton Warrior
     Prefab: {fileID: 187752, guid: 00611a129d3bf1247b2b45d4e7e0e1af, type: 2}
+  ObjectivePrefab: {fileID: 143020, guid: 43cdbc2f566c30b40b10d25714109f7c, type: 2}
   GameMap: {fileID: 177063253}
 --- !u!4 &878191716
 Transform:
@@ -3060,10 +3061,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c04d307acc2e5d24ea744f66817f181f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UI: {fileID: 0}
   Mover: {fileID: 1568433441}
   Attacker: {fileID: 729663276}
+  Capture: {fileID: 0}
   GameMap: {fileID: 177063253}
-  StartAttackButton: {fileID: 483254383}
+  MoveButton: {fileID: 0}
+  AttackButton: {fileID: 0}
+  CaptureButton: {fileID: 0}
 --- !u!4 &1158007037
 Transform:
   m_ObjectHideFlags: 0
@@ -3291,7 +3296,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 378025454}
   m_Direction: 2
   m_Value: 1
-  m_Size: 1
+  m_Size: 0.9998993
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3888,7 +3893,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   infoPanelSystem: {fileID: 1786905510}
   selector: {fileID: 1228900779}
+  manager: {fileID: 0}
   DeleteButton: {fileID: 483254383}
+  EditHighlightColor: {r: 0, g: 1, b: 0, a: 1}
 --- !u!4 &1525393646
 Transform:
   m_ObjectHideFlags: 0
@@ -4162,8 +4169,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: RequestEndMatch
+      - m_Target: {fileID: 2040986097}
+        m_MethodName: CancelButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4980,8 +4987,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: EndTurn
+      - m_Target: {fileID: 2040986097}
+        m_MethodName: ConfirmAndQueue
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5393,6 +5400,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98429aa6086df864ab8e297beff543ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Manager: {fileID: 878191715}
+  ValidTileHightlightColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!4 &2040986098
 Transform:
   m_ObjectHideFlags: 0

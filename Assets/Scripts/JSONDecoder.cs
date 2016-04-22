@@ -5,8 +5,16 @@ using System.Collections.Generic;
 
 public class JSONDecoder{
 
-    public static void DecodeMap(JSONObject serializedMap, Map mapRenderer)
+    public static void DecodeMap(JSONObject serializedMap, Map mapRenderer) {
+        List<Tile> heroes, monsters, objectives;
+        DecodeMap(serializedMap, mapRenderer, out heroes, out monsters, out objectives);
+    }
+
+    public static void DecodeMap(JSONObject serializedMap, Map mapRenderer, out List<Tile> heroSpawns, out List<Tile> monsterSpawns, out List<Tile> objectiveSpawns)
     {
+        heroSpawns = new List<Tile>();
+        monsterSpawns = new List<Tile>();
+        objectiveSpawns = new List<Tile>();
         if (mapRenderer == null)
         {
             Debug.LogError("No MapRenderer was given, cannot decode map!");
@@ -27,7 +35,19 @@ public class JSONDecoder{
             int rotation = (int)serializedTiles.list[i].GetField("rotation").n;
             string type = serializedTiles.list[i].GetField("terrain").str;
             bool isObstacle = serializedTiles.list[i].GetField("is_obstacle").b;
-            mapRenderer.InstantiateTile(tileX, tileY, type, rotation, isObstacle);
+            bool blocksVision = serializedTiles.list[i]["is_vision_obstacle"].b;
+            Tile tile = mapRenderer.InstantiateTile(tileX, tileY, type, rotation, isObstacle, blocksVision);
+            if(tile != null) {
+                if (serializedTiles.list[i]["is_hero_spawn_tile"].b) {
+                    heroSpawns.Add(tile);
+                }
+                if(serializedTiles.list[i]["is_architect_spawn_tile"].b) {
+                    monsterSpawns.Add(tile);
+                }
+                if(serializedTiles.list[i]["is_objective_spawn_tile"].b) {
+                    objectiveSpawns.Add(tile);
+                }
+            }
         }
     }
 

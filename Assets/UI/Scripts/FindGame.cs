@@ -49,6 +49,10 @@ public class FindGame : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
 	}
 
+    void OnDestroy() {
+        socket.Off("match_found", OnMatch);
+    }
+
     public void OnHeroes()
     {
         JSONObject data = new JSONObject();
@@ -139,6 +143,11 @@ public class FindGame : MonoBehaviour
             Debug.Log(x);
             Debug.Log(x.type);
             MonsterPlacementManager.InitialMap = x[0]["map"];
+            JSONObject root = new JSONObject();
+            root.AddField("map_id", 1);
+            root.AddField("queue_with_passbot", true);
+            root.AddField("game_mode", "DM");
+            MonsterPlacementManager.JSONRoot = root;
             SceneManager.LoadScene("ArchSetupScene");
         });
 
@@ -204,10 +213,10 @@ public class FindGame : MonoBehaviour
 
     
 
-    private void OnMatch(SocketIOEvent e)
+    public static void OnMatch(SocketIOEvent e)
     {
         Debug.Log(e.data);
-        socket.Off("match_found", OnMatch);
+        GameManager.instance.getSocket().Off("match_found", OnMatch);
         SceneManager.LoadScene("MatchScene");
         MatchManager.SetInitialMatchState(e.data);
         GameManager.instance.InMatch = true;
