@@ -85,14 +85,14 @@ public class Selector : MonoBehaviour
             {
                 Unit movingUnit = SelectedUnit;
                 Attacker.EndAttack();
-                SelectedUnit = movingUnit;
+                SelectUnit(movingUnit);
             }
 
             if (CurrentState == CursorState.Capturing)
             {
                 Unit attacker = SelectedUnit;
                 Capture.EndCapture();
-                SelectedUnit = attacker;
+                SelectUnit(attacker);
             }
 
             CurrentState = CursorState.Movement;
@@ -117,14 +117,14 @@ public class Selector : MonoBehaviour
             {
                 Unit attacker = SelectedUnit;
                 Mover.EndMove();
-                SelectedUnit = attacker;
+                SelectUnit(attacker);
             }
 
             if (CurrentState == CursorState.Capturing)
             {
                 Unit attacker = SelectedUnit;
                 Capture.EndCapture();
-                SelectedUnit = attacker;
+                SelectUnit(attacker);
             }
             CurrentState = CursorState.Attacking;
 //            StartAttackButton.gameObject.SetActive(false);
@@ -148,14 +148,14 @@ public class Selector : MonoBehaviour
             {
                 Unit capturer = SelectedUnit;
                 Mover.EndMove();
-                SelectedUnit = capturer;
+                SelectUnit(capturer);
             }
 
             if (CurrentState == CursorState.Attacking)
             {
                 Unit capturer = SelectedUnit;
                 Attacker.EndAttack();
-                SelectedUnit = capturer;
+                SelectUnit(capturer);
             }
 
             CurrentState = CursorState.Capturing;
