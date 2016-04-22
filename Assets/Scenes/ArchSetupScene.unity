@@ -761,7 +761,7 @@ RectTransform:
   - {fileID: 1864613948}
   - {fileID: 1786905507}
   - {fileID: 367322884}
-  - {fileID: 1004652626}
+  - {fileID: 562930553}
   - {fileID: 1728242710}
   - {fileID: 376223327}
   - {fileID: 123481994}
@@ -805,7 +805,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_TypeName: MyCollection+ButtonPressedEvent, Assembly-CSharp, Version=1.0.2.31800,
+    m_TypeName: MyCollection+ButtonPressedEvent, Assembly-CSharp, Version=1.0.2.34477,
       Culture=neutral, PublicKeyToken=null
   DisplayRemaining: 1
 --- !u!1 &177063252
@@ -850,7 +850,7 @@ MonoBehaviour:
   - Name: rock
     Prefab: {fileID: 126678, guid: 70ec49ba8d237bb45a032dddfb6c7079, type: 2}
   - Name: empty
-    Prefab: {fileID: 0}
+    Prefab: {fileID: 194768, guid: 19a5d17226997924a814c439712ca495, type: 2}
 --- !u!4 &177063254
 Transform:
   m_ObjectHideFlags: 0
@@ -1652,6 +1652,10 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c9ee75055f64e4df8b2b67237894e819, type: 2}
   m_IsPrefabParent: 0
+--- !u!4 &562930553 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 562930552}
 --- !u!1 &574270830
 GameObject:
   m_ObjectHideFlags: 0
@@ -2881,11 +2885,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 991018283}
---- !u!224 &1004652626 stripped
-RectTransform:
-  m_PrefabParentObject: {fileID: 22406750, guid: c9ee75055f64e4df8b2b67237894e819,
-    type: 2}
-  m_PrefabInternal: {fileID: 562930552}
 --- !u!1 &1021383301
 GameObject:
   m_ObjectHideFlags: 0
@@ -3296,7 +3295,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 378025454}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.9998993
+  m_Size: 0.9998992
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

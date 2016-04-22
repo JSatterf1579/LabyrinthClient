@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine.SceneManagement;
 using System.Collections;
 
@@ -32,10 +34,15 @@ public class MainMenu : MonoBehaviour {
 	}
 
 	public void OnQuit() {
-		if (Application.isEditor) {
+#if UNITY_EDITOR
+        if (Application.isEditor) {
 			EditorApplication.isPlaying = false;
-		} else {
-			Application.Quit();
 		}
-	}
+        else {
+#endif
+            Application.Quit();
+#if UNITY_EDITOR
+        }
+#endif
+    }
 }

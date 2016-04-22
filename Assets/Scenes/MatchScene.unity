@@ -615,7 +615,7 @@ MonoBehaviour:
   - Name: rock
     Prefab: {fileID: 126678, guid: 70ec49ba8d237bb45a032dddfb6c7079, type: 2}
   - Name: empty
-    Prefab: {fileID: 0}
+    Prefab: {fileID: 194768, guid: 19a5d17226997924a814c439712ca495, type: 2}
 --- !u!4 &177063254
 Transform:
   m_ObjectHideFlags: 0
