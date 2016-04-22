@@ -110,6 +110,11 @@ public class FindGame : MonoBehaviour
         }
     }
 
+    public void ChangeMap(int ddID)
+    {
+        maxHeroes = mapSelectPosition[ddID].HeroCapacity;
+    }
+
     private void SetupHeroCards(JSONObject heroes)
     {
         List<HeroCardData> cards = JSONDecoder.DecodeHeroCards(heroes);
@@ -159,8 +164,11 @@ public class FindGame : MonoBehaviour
             }
             else
             {
-                selectedHeroes.Add(hero.UUID, hero);
-                clickedCard.GetComponent<Image>().color = selectedColor;
+                if (selectedHeroes.Count < maxHeroes)
+                {
+                    selectedHeroes.Add(hero.UUID, hero);
+                    clickedCard.GetComponent<Image>().color = selectedColor;
+                }
             }
         }
         if (selectedHeroes.Count >= minimumSelectedHeroes)
