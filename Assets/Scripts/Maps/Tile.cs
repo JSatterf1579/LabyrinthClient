@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
+
+[RequireComponent(typeof(Collider))]
 public class Tile : MonoBehaviour {
     public int YPos { get; private set; }
     public int XPos { get; private set; }
@@ -8,15 +10,33 @@ public class Tile : MonoBehaviour {
     public string Type { get; private set; }
     public bool IsObstacle { get; private set; }
 
+    private bool _Locked = false;
+    public bool Locked {
+        get {
+            return _Locked;
+        }
+
+        set {
+            _Locked = value;
+            if (value) {
+                SetEmissionColor(Color.black);
+            } else {
+                RefreshEmission();
+            }
+        }
+    }
+
     public GameObject VisibleObject, SeenObject, HiddenObject;
     public ParticleSystem SeenParticleSystem, HiddenParticleSystem;
 
+    private Collider colider;
 
     //private bool seenBefore = false;
     //originally I was keeping track of whether or not this tile had been seen before, so that when
     //the last unit is deregistered from UnitsInSight, I know wether to set Vision state to SEEN or HIDDEN,
     //but then I realized that the only way to deregister a unit is if a unit was once registered, meaning that
     //seenBefore would always be true when I need to check it, so I removed it.  
+    //if you're still confused, draw the state machine on paper, it'll be clear then
 
     public VisionState VisionState { get; private set; }
 
@@ -29,7 +49,7 @@ public class Tile : MonoBehaviour {
         get { return _UnitsInSight; }
     }
 
-    [UnityEngine.Serialization.FormerlySerializedAs("HighlihgtRenderers")]
+    [UnityEngine.Serialization.FormerlySerializedAs("HighlihgtRenderers")]//whoops, misspellings!
     public Renderer[] HighlightRenderers;
 
     public Color MouseOverColor;
@@ -63,7 +83,18 @@ public class Tile : MonoBehaviour {
 
         set {
             forceHighlighted = value;
-            if (!IsMouseOver) SetEmissionColor(value ? HighlightColor : Color.black);
+            if (Locked) return;
+            RefreshEmission();
+        }
+    }
+
+    private void RefreshEmission() {
+        if (IsMouseOver) {
+            SetEmissionColor(MouseOverColor);
+        } else if (forceHighlighted) {
+            SetEmissionColor(HighlightColor);
+        } else {
+            SetEmissionColor(Color.black);
         }
     }
 
@@ -93,7 +124,6 @@ public class Tile : MonoBehaviour {
     void Awake() {
         // this is required to enable the OnMouseEnter() and OnMouseExit() events
         if (!Physics.queriesHitTriggers) Physics.queriesHitTriggers = true;
-        //HighlihgtRenderers = GetComponentsInChildren<Renderer>();
         SetEmissionColor(Color.black);
     }
 
@@ -104,19 +134,27 @@ public class Tile : MonoBehaviour {
         this.Type = type;
         this.IsObstacle = isObstacle;
         UpdateVisibility(VisionState.HIDDEN);
+        RefreshEmission();
+
+        if (Map.Current.DisableVision) {
+            UpdateVisibility(VisionState.VISIBLE);
+        }
     }
 
     void OnMouseEnter() {
-        SetEmissionColor(MouseOverColor);
         IsMouseOver = true;
+        if(!Locked)
+            SetEmissionColor(MouseOverColor);
     }
 
     void OnMouseExit() {
         IsMouseOver = false;
-        if (Highlighted) {
-            SetEmissionColor(HighlightColor);
-        } else {
-            SetEmissionColor(Color.black);
+        if (!Locked) {
+            if (Highlighted) {
+                SetEmissionColor(HighlightColor);
+            } else {
+                SetEmissionColor(Color.black);
+            }
         }
     }
 
@@ -146,8 +184,17 @@ public class Tile : MonoBehaviour {
     }
 
     public void AddMapObject(MapObject obj) {
-        mapObjects.Add(obj.UUID, obj);
+        AddMapObjectLogically(obj);
+        AddMapObjectVisibly(obj);
+    }
+
+    public void AddMapObjectLogically(MapObject obj) {
         obj.OnMouseEvent += ExternalMouseEvent;
+        mapObjects.Add(obj.UUID, obj);
+        calculateObstacleOnTile();
+    }
+
+    public void AddMapObjectVisibly(MapObject obj) {
         if (obj.IsMouseOver && !this.IsMouseOver) OnMouseEnter();
         if (Highlighted) {
             SetEmissionColorForObject(obj, HighlightColor);
@@ -155,40 +202,52 @@ public class Tile : MonoBehaviour {
         if (IsMouseOver) {
             SetEmissionColorForObject(obj, MouseOverColor);
         }
-        calculateObstacleOnTile();
-        ApplyVisibilityToObject(obj);
-        if (obj.controllerID == GameManager.instance.Username && obj is Unit) {
-            Debug.Log("Performing vision check on " + obj.UUID);
-            var unit = (Unit)obj;
-            Vision.PerformActionOnVisibleTilesInRange(XPos, YPos, unit.vision, t => {
-                t.UnitCanSeeTile(unit.UUID);
-            });
+        if (!Map.Current.DisableVision) {
+            ApplyVisibilityToObject(obj);
+            if (obj.controllerID == GameManager.instance.Username && obj is Unit) {
+                Debug.Log("Performing vision check on " + obj.UUID);
+                var unit = (Unit)obj;
+                Vision.ForEachVisibleTileInRange(XPos, YPos, unit.vision, t => {
+                    t.UnitCanSeeTile(unit.UUID);
+                });
+            }
         }
     }
 
     public void RemoveMapObject(MapObject obj) {
+        RemoveMapObjectLogically(obj);
+        RemoveMapObjectVisibly(obj);
+    }
+
+    public void RemoveMapObjectLogically(MapObject obj) {
+        mapObjects.Remove(obj.UUID);
+        calculateObstacleOnTile();
+        obj.OnMouseEvent -= ExternalMouseEvent;
+    }
+
+    public void RemoveMapObjectVisibly(MapObject obj) {
         try {
-            obj.OnMouseEvent -= ExternalMouseEvent;
             SetEmissionColorForObject(obj, Color.black);
-            mapObjects.Remove(obj.UUID);
-            calculateObstacleOnTile();
-            if (obj.controllerID == GameManager.instance.Username && obj is Unit) {
-                var unit = (Unit)obj;
-                Vision.PerformActionOnTilesInRange(XPos, YPos, unit.vision, t => {
-                    t.UnitCannotSeeTile(unit.UUID);
-                });
+
+            if (!Map.Current.DisableVision) {
+                if (obj.controllerID == GameManager.instance.Username && obj is Unit) {
+                    var unit = (Unit)obj;
+                    Vision.ForEachTileInRange(XPos, YPos, unit.vision, t => {
+                        t.UnitCannotSeeTile(unit.UUID);
+                    });
+                }
             }
         } catch (System.NullReferenceException e) {
             Debug.LogException(e);
         }
     }
 
-    public void RemoveMapObject(string UUID) {
-        RemoveMapObject(mapObjects[UUID]);
-    }
-
     public bool ContainsMapObject(string UUID) {
         return mapObjects.ContainsKey(UUID);
+    }
+
+    public bool IsEmpty {
+        get { return mapObjects.Count == 0; }
     }
 
     public bool ContainsMapObject(MapObject obj) {
@@ -206,7 +265,6 @@ public class Tile : MonoBehaviour {
     /// </summary>
     /// <param name="UUID"></param>
     public void UnitCanSeeTile(string UUID) {
-        //seenBefore = true; //see comment at top
         UpdateVisibility(VisionState.VISIBLE);
         UnitsInSight.Add(UUID);
     }
@@ -274,15 +332,6 @@ public class Tile : MonoBehaviour {
                 break;
         }
     }
-
-
-    //public VisionState newVisionState;
-    //void Update() {
-    //    if(VisionState != newVisionState) {
-    //        Debug.Log("Visibility changed!");
-    //        UpdateVisibility(newVisionState);
-    //    }
-    //}
 
     public override string ToString() {
         return "Tile: " + Type + ": (" + XPos + ", " + YPos + ") r=" + Rotation + " IsObstacle=" + IsObstacle + " IsValidForMovement=" + IsValidForMovement + " VisionState=" + VisionState;

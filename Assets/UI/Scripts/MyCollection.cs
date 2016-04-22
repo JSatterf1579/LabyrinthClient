@@ -1,23 +1,33 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using SocketIO;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
 public class MyCollection : MonoBehaviour {
 
-	
-    private List<MonsterCardData> collection;
-	private CardButton[] buttons;
+    public List<MonsterCardData> collection { get; private set; }
+//	private TempCard[] collection;
+	public CardButton[] buttons { get; private set; }
 	private List<CardButton> displayed = new List<CardButton>();
 	public GameObject buttonPrefab;
 	public GameObject contentParent;
 	public InputField searchBox;
 	public enum SortingOptions {CostIncreasing = 0, CostDecreasing, Alphabetical};
+	public Vector2 cardPosition = new Vector2(55, -70);
+	public Vector2 widthHeight = new Vector2(90, 120);
+	public Vector2 margin = new Vector2(10, 10);
+	public int numColumns;
 	private SortingOptions curSort = SortingOptions.CostIncreasing;
     private SocketIOComponent socket;
+
+    [System.Serializable]
+    public class ButtonPressedEvent : UnityEvent<CardButton> { }
+    public ButtonPressedEvent OnButtonPressed;
+
+    public bool DisplayRemaining = false;
 
 	// Use this for initialization
 	void Start () {
@@ -116,6 +126,8 @@ public class MyCollection : MonoBehaviour {
 
 	private void addListToDisplay(List<CardButton> list) {
 		int count = 0;
+		RectTransform rt = (RectTransform)contentParent.transform;
+		rt.sizeDelta = new Vector2(0, (widthHeight.y + margin.y) * Mathf.CeilToInt(list.Count / numColumns));
 		foreach (CardButton b in list) {
 			addContentToDisplay(b.gameObject, count);
 			count++;
@@ -133,11 +145,16 @@ public class MyCollection : MonoBehaviour {
 	}
 
 	private void calcRect(ref RectTransform rt, int i) {
-		rt.anchorMin = new Vector2(0.04f + 0.24f * (i % 4), 0.56f - 0.44f * (int)(i / 4));
-		rt.anchorMax = new Vector2(rt.anchorMin.x + 0.2f, rt.anchorMin.y + 0.4f);
-		rt.offsetMin = Vector2.zero;
-		rt.offsetMax = Vector2.zero;
-		rt.localScale = Vector3.one;
+//		rt.anchorMin = new Vector2(0.04f + 0.24f * (i % 4), 0.56f - 0.44f * (int)(i / 4));
+//		rt.anchorMax = new Vector2(rt.anchorMin.x + 0.2f, rt.anchorMin.y + 0.4f);
+		//rt.anchorMin = new Vector2(0, 1);
+		//rt.anchorMax = new Vector2(0, 1);
+		Vector2 temp = cardPosition + new Vector2((widthHeight.x + margin.x) * (i % numColumns), -(widthHeight.y + margin.y) * (int)(i / numColumns));
+		rt.localPosition = new Vector3(temp.x, temp.y, 0);
+        //rt.localScale = new Vector3(widthHeight.x, widthHeight.y, 0);
+//		Debug.Log(rt.offsetMin)
+//		rt.offsetMax = rt.offsetMin + widthHeight;
+//		rt.localScale = Vector3.one;
 	}
 
 	private void makeButtons() {
@@ -145,21 +162,33 @@ public class MyCollection : MonoBehaviour {
 		for (int i = 0; i < collection.Count; i++)
         {
 			GameObject b = Instantiate(buttonPrefab);
-			buttons[i] = b.GetComponent<CardButton>();
-			buttons[i].cardInfo = collection[i];
-			buttons[i].UpdateView();
-			buttons[i].gameObject.SetActive(false);
+            var card = b.GetComponent<CardButton>();
+            buttons[i] = card;
+			card.cardInfo = collection[i];
+			card.UpdateView();
+			card.gameObject.SetActive(false);
+            card.button.onClick.AddListener(new UnityAction(() => { ButtonPressedCallback(card); }));
+            card.DisplayRemaining = DisplayRemaining;
+            card.Remaining = card.cardInfo.count;
 		}
 	}
+
+    private void ButtonPressedCallback(CardButton data) {
+        if(OnButtonPressed != null) {
+            OnButtonPressed.Invoke(data);
+        }
+    }
 		
 	private void makeCollection() {
         socket.Emit("get_monsters", new JSONObject(), MonstersCallback);
-		//collection = new TempCard[32];
-		//for (int i = 0; i < collection.Length; i++) {
-		//	bool ismonster = i % 3 != 0;
-		//	string name = ismonster ? "Monster " + (i + 1) : "Trap " + (i + 1);
-		//	collection[i] = new TempCard(name, (int)Random.Range(100, 500), ismonster, (int)Random.Range(1, 10));
-		//}
+//		collection = new TempCard[32];
+//		for (int i = 0; i < collection.Length; i++) {
+//			bool ismonster = i % 3 != 0;
+//			string name = ismonster ? "Monster " + (i + 1) : "Trap " + (i + 1);
+//			collection[i] = new TempCard(name, (int)Random.Range(100, 500), ismonster, (int)Random.Range(1, 10));
+//		}
+//		makeButtons();
+//		OnAll(true);
 	}
 
     private void MonstersCallback(JSONObject response)

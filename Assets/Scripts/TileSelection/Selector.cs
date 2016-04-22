@@ -1,6 +1,7 @@
+
 ﻿using System;
-using UnityEngine;
 using System.Collections;
+﻿using UnityEngine;
 using System.Linq;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -220,7 +221,7 @@ public class Selector : MonoBehaviour
     private MapObject SelectUnitUnderCursor()
     {
         Tile underCursor = GameMap.GetTileAtMouse();
-        if (underCursor != null)
+        if (underCursor != null && !underCursor.Locked)
         {
             return underCursor.MapObjects.Any() ? underCursor.MapObjects.First() : null;
         }

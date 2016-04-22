@@ -6,15 +6,15 @@ public class TempCard {
 
 	public string Name { private set; get; }
 
-	public int Cost { private set; get; }
+	public int cost { private set; get; }
 
-	public int Quantity { get; set; }
+	public int count { get; set; }
 
 	public TempCard(string name, int cost, bool isMonster, int quantity) {
 		Name = name;
-		Cost = cost;
+		this.cost = cost;
 		IsMonster = isMonster;
-		Quantity = quantity;
+		this.count = quantity;
 	}
 
 }
