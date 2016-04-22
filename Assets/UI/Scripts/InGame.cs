@@ -33,7 +33,7 @@ public class InGame : MonoBehaviour {
 		alreadyDismissed = false;
 		tempSelectedUnit = selector.SelectedUnit;
 		canvas = gameObject.GetComponent<Canvas>();
-		if (match) displayHeroes();
+		if (match) displayJumpButtons();
 	}
 	
 	// Update is called once per frame
@@ -59,11 +59,11 @@ public class InGame : MonoBehaviour {
 //			}
 		} else {
 			match = MatchManager.instance;
-			displayHeroes();
+			displayJumpButtons();
 		}
 	}
 
-	public void displayHeroes() {
+	public void displayJumpButtons() {
 		int count = 0;
 		foreach (Hero hero in match.MapObjects.Values.Where(x => x is Hero && x.ownerID == GameManager.instance.Username)) {
 			GameObject jumpButton = Instantiate(jumpButtonPrefab);
@@ -78,9 +78,33 @@ public class InGame : MonoBehaviour {
 			rt.offsetMin = Vector2.zero;
 			rt.offsetMax = Vector2.zero;
 			count++;
-			//TODO: Joe
-			//jb.title.text = hero.herotype;
+			string title;
+			switch(hero.MOName.ToLower()) {
+			case "warrior":
+				title = "W";
+				break;
+			case "mage":
+				title = "M";
+				break;
+			case "rogue":
+				title = "R";
+				break;
+			case "warriorrogue":
+				title = "W/R";
+				break;
+			case "warriormage":
+				title = "W/M";
+				break;
+			case "roguemage":
+				title = "R/M";
+				break;
+			default:
+				title = "H";
+				break;
+			}
+			jb.title.text = title;
 		}
+
 	}
 
 	private void updateGameInfo() {

@@ -524,6 +524,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 329a7ed9ddccc354d948445b9d1d1d49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DisableVision: 1
   TileList:
   - Name: default
     Prefab: {fileID: 194768, guid: dddf88b200c002b419f853e3d49c2267, type: 2}
@@ -1764,8 +1765,8 @@ MonoBehaviour:
   - Name: roguemage
     Prefab: {fileID: 150882, guid: e1afabe9167c44232b8841ae517492b4, type: 2}
   monsterPrefab:
-  - Name: Goblin
-    Prefab: {fileID: 187752, guid: 00611a129d3bf1247b2b45d4e7e0e1af, type: 2}
+  - Name: Skeleton Warrior
+    Prefab: {fileID: 171566, guid: 84e407d69d11b435db77fd07469e2121, type: 2}
   GameMap: {fileID: 177063253}
 --- !u!4 &878191716
 Transform:
@@ -2955,7 +2956,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8a4f96a7deae4c8b870d733770c8faa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: {fileID: 1168700988}
+  Name: {fileID: 1168700988}
   stats: {fileID: 1517567269}
   description: {fileID: 0}
   equippedWeapon: {fileID: 686957902}

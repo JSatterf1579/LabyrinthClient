@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 431436}
   - 33: {fileID: 3344180}
   - 23: {fileID: 2308448}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Gruppe#14_004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27,7 +27,7 @@ GameObject:
   - 4: {fileID: 480374}
   - 33: {fileID: 3325380}
   - 23: {fileID: 2308706}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Gruppe#4_005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   - 4: {fileID: 410186}
   - 33: {fileID: 3379206}
   - 23: {fileID: 2305022}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Group_005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61,7 +61,7 @@ GameObject:
   - 4: {fileID: 457902}
   - 33: {fileID: 3310746}
   - 23: {fileID: 2303472}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Gruppe#14_002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78,7 +78,7 @@ GameObject:
   - 4: {fileID: 426764}
   - 33: {fileID: 3313540}
   - 23: {fileID: 2307982}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Helmet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   - 4: {fileID: 424252}
   - 33: {fileID: 3386614}
   - 23: {fileID: 2340876}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Right Greave
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,7 +112,7 @@ GameObject:
   - 4: {fileID: 458404}
   - 33: {fileID: 3385088}
   - 23: {fileID: 2376956}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Clothes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -129,7 +129,7 @@ GameObject:
   - 4: {fileID: 430116}
   - 33: {fileID: 3341640}
   - 23: {fileID: 2371750}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Gruppe#4_003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -146,7 +146,7 @@ GameObject:
   - 4: {fileID: 496050}
   - 33: {fileID: 3371440}
   - 23: {fileID: 2302522}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: cube2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -162,7 +162,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 439748}
   - 95: {fileID: 9586800}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: StandPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -179,7 +179,7 @@ GameObject:
   - 4: {fileID: 466348}
   - 33: {fileID: 3309304}
   - 23: {fileID: 2349412}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Shield Bolt Top Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -196,7 +196,7 @@ GameObject:
   - 4: {fileID: 455348}
   - 33: {fileID: 3377034}
   - 23: {fileID: 2370448}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Shield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -213,7 +213,7 @@ GameObject:
   - 4: {fileID: 414590}
   - 33: {fileID: 3334328}
   - 23: {fileID: 2355344}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Shield Strap Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -230,7 +230,7 @@ GameObject:
   - 4: {fileID: 497554}
   - 33: {fileID: 3328522}
   - 23: {fileID: 2325258}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: sphere1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -247,7 +247,7 @@ GameObject:
   - 4: {fileID: 427748}
   - 33: {fileID: 3363880}
   - 23: {fileID: 2359338}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Beard Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -264,7 +264,7 @@ GameObject:
   - 4: {fileID: 463178}
   - 33: {fileID: 3328570}
   - 23: {fileID: 2396156}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Shield Bolt Bottom Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -281,7 +281,7 @@ GameObject:
   - 4: {fileID: 465666}
   - 33: {fileID: 3318060}
   - 23: {fileID: 2337712}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Shield Bolt Bottom Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -298,7 +298,7 @@ GameObject:
   - 4: {fileID: 419544}
   - 33: {fileID: 3323836}
   - 23: {fileID: 2348830}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Spear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -313,7 +313,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 461968}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Sword Nonsense
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -330,7 +330,7 @@ GameObject:
   - 4: {fileID: 419710}
   - 33: {fileID: 3343094}
   - 23: {fileID: 2332270}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Shield Bolt Top Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -347,7 +347,7 @@ GameObject:
   - 4: {fileID: 444640}
   - 33: {fileID: 3340842}
   - 23: {fileID: 2363472}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Group_002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -364,7 +364,7 @@ GameObject:
   - 4: {fileID: 443232}
   - 33: {fileID: 3331122}
   - 23: {fileID: 2329994}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: polymsh2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -381,7 +381,7 @@ GameObject:
   - 4: {fileID: 493670}
   - 33: {fileID: 3394624}
   - 23: {fileID: 2331834}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Spear End
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -398,7 +398,7 @@ GameObject:
   - 4: {fileID: 437652}
   - 33: {fileID: 3389884}
   - 23: {fileID: 2388366}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Group_006
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -415,7 +415,7 @@ GameObject:
   - 4: {fileID: 400446}
   - 33: {fileID: 3309620}
   - 23: {fileID: 2310168}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Group_007
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -432,7 +432,7 @@ GameObject:
   - 4: {fileID: 430204}
   - 33: {fileID: 3310350}
   - 23: {fileID: 2343442}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Group_004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -449,7 +449,7 @@ GameObject:
   - 4: {fileID: 411544}
   - 33: {fileID: 3394866}
   - 23: {fileID: 2311944}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Gruppe#14_003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -466,7 +466,7 @@ GameObject:
   - 4: {fileID: 475916}
   - 33: {fileID: 3347058}
   - 23: {fileID: 2332360}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Group_003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -482,7 +482,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 446210}
   - 95: {fileID: 9536854}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: WarriorRogueModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -499,7 +499,7 @@ GameObject:
   - 4: {fileID: 436624}
   - 33: {fileID: 3373558}
   - 23: {fileID: 2331438}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: sphere2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -516,7 +516,7 @@ GameObject:
   - 4: {fileID: 449674}
   - 33: {fileID: 3373360}
   - 23: {fileID: 2325484}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Shield Strap Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -533,7 +533,7 @@ GameObject:
   - 4: {fileID: 433706}
   - 33: {fileID: 3387124}
   - 23: {fileID: 2357828}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: cube1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -550,7 +550,7 @@ GameObject:
   - 4: {fileID: 498900}
   - 33: {fileID: 3329718}
   - 23: {fileID: 2303334}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Left Greave
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -567,7 +567,7 @@ GameObject:
   - 4: {fileID: 418636}
   - 33: {fileID: 3335522}
   - 23: {fileID: 2370042}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: polymsh3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -584,9 +584,9 @@ GameObject:
   - 4: {fileID: 481324}
   - 114: {fileID: 11466990}
   - 65: {fileID: 6556094}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Warrior
-  m_TagString: Untagged
+  m_TagString: Hero
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -601,7 +601,7 @@ GameObject:
   - 4: {fileID: 436278}
   - 33: {fileID: 3347332}
   - 23: {fileID: 2333398}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Group_001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -618,7 +618,7 @@ GameObject:
   - 4: {fileID: 426452}
   - 33: {fileID: 3369230}
   - 23: {fileID: 2351074}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -635,7 +635,7 @@ GameObject:
   - 4: {fileID: 411728}
   - 33: {fileID: 3345822}
   - 23: {fileID: 2342834}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Gruppe#14_001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -652,7 +652,7 @@ GameObject:
   - 4: {fileID: 451412}
   - 33: {fileID: 3334296}
   - 23: {fileID: 2313848}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Gruppe#4_007
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -669,7 +669,7 @@ GameObject:
   - 4: {fileID: 456060}
   - 33: {fileID: 3388658}
   - 23: {fileID: 2329898}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Eyes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -686,7 +686,7 @@ GameObject:
   - 4: {fileID: 499458}
   - 33: {fileID: 3303772}
   - 23: {fileID: 2301164}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: polymsh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -703,7 +703,7 @@ GameObject:
   - 4: {fileID: 497780}
   - 33: {fileID: 3374454}
   - 23: {fileID: 2370284}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Group_008
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -720,7 +720,7 @@ GameObject:
   - 4: {fileID: 461946}
   - 33: {fileID: 3363546}
   - 23: {fileID: 2368934}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Beard Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -735,7 +735,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 472854}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -752,7 +752,7 @@ GameObject:
   - 4: {fileID: 437346}
   - 33: {fileID: 3397806}
   - 23: {fileID: 2350846}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Shield Bolt Top Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -769,7 +769,7 @@ GameObject:
   - 4: {fileID: 412682}
   - 33: {fileID: 3331870}
   - 23: {fileID: 2384804}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: polymsh1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -786,7 +786,7 @@ GameObject:
   - 4: {fileID: 462058}
   - 33: {fileID: 3388584}
   - 23: {fileID: 2342984}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Gruppe#4_001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -803,7 +803,7 @@ GameObject:
   - 4: {fileID: 435530}
   - 33: {fileID: 3315136}
   - 23: {fileID: 2375104}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -820,7 +820,7 @@ GameObject:
   - 4: {fileID: 424388}
   - 33: {fileID: 3360130}
   - 23: {fileID: 2301402}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: greek_hero_w#3_001_MeshPart0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -837,7 +837,7 @@ GameObject:
   - 4: {fileID: 492746}
   - 33: {fileID: 3352734}
   - 23: {fileID: 2385216}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Shield Bolt Bottom Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -854,7 +854,7 @@ GameObject:
   - 4: {fileID: 473592}
   - 33: {fileID: 3326232}
   - 23: {fileID: 2374114}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Spear Tip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1560,7 +1560,7 @@ MeshRenderer:
   m_ReceiveShadows: 1
   m_Materials:
   - {fileID: 2100000, guid: 4398de37ecce84257855bc655f16313c, type: 2}
-  - {fileID: 2100000, guid: 202ee2a83561c4e4f8dc300f957b3770, type: 2}
+  - {fileID: 0}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -1748,8 +1748,8 @@ MeshRenderer:
   m_Materials:
   - {fileID: 2100000, guid: d8d5b55fc274943ce9e99d3f8dfc5267, type: 2}
   - {fileID: 2100000, guid: d4fbaa4ef363c40c898fd212173c6669, type: 2}
-  - {fileID: 2100000, guid: ba614c92f1a1944d2a11ab920f611476, type: 2}
-  - {fileID: 2100000, guid: cf0cdbf72020d43f4aef49d202ba3494, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -1829,8 +1829,8 @@ MeshRenderer:
   m_Materials:
   - {fileID: 2100000, guid: d8d5b55fc274943ce9e99d3f8dfc5267, type: 2}
   - {fileID: 2100000, guid: d4fbaa4ef363c40c898fd212173c6669, type: 2}
-  - {fileID: 2100000, guid: a40fe4b157f004ce1a0b00f594e22d9e, type: 2}
-  - {fileID: 2100000, guid: 55e2c62c687ac429888c4341a8988913, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -1883,7 +1883,7 @@ MeshRenderer:
   m_ReceiveShadows: 1
   m_Materials:
   - {fileID: 2100000, guid: d4fbaa4ef363c40c898fd212173c6669, type: 2}
-  - {fileID: 2100000, guid: 228646a9e049f42bb9326b997524704e, type: 2}
+  - {fileID: 2100000, guid: d4fbaa4ef363c40c898fd212173c6669, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -2042,7 +2042,7 @@ MeshRenderer:
   m_Materials:
   - {fileID: 2100000, guid: d4fbaa4ef363c40c898fd212173c6669, type: 2}
   - {fileID: 2100000, guid: d4fbaa4ef363c40c898fd212173c6669, type: 2}
-  - {fileID: 2100000, guid: 50ff44ef042a441a3b473164c857efab, type: 2}
+  - {fileID: 0}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -2070,7 +2070,7 @@ MeshRenderer:
   m_Materials:
   - {fileID: 2100000, guid: d4fbaa4ef363c40c898fd212173c6669, type: 2}
   - {fileID: 2100000, guid: d4fbaa4ef363c40c898fd212173c6669, type: 2}
-  - {fileID: 2100000, guid: 8b18b2691c40643e9b87e2a25dd15525, type: 2}
+  - {fileID: 0}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -2179,8 +2179,8 @@ MeshRenderer:
   m_Materials:
   - {fileID: 2100000, guid: d8d5b55fc274943ce9e99d3f8dfc5267, type: 2}
   - {fileID: 2100000, guid: d4fbaa4ef363c40c898fd212173c6669, type: 2}
-  - {fileID: 2100000, guid: 8345eaad1685041648d901b01991216c, type: 2}
-  - {fileID: 2100000, guid: 0fc0b2fc2ae4243239f54b33a11be784, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -2208,7 +2208,7 @@ MeshRenderer:
   m_Materials:
   - {fileID: 2100000, guid: d4fbaa4ef363c40c898fd212173c6669, type: 2}
   - {fileID: 2100000, guid: d4fbaa4ef363c40c898fd212173c6669, type: 2}
-  - {fileID: 2100000, guid: 0628d89762faa4e94bfc37304ab5c5f6, type: 2}
+  - {fileID: 0}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -2391,8 +2391,8 @@ MeshRenderer:
   m_ReceiveShadows: 1
   m_Materials:
   - {fileID: 2100000, guid: d4fbaa4ef363c40c898fd212173c6669, type: 2}
-  - {fileID: 2100000, guid: fb09fa01d98e945faaa241e445d07fc2, type: 2}
-  - {fileID: 2100000, guid: d23bd527dc451435b946f1e7b094763b, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -2420,7 +2420,7 @@ MeshRenderer:
   m_Materials:
   - {fileID: 2100000, guid: d4fbaa4ef363c40c898fd212173c6669, type: 2}
   - {fileID: 2100000, guid: d4fbaa4ef363c40c898fd212173c6669, type: 2}
-  - {fileID: 2100000, guid: db6cc33a408f34d51b6dceb31520ac5d, type: 2}
+  - {fileID: 0}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -2447,8 +2447,8 @@ MeshRenderer:
   m_ReceiveShadows: 1
   m_Materials:
   - {fileID: 2100000, guid: d4fbaa4ef363c40c898fd212173c6669, type: 2}
-  - {fileID: 2100000, guid: 86824a19eba804359bfb2aebd80d9466, type: 2}
-  - {fileID: 2100000, guid: 4dc951a6281544d1d8b6900ad7f7f7c4, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -2556,8 +2556,8 @@ MeshRenderer:
   m_Materials:
   - {fileID: 2100000, guid: d8d5b55fc274943ce9e99d3f8dfc5267, type: 2}
   - {fileID: 2100000, guid: d4fbaa4ef363c40c898fd212173c6669, type: 2}
-  - {fileID: 2100000, guid: 618db231f959143c2b4889e4ade8ee0d, type: 2}
-  - {fileID: 2100000, guid: 2ff5511bc797b437aa7ce29bee81bdd8, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -3135,6 +3135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e066f13efac0254aacb0fbf6a5de65b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MOName: 
   ownerID: 
   controllerID: 
   UUID: 
@@ -3151,7 +3152,6 @@ MonoBehaviour:
   - {fileID: 2375104}
   - {fileID: 2325258}
   - {fileID: 2331438}
-  level: 0
   maxHealth: 0
   currentHealth: 0
   attack: 0
@@ -3164,6 +3164,7 @@ MonoBehaviour:
   abilities: []
   equipment: []
   passive: {fileID: 0}
+  level: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
