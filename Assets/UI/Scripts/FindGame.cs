@@ -15,6 +15,8 @@ public class FindGame : MonoBehaviour
     public GameObject CardPrefab;
     public GameObject HeroConfirmButton;
 
+    public InputField MapID;
+
     public Color selectedColor;
     public Color unselectedColor;
 
@@ -149,6 +151,10 @@ public class FindGame : MonoBehaviour
                 heroes.Add(uuid);
             }
             data.AddField("game_mode", "obj");
+            if (MapID.text != "")
+            {
+                data.AddField("map_id", MapID.text);
+            }
             socket.Emit("queue_up_heroes", data, HeroesQueue);
         }
     }
