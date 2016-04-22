@@ -180,7 +180,24 @@ public class JSONDecoder{
             monsters.Add(new MonsterCardData(name, id, health, attack, defense, movement, vision, wep, count));
         }
         return monsters;
-    } 
+    }
+
+    public static List<FindGame.MapMetadata> DecodeMapMetadata(JSONObject serializedMaps)
+    {
+        List<FindGame.MapMetadata> maps = new List<FindGame.MapMetadata>();
+        foreach (var map in serializedMaps.list)
+        {
+            string name = map.GetField("name").str;
+            string creator = map.GetField("creator_id").str;
+            int id = (int)map.GetField("id").n;
+            int cap = (int)map.GetField("hero_capacity").n;
+            int x = (int) map.GetField("size").GetField("x").n;
+            int y = (int)map.GetField("size").GetField("y").n;
+            FindGame.MapMetadata m = new FindGame.MapMetadata(id, cap, name, creator, x, y);
+            maps.Add(m);
+        }
+        return maps;
+    }  
 
 
 }

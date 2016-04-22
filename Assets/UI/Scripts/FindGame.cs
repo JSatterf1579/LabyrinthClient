@@ -14,6 +14,11 @@ public class FindGame : MonoBehaviour
     public GameObject HeroScrollContent;
     public GameObject CardPrefab;
     public GameObject HeroConfirmButton;
+    public Dropdown MapSelect;
+    public Dropdown GameMode;
+    public Toggle Passbot;
+
+    public Camera camera;
 
 	public Vector2 cardPosition = new Vector2(55, -70);
 	public Vector2 widthHeight = new Vector2(90, 120);
@@ -24,13 +29,18 @@ public class FindGame : MonoBehaviour
     public Color unselectedColor;
 
     private bool queued = false;
+    private bool matchFound = false;
     private SocketIOComponent socket;
 
     private Dictionary<string, HeroCardData> selectedHeroes;
-    private int minimumSelectedHeroes = 1;  
+    private Dictionary<int, MapMetadata> mapSelectPosition; 
+    private int minimumSelectedHeroes = 1;
+    private int maxHeroes = 4;
 
     //Card distance in pixels
     private int cardDist = 20;
+
+    private JSONObject MatchData;
 
 	// Use this for initialization
 	void Start () {
@@ -42,6 +52,15 @@ public class FindGame : MonoBehaviour
         socket = GameManager.instance.getSocket();
         socket.On("match_found", OnMatch);
         selectedHeroes = new Dictionary<string, HeroCardData>();
+        mapSelectPosition = new Dictionary<int, MapMetadata>();
+    }
+
+    void Update()
+    {
+        if (queued && matchFound)
+        {
+            JoinMatch();
+        }
     }
 	
 	public void OnBack() {
@@ -53,6 +72,7 @@ public class FindGame : MonoBehaviour
     {
         JSONObject data = new JSONObject();
         socket.Emit("get_heroes", data, HeroesSelect);
+        socket.Emit("maps", data, ListMaps);
         //Debug.Log(data);
         //data.AddField("queue_with_passbot", true);
         //socket.Emit("queue_up_heroes", data, HeroesQueue);
@@ -72,10 +92,29 @@ public class FindGame : MonoBehaviour
         }
     }
 
+    private void ListMaps(JSONObject response)
+    {
+        Debug.Log(response.list[0]);
+        if (response.list[0].GetField("status").n == 200)
+        {
+            MapSelect.ClearOptions();
+            mapSelectPosition.Clear();
+            List<MapMetadata> maps = JSONDecoder.DecodeMapMetadata(response.list[0].GetField("maps"));
+            for (int i = 0; i < maps.Count; i++)
+            {
+                MapSelect.options.Add(new Dropdown.OptionData() {text = maps[i].Name});
+                mapSelectPosition[i] = maps[i];
+            }
+            MapSelect.value = 1;
+            MapSelect.value = 0;
+        }
+    }
+
     private void SetupHeroCards(JSONObject heroes)
     {
         List<HeroCardData> cards = JSONDecoder.DecodeHeroCards(heroes);
         int heroesAdded = 0;
+        ClearDisplay();
         foreach (HeroCardData card in cards)
         {
             GameObject UICard = Instantiate(CardPrefab);
@@ -93,6 +132,19 @@ public class FindGame : MonoBehaviour
             heroesAdded++;
         }
         
+    }
+
+    public void ClearDisplay()
+    {
+        foreach (Transform b in HeroScrollContent.transform)
+        {
+            removeContentFromDisplay(b.gameObject);
+        }
+    }
+
+    private void removeContentFromDisplay(GameObject b)
+    {
+        Destroy(b);
     }
 
     private void toggleHeroCard(GameObject clickedCard)
@@ -124,12 +176,20 @@ public class FindGame : MonoBehaviour
 
     private void calcRect(ref RectTransform rt, int i)
     {
-		rt.anchorMin = new Vector2(0, 1);
+        rt.anchorMin = new Vector2(0, 1);
 		rt.anchorMax = new Vector2(0, 1);
 		Vector2 temp = cardPosition + new Vector2((widthHeight.x + margin.x) * (i % numColumns), -(widthHeight.y + margin.y) * (int)(i / numColumns));
 		rt.localPosition = new Vector3(temp.x, temp.y, 0);
-		rt.sizeDelta = widthHeight;
+        rt.sizeDelta = ResizeToCurrentResolution(widthHeight); ;
     }
+
+    private Vector2 ResizeToCurrentResolution(Vector2 vector)
+    {
+        RectTransform rt = (RectTransform)HeroScrollContent.transform;
+        return new Vector2(vector.x * rt.lossyScale.x / 0.9f, vector.y * rt.lossyScale.y / 0.9f);
+    }
+
+
 
     public void OnArchitect()
     {
@@ -146,8 +206,16 @@ public class FindGame : MonoBehaviour
 
     public void OnDequeue()
     {
-        QueueingModal.SetActive(false);
-        queued = false;
+        socket.Emit("dequeue", new JSONObject(), DequeueCallback);
+    }
+
+    public void DequeueCallback(JSONObject response)
+    {
+        if (response.list[0].GetField("status").n == 200)
+        {
+            QueueingModal.SetActive(false);
+            queued = false;
+        }
     }
 
     public void OnConfirmHero()
@@ -155,14 +223,34 @@ public class FindGame : MonoBehaviour
         if (selectedHeroes.Count >= minimumSelectedHeroes)
         {
             JSONObject data = new JSONObject();
-            data.AddField("queue_with_passbot", true);
+            if (Passbot.isOn)
+            {
+                data.AddField("queue_with_passbot", true);
+            }
             JSONObject heroes = new JSONObject(JSONObject.Type.ARRAY);
             data.AddField("heroes", heroes);
             foreach (string  uuid in selectedHeroes.Keys)
             {
                 heroes.Add(uuid);
             }
-            data.AddField("game_mode", "obj");
+            //data.AddField("game_mode", "obj");
+            switch (GameMode.value)
+            {
+                case 0:
+                    data.AddField("game_mode", "dm");
+                    break;
+                case 1:
+                    data.AddField("game_mode", "obj");
+                    break;
+                default:
+                    data.AddField("game_mode", "dm");
+                    break;
+            }
+            if (MapSelect.options[MapSelect.value] != null)
+            {
+                data.AddField("map_id", mapSelectPosition[MapSelect.value].ID);
+            }
+
             socket.Emit("queue_up_heroes", data, HeroesQueue);
         }
     }
@@ -174,8 +262,8 @@ public class FindGame : MonoBehaviour
         {
             HeroSelectModal.SetActive(false);
             selectedHeroes = new Dictionary<string, HeroCardData>();
-            queued = true;
             QueueingModal.SetActive(true);
+            queued = true;
         }
         else if (response.list[0].GetField("status").n == 422)
         {
@@ -197,19 +285,46 @@ public class FindGame : MonoBehaviour
         selectedHeroes = new Dictionary<string, HeroCardData>();
         HeroConfirmButton.SetActive(false);
         HeroSelectModal.SetActive(false);
+        ClearDisplay();
     }
 
 
-    
-
-    
 
     private void OnMatch(SocketIOEvent e)
     {
         Debug.Log(e.data);
+        MatchData = e.data;
+        matchFound = true;
+    }
+
+
+
+    private void JoinMatch()
+    {
         socket.Off("match_found", OnMatch);
         SceneManager.LoadScene("MatchScene");
-        MatchManager.SetInitialMatchState(e.data);
+        MatchManager.SetInitialMatchState(MatchData);
         GameManager.instance.InMatch = true;
+    }
+
+
+    public struct MapMetadata
+    {
+        public int ID;
+        public int HeroCapacity;
+        public string Name;
+        public string CreatorID;
+        public int x;
+        public int y;
+
+        public MapMetadata(int id, int cap, string name, string creator, int x, int y)
+        {
+            ID = id;
+            HeroCapacity = cap;
+            Name = name;
+            CreatorID = creator;
+            this.x = x;
+            this.y = y;
+        }
     }
 }
