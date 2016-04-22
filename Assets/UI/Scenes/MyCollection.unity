@@ -880,7 +880,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1130431038}
   m_Direction: 2
   m_Value: 1
-  m_Size: 1
+  m_Size: 0.9999999
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3333,6 +3333,7 @@ Canvas:
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -3378,6 +3379,12 @@ MonoBehaviour:
   widthHeight: {x: 90, y: 120}
   margin: {x: 10, y: 10}
   numColumns: 4
+  OnButtonPressed:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: MyCollection+ButtonPressedEvent, Assembly-CSharp, Version=1.0.2.39405,
+      Culture=neutral, PublicKeyToken=null
+  DisplayRemaining: 0
 --- !u!1 &1926890855
 GameObject:
   m_ObjectHideFlags: 0

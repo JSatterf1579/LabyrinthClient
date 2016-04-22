@@ -36,8 +36,10 @@ public abstract class Unit : MapObject
         MaxActionPoints = ap;
         CurrentActionPoints = MaxActionPoints;
 
-        MatchManager.instance.RegisterJSONChangeAction("/board_objects/" + UUID + "/action_points", ActionPointsChanged);
-        MatchManager.instance.RegisterJSONChangeAction("/board_objects/" + UUID + "/health", HealthChanged);
+        if (MatchManager.instance) {
+            MatchManager.instance.RegisterJSONChangeAction("/board_objects/" + UUID + "/action_points", ActionPointsChanged);
+            MatchManager.instance.RegisterJSONChangeAction("/board_objects/" + UUID + "/health", HealthChanged);
+        }
     }
 
 

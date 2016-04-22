@@ -10,6 +10,8 @@ public class Map : MonoBehaviour {
     /// </summary>
     public static Map Current = null;
 
+    public bool DisableVision = false;
+
     /// <summary>
     /// This allows us to set the tile names and their corresponding prefabs in the editor.  
     /// NOTE: changes made after the scene loads are ignored
@@ -225,6 +227,10 @@ public class Map : MonoBehaviour {
     /// <param name="tiles"></param>
     public void MoveMapObject(MapObject target, List<Tile> tiles) {
         StartCoroutine(AnimateMove(target, tiles, 1, 1 / 60f));
+    }
+
+    public void RemoveMapObject(MapObject target) {
+        target.Tile.RemoveMapObject(target);
     }
 
     /// <summary>

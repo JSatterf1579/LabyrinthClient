@@ -45,7 +45,7 @@ public abstract class MapObject : MonoBehaviour {
         posY = y;
         BlocksMovement = blocksMovement;
 
-        MatchManager.instance.MapObjects.Add(UUID, this);
+        if(MatchManager.instance) MatchManager.instance.MapObjects.Add(UUID, this);
     }
 
     /// <summary>

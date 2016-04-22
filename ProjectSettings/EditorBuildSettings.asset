@@ -23,3 +23,5 @@ EditorBuildSettings:
     path: Assets/Scenes/MatchSceneTestJoe.unity
   - enabled: 1
     path: Assets/Scenes/MatchScene 1.unity
+  - enabled: 1
+    path: Assets/Scenes/ArchSetupScene.unity
