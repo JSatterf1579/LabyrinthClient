@@ -123,7 +123,7 @@ public class Map : MonoBehaviour {
     /// <param name="rotation"></param>
     /// <param name="isObstacle"></param>
     /// <returns></returns>
-    public Tile InstantiateTile(int x, int y, string type, int rotation, bool isObstacle) {
+    public Tile InstantiateTile(int x, int y, string type, int rotation, bool isObstacle, bool blocksVision) {
         if (!Loaded) {
             Debug.LogError("Tried to instantiate a tile on a Map that has not been initalized yet");
             return null;
@@ -144,7 +144,7 @@ public class Map : MonoBehaviour {
                 Debug.LogError("Error: a Tile prefab was instantiated, but it does not have an attached Tile behaviour; it will now be destroyed for its insubordination");
                 Destroy(instance);
             } else {
-                tile.Init(x, y, rotation, type, isObstacle);
+                tile.Init(x, y, rotation, type, isObstacle, blocksVision);
                 CurrentMap[x, y] = tile;
             }
             return tile;
@@ -256,8 +256,22 @@ public class Map : MonoBehaviour {
         SetTilesLockedState(tiles, true);
     }
 
+    public void LockAllTiles() {
+        LockTiles(GetAllTiles());
+    }
+
+    public IEnumerable<Tile> GetAllTiles() {
+        foreach(Tile t in CurrentMap) {
+            yield return t;
+        }
+    }
+
     public void UnlockTiles(IEnumerable<Tile> tiles) {
         SetTilesLockedState(tiles, false);
+    }
+
+    public void UnlockAllTiles() {
+        UnlockTiles(GetAllTiles());
     }
 
     /// <summary>

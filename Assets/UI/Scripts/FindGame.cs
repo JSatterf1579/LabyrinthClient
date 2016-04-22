@@ -34,7 +34,7 @@ public class FindGame : MonoBehaviour
 
     private Dictionary<string, HeroCardData> selectedHeroes;
     private Dictionary<int, MapMetadata> mapSelectPosition; 
-    private int minimumSelectedHeroes = 1;
+    private int minimumSelectedHeroes = 1;  
     private int maxHeroes = 4;
 
     //Card distance in pixels
@@ -54,19 +54,15 @@ public class FindGame : MonoBehaviour
         selectedHeroes = new Dictionary<string, HeroCardData>();
         mapSelectPosition = new Dictionary<int, MapMetadata>();
     }
-
-    void Update()
-    {
-        if (queued && matchFound)
-        {
-            JoinMatch();
-        }
-    }
 	
 	public void OnBack() {
         socket.Off("match_found", OnMatch);
         SceneManager.LoadScene("MainMenu");
 	}
+
+    void OnDestroy() {
+        socket.Off("match_found", OnMatch);
+    }
 
     public void OnHeroes()
     {
@@ -166,10 +162,10 @@ public class FindGame : MonoBehaviour
             {
                 if (selectedHeroes.Count < maxHeroes)
                 {
-                    selectedHeroes.Add(hero.UUID, hero);
-                    clickedCard.GetComponent<Image>().color = selectedColor;
-                }
+                selectedHeroes.Add(hero.UUID, hero);
+                clickedCard.GetComponent<Image>().color = selectedColor;
             }
+        }
         }
         if (selectedHeroes.Count >= minimumSelectedHeroes)
         {
@@ -184,7 +180,7 @@ public class FindGame : MonoBehaviour
 
     private void calcRect(ref RectTransform rt, int i)
     {
-        rt.anchorMin = new Vector2(0, 1);
+		rt.anchorMin = new Vector2(0, 1);
 		rt.anchorMax = new Vector2(0, 1);
 		Vector2 temp = cardPosition + new Vector2((widthHeight.x + margin.x) * (i % numColumns), -(widthHeight.y + margin.y) * (int)(i / numColumns));
 		rt.localPosition = new Vector3(temp.x, temp.y, 0);
@@ -207,6 +203,11 @@ public class FindGame : MonoBehaviour
             Debug.Log(x);
             Debug.Log(x.type);
             MonsterPlacementManager.InitialMap = x[0]["map"];
+            JSONObject root = new JSONObject();
+            root.AddField("map_id", 1);
+            root.AddField("queue_with_passbot", true);
+            root.AddField("game_mode", "DM");
+            MonsterPlacementManager.JSONRoot = root;
             SceneManager.LoadScene("ArchSetupScene");
         });
 
@@ -221,9 +222,9 @@ public class FindGame : MonoBehaviour
     {
         if (response.list[0].GetField("status").n == 200)
         {
-            QueueingModal.SetActive(false);
-            queued = false;
-        }
+        QueueingModal.SetActive(false);
+        queued = false;
+    }
     }
 
     public void OnConfirmHero()
@@ -233,7 +234,7 @@ public class FindGame : MonoBehaviour
             JSONObject data = new JSONObject();
             if (Passbot.isOn)
             {
-                data.AddField("queue_with_passbot", true);
+            data.AddField("queue_with_passbot", true);
             }
             JSONObject heroes = new JSONObject(JSONObject.Type.ARRAY);
             data.AddField("heroes", heroes);
@@ -248,7 +249,7 @@ public class FindGame : MonoBehaviour
                     data.AddField("game_mode", "dm");
                     break;
                 case 1:
-                    data.AddField("game_mode", "obj");
+            data.AddField("game_mode", "obj");
                     break;
                 default:
                     data.AddField("game_mode", "dm");
@@ -296,23 +297,13 @@ public class FindGame : MonoBehaviour
         ClearDisplay();
     }
 
-
-
-    private void OnMatch(SocketIOEvent e)
+    public static void OnMatch(SocketIOEvent e)
     {
         Debug.Log(e.data);
-        MatchData = e.data;
-        matchFound = true;
-    }
-
-
-
-    private void JoinMatch()
-    {
-        socket.Off("match_found", OnMatch);
-        SceneManager.LoadScene("MatchScene");
-        MatchManager.SetInitialMatchState(MatchData);
+        GameManager.instance.getSocket().Off("match_found", OnMatch);
+        MatchManager.SetInitialMatchState(e.data);
         GameManager.instance.InMatch = true;
+        SceneManager.LoadScene("MatchScene");
     }
 
 

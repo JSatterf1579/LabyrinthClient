@@ -65,7 +65,7 @@ public class HeroManager : MonoBehaviour
         }
     }
 	
-    public void InstantiateMonster(string monsterID, string ownerID, string controllerID, string UUID, int x, int y, int health, int attack,
+    public Monster InstantiateMonster(string monsterID, string ownerID, string controllerID, string UUID, int x, int y, int health, int attack,
         int defense, int vision, int movement, int ap, Weapon weapon)
     {
         Debug.Log("Instantiating a monster");
@@ -73,7 +73,7 @@ public class HeroManager : MonoBehaviour
         if (!monsterPrefabDict.ContainsKey(monsterType))
         {
             Debug.LogError("Monster type not found " + monsterID);
-            return;
+            return null;
         }
 
         GameObject prefab = monsterPrefabDict[monsterType];
@@ -94,8 +94,10 @@ public class HeroManager : MonoBehaviour
                 {
                     GameMap.PlaceNewObjectIntoMap(monster);
                 }
+                return monster;
             }
         }
+        return null;
     }
 
     public void InstantiateObjective(string id, int x, int y, bool blocksMovement)
