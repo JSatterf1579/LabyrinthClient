@@ -40,7 +40,8 @@ public class FindGame : MonoBehaviour
     }
 	
 	public void OnBack() {
-		SceneManager.LoadScene("MainMenu");
+        socket.Off("match_found", OnMatch);
+        SceneManager.LoadScene("MainMenu");
 	}
 
     public void OnHeroes()
@@ -193,6 +194,7 @@ public class FindGame : MonoBehaviour
     private void OnMatch(SocketIOEvent e)
     {
         Debug.Log(e.data);
+        socket.Off("match_found", OnMatch);
         SceneManager.LoadScene("MatchScene");
         MatchManager.SetInitialMatchState(e.data);
         GameManager.instance.InMatch = true;

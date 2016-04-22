@@ -228,6 +228,8 @@ public class MatchManager : MonoBehaviour
         Debug.Log(response);
         if (response.list[0].GetField("status").n == 200)
         {
+            socket.Off("game_update", GameUpdate);
+            instance = null;
             SceneManager.LoadScene("FindGame"); 
         }
 
