@@ -397,8 +397,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 3
-  m_Text: Glide across the ground, racing against your friends (local multiplayer
-    only) in the fastest, most dangerous game ever created!
+  m_Text: 'Fast and sturdy.
+
+    High defense, high movement.'
 --- !u!222 &428069049
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -643,7 +644,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: c15abcf7b650f4fd983a50b3f846660b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a1f3e4c2416d54b43a3d124b0e325ea5, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -777,7 +778,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: c15abcf7b650f4fd983a50b3f846660b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 041d94bf4f037481da076ecff5d26094, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1029,7 +1030,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: c15abcf7b650f4fd983a50b3f846660b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e8ed286d7086b4d72bbacf7ac5ab3c54, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1462,8 +1463,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 3
-  m_Text: Glide across the ground, racing against your friends (local multiplayer
-    only) in the fastest, most dangerous game ever created!
+  m_Text: 'Impenetrable.
+
+    High health, high defense.'
 --- !u!222 &884872603
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1756,7 +1758,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: c15abcf7b650f4fd983a50b3f846660b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5a1dbaed7efde4732846bb021eda60d1, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1909,8 +1911,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 3
-  m_Text: Glide across the ground, racing against your friends (local multiplayer
-    only) in the fastest, most dangerous game ever created!
+  m_Text: 'Herculaen.
+
+    High attack, high movement.'
 --- !u!222 &1419989134
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1983,8 +1986,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 3
-  m_Text: Glide across the ground, racing against your friends (local multiplayer
-    only) in the fastest, most dangerous game ever created!
+  m_Text: 'Very fast, very dangerous.
+
+    High movement, high vision.'
 --- !u!222 &1432091384
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2044,7 +2048,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: c15abcf7b650f4fd983a50b3f846660b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2bf932c0187db47d9998adb116ca9e6c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2111,7 +2115,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: c15abcf7b650f4fd983a50b3f846660b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a6e1768fc486a404088856f5949d27ef, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2191,8 +2195,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 3
-  m_Text: Glide across the ground, racing against your friends (local multiplayer
-    only) in the fastest, most dangerous game ever created!
+  m_Text: 'Eyes like a hawk.
+
+    High defense, high vision.'
 --- !u!222 &1503639079
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2377,8 +2382,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 3
-  m_Text: Glide across the ground, racing against your friends (local multiplayer
-    only) in the fastest, most dangerous game ever created!
+  m_Text: 'God-powered.
+
+    High attack, high vision.'
 --- !u!222 &1821025113
 CanvasRenderer:
   m_ObjectHideFlags: 0
