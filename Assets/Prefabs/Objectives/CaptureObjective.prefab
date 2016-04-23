@@ -1,5 +1,22 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &120100
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 439454}
+  - 23: {fileID: 2388518}
+  - 33: {fileID: 3344104}
+  m_Layer: 0
+  m_Name: Mesh
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &143020
 GameObject:
   m_ObjectHideFlags: 0
@@ -8,13 +25,25 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 417730}
-  - 33: {fileID: 3388138}
-  - 23: {fileID: 2331434}
-  - 111: {fileID: 11152950}
   - 114: {fileID: 11469838}
-  - 114: {fileID: 11499896}
   m_Layer: 0
   m_Name: CaptureObjective
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &194098
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 473472}
+  - 114: {fileID: 11440936}
+  m_Layer: 0
+  m_Name: Bounce
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27,17 +56,43 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 143020}
   m_LocalRotation: {x: 0.000000021855698, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.233, y: 1.145, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 473472}
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!23 &2331434
+--- !u!4 &439454
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 120100}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.229, y: 1.15, z: 0.011}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 473472}
+  m_RootOrder: 0
+--- !u!4 &473472
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 194098}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 439454}
+  m_Father: {fileID: 417730}
+  m_RootOrder: 0
+--- !u!23 &2388518
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 143020}
+  m_GameObject: {fileID: 120100}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -58,27 +113,28 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!33 &3388138
+--- !u!33 &3344104
 MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 143020}
+  m_GameObject: {fileID: 120100}
   m_Mesh: {fileID: 4300000, guid: efa2aa0fe6fa6504abf4d3446c601ec4, type: 3}
---- !u!111 &11152950
-Animation:
+--- !u!114 &11440936
+MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 143020}
+  m_GameObject: {fileID: 194098}
   m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 0}
-  m_Animations: []
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4146c7f841bf415ba43b02fb88eba06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bobHeight: 0.25
+  bobRate: 1
+  spinRate: {x: 0, y: 5, z: 0}
+  useOffset: 0
 --- !u!114 &11469838
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -97,21 +153,6 @@ MonoBehaviour:
   posX: 0
   posY: 0
   HighlightRenderers: []
---- !u!114 &11499896
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 143020}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4146c7f841bf415ba43b02fb88eba06, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bobHeight: 0.5
-  bobRate: 1
-  spinRate: {x: 0, y: 0, z: 0}
-  useOffset: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
