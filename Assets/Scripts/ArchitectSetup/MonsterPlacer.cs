@@ -24,8 +24,9 @@ public class MonsterPlacer : MonoBehaviour {
                     if (card != null) {
                         var monsterInfo = card.cardInfo;
                         if (monsterInfo != null) {
-                            var monster = manager.InstantiateMonster(monsterInfo.Name, GameManager.instance.Username, GameManager.instance.Username, System.Guid.NewGuid().ToString(), tile.XPos, tile.YPos, monsterInfo.health, monsterInfo.attack, monsterInfo.defense, monsterInfo.vision, monsterInfo.movement, 0, monsterInfo.weapon);
+                            var monster = manager.InstantiateMonster(monsterInfo.Name, GameManager.instance.Username, GameManager.instance.Username, System.Guid.NewGuid().ToString(), tile.XPos, tile.YPos, monsterInfo.health, monsterInfo.attack, monsterInfo.defense, monsterInfo.vision, monsterInfo.movement, 0, monsterInfo.weapon, monsterInfo.id);
                             selector.MonsterPlaced(card);
+                            placementManager.AddMonster(monster);
                         }
                     }
                 } else {

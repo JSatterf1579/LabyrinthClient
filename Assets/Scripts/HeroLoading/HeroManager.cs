@@ -66,7 +66,7 @@ public class HeroManager : MonoBehaviour
     }
 	
     public Monster InstantiateMonster(string monsterID, string ownerID, string controllerID, string UUID, int x, int y, int health, int attack,
-        int defense, int vision, int movement, int ap, Weapon weapon)
+        int defense, int vision, int movement, int ap, Weapon weapon, int dbid)
     {
         Debug.Log("Instantiating a monster");
         string monsterType = monsterID.ToUpper().Trim();
@@ -89,7 +89,7 @@ public class HeroManager : MonoBehaviour
             }
             else
             {
-                monster.Init(ownerID, controllerID, UUID, x, y, health, attack, defense, vision, movement, ap, weapon, monsterID);
+                monster.Init(ownerID, controllerID, UUID, x, y, health, attack, defense, vision, movement, ap, weapon, monsterID, dbid);
                 if (GameMap.Loaded)
                 {
                     GameMap.PlaceNewObjectIntoMap(monster);
