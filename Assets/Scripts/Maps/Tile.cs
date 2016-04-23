@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 
 
-[RequireComponent(typeof(Collider))]
 public class Tile : MonoBehaviour {
     public int YPos { get; private set; }
     public int XPos { get; private set; }
@@ -36,8 +35,6 @@ public class Tile : MonoBehaviour {
 
     public GameObject VisibleObject, SeenObject, HiddenObject;
     public ParticleSystem SeenParticleSystem, HiddenParticleSystem;
-
-    private Collider colider;
 
     //private bool seenBefore = false;
     //originally I was keeping track of whether or not this tile had been seen before, so that when

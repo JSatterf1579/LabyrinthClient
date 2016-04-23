@@ -4,9 +4,6 @@ using System.Collections;
 // Move hero up here
 public abstract class Unit : MapObject
 {
-
-
-    
     public int maxHealth;
     public int currentHealth;
     public int attack;
@@ -17,12 +14,15 @@ public abstract class Unit : MapObject
     public int CurrentActionPoints;
     public Weapon weapon;
 
+    public bool IsDead { get; private set; }
+
     public Object[] status;
     public Object[] abilities;
 
 
     public void Init(string name, string ownerID, string contrllerID, string UUID, int x, int y, int health, int attack, int defense, int vision, int movement, int ap, Weapon weapon, bool blocksMovement)
     {
+        IsDead = false;
         base.Init(name, ownerID, contrllerID, UUID, x, y, blocksMovement);
         //this.level = level;
         this.maxHealth = health;
@@ -62,5 +62,15 @@ public abstract class Unit : MapObject
             return;
         }
         currentHealth = (int) info.NewValue.n;
+        if(currentHealth == 0) {
+            //this unit is straight dead
+            IsDead = true;
+            Map.Current.RemoveMapObject(this);
+            if (MatchManager.instance) {
+                MatchManager.instance.RemoveJSONChangeAction("/board_objects/" + UUID + "/action_points", ActionPointsChanged);
+                MatchManager.instance.RemoveJSONChangeAction("/board_objects/" + UUID + "/health", HealthChanged);
+            }
+            gameObject.SetActive(false);
+        }
     }
 }
