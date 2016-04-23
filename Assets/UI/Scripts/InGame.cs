@@ -8,6 +8,7 @@ public class InGame : MonoBehaviour {
 	public Text GameInfo;
 
 	public Button ConfirmAction;
+	public GameObject EndTurn;
 
 	public GameObject jumpButtonYouPrefab;
 	public GameObject jumpButtonThemPrefab;
@@ -59,6 +60,7 @@ public class InGame : MonoBehaviour {
 //					alreadyDismissed = true;
 //				}
 //			}
+			EndTurn.SetActive(match.MyTurn);
 		} else {
 			match = MatchManager.instance;
 			displayJumpButtons();

@@ -567,6 +567,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameInfo: {fileID: 1808460781}
   ConfirmAction: {fileID: 1526130241}
+  EndTurn: {fileID: 1864613947}
   jumpButtonYouPrefab: {fileID: 148014, guid: 5fc80fecfe2924da9baed25943c7a9a6, type: 2}
   jumpButtonThemPrefab: {fileID: 114014, guid: 089341c0e3dc14dfc8508be16eef0f4c, type: 2}
   selector: {fileID: 1158007036}
