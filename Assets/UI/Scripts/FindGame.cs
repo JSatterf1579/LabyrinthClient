@@ -18,6 +18,13 @@ public class FindGame : MonoBehaviour
     public Dropdown GameMode;
     public Toggle Passbot;
 
+
+    public GameObject ArchitectModal;
+    public Dropdown ArchitectMap;
+    public Dropdown ArchGamemode;
+    public Toggle ArchitectPassbot;
+
+
     public Camera camera;
 
 	public Vector2 cardPosition = new Vector2(55, -70);
@@ -81,8 +88,6 @@ public class FindGame : MonoBehaviour
         {
             HeroSelectModal.SetActive(true);
             SetupHeroCards(response.list[0]);
-            //queued = true;
-            //QueueingModal.SetActive(true);
 
 
         }
@@ -194,19 +199,56 @@ public class FindGame : MonoBehaviour
     }
 
 
-
     public void OnArchitect()
     {
+        ArchitectModal.SetActive(true);
+        socket.Emit("maps", new JSONObject(), OnMaps);
+    }
+
+    public void OnMaps(JSONObject response)
+    {
+
+        Debug.Log(response.list[0]);
+        if (response.list[0].GetField("status").n == 200)
+        {
+            MapSelect.ClearOptions();
+            mapSelectPosition.Clear();
+            List<MapMetadata> maps = JSONDecoder.DecodeMapMetadata(response.list[0].GetField("maps"));
+            for (int i = 0; i < maps.Count; i++)
+            {
+                ArchitectMap.options.Add(new Dropdown.OptionData() { text = maps[i].Name });
+                mapSelectPosition[i] = maps[i];
+            }
+            MapSelect.value = 1;
+            MapSelect.value = 0;
+        }
+    }
+
+
+
+    public void OnArchitectConfirm()
+    {
         JSONObject data = new JSONObject();
-        data["map_id"] = new JSONObject(1);
+        data.AddField("map_id", mapSelectPosition[ArchitectMap.value].ID);
         socket.Emit("map", data, (x) => {
             Debug.Log(x);
             Debug.Log(x.type);
             MonsterPlacementManager.InitialMap = x[0]["map"];
             JSONObject root = new JSONObject();
-            root.AddField("map_id", 1);
-            root.AddField("queue_with_passbot", true);
-            root.AddField("game_mode", "DM");
+            root.AddField("map_id", mapSelectPosition[ArchitectMap.value].ID);
+            root.AddField("queue_with_passbot", ArchitectPassbot.isOn);
+            switch (ArchGamemode.value)
+            {
+                case 0:
+                    data.AddField("game_mode", "dm");
+                    break;
+                case 1:
+                    data.AddField("game_mode", "obj");
+                    break;
+                default:
+                    data.AddField("game_mode", "dm");
+                    break;
+            }
             MonsterPlacementManager.JSONRoot = root;
             SceneManager.LoadScene("ArchSetupScene");
         });
@@ -276,6 +318,7 @@ public class FindGame : MonoBehaviour
         }
         else if (response.list[0].GetField("status").n == 422)
         {
+            socket.Emit("dequeue", new JSONObject());
             socket.Emit("leave_match", new JSONObject(), AutoLeaveMatch);
         }
     }

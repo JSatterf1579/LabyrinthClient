@@ -98,7 +98,7 @@ public class JSONDecoder{
                 int yPos = (int)hero.GetField("y").n;
 
 
-                //int level = (int)hero.GetField("level").n;
+                int dbid = (int)hero.GetField("database_id").n;
                 int health = (int)hero.GetField("health").n;
                 int attack = (int)hero.GetField("attack").n;
                 int defense = (int)hero.GetField("defense").n;
@@ -115,7 +115,7 @@ public class JSONDecoder{
                     weapon = DecodeWeapon(hero.GetField("weapon"));
                 }
 
-                Manager.InstantiateMonster(monsterName, owner, controller, UUID, xPos, yPos, health, attack, defense, vision, movement, ap, weapon);
+                Manager.InstantiateMonster(monsterName, owner, controller, UUID, xPos, yPos, health, attack, defense, vision, movement, ap, weapon, dbid);
             }
             else if (hero.GetField("type").str == "objective")
             {

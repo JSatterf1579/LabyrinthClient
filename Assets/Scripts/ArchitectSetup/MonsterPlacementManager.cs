@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System;
+using SocketIO;
 using UnityEngine.SceneManagement;
 
 public class MonsterPlacementManager : MonoBehaviour {
 
     public HeroManager Manager;
     public Color ValidTileHightlightColor = Color.blue;
+    public Dialog DialogBox;
     
     public static JSONObject InitialMap;
     public static JSONObject JSONRoot;
@@ -81,12 +83,53 @@ public class MonsterPlacementManager : MonoBehaviour {
     }
 
     public void ConfirmAndQueue() {
+        
         if (Queueing) return;
         Queueing = true;
         var socket = GameManager.instance.getSocket();
+        socket.On("queue_error", FailedQueue);
         socket.On("match_found", FindGame.OnMatch);
         AddMonstersToJSON();
-        socket.Emit("queue_up_architect", JSONRoot);
+        Debug.Log(JSONRoot);
+        socket.Emit("queue_up_architect", JSONRoot, ArchQueue);
+    }
+
+    public void ArchQueue(JSONObject response)
+    {
+        Debug.Log(response);
+        if (response.list[0].GetField("status").n == 200)
+        {
+            DialogBox.Show("Queued up. Please wait for match", "Cancel", QueueCancel);
+        }
+        else if (response.list[0].GetField("status").n == 422)
+        {
+            Queueing = false;
+            var socket = GameManager.instance.getSocket();
+            socket.Emit("dequeue", new JSONObject());
+            socket.Emit("leave_match", new JSONObject());
+        }
+    }
+
+    public void QueueCancel()
+    {
+        var socket = GameManager.instance.getSocket();
+        socket.Emit("dequeue", new JSONObject(), DequeueResponse);
+    }
+
+    public void DequeueResponse(JSONObject response)
+    {
+        Debug.Log(response);
+        if (response.list[0].GetField("status").n == 200)
+        {
+            DialogBox.Hide();
+            Queueing = false;
+        }
+    }
+
+    public void FailedQueue(SocketIOEvent response)
+    {
+        Debug.Log(response.data);
+        Queueing = false;
     }
 
     public void CancelButtonPressed() {
@@ -100,7 +143,7 @@ public class MonsterPlacementManager : MonoBehaviour {
             JSONObject inner = new JSONObject();
             inner.AddField("x", monster.posX);
             inner.AddField("y", monster.posY);
-            inner.AddField("id", monster.MOName);
+            inner.AddField("id", monster.DatabaseID);
             monsterList.Add(inner);
         }
         JSONRoot.AddField("monsters", monsterList);
