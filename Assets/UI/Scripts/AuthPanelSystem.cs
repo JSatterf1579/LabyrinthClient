@@ -39,7 +39,7 @@ public class AuthPanelSystem : MonoBehaviour {
 			passField.ActivateInputField();
 		}
 
-		if(Input.GetKey(KeyCode.Return)) {
+		if(Input.GetKeyDown(KeyCode.Return)) {
 			login();
 		}
 
