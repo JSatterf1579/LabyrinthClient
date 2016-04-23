@@ -858,7 +858,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: M / W
+  m_Text: MAGE WARRIOR
 --- !u!222 &637137894
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1244,7 +1244,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: W / R
+  m_Text: WARRIOR ROGUE
 --- !u!222 &859441236
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1317,7 +1317,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: R / M
+  m_Text: ROGUE MAGE
 --- !u!222 &865284130
 CanvasRenderer:
   m_ObjectHideFlags: 0

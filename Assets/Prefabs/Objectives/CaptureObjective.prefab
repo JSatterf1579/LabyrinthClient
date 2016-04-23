@@ -12,6 +12,7 @@ GameObject:
   - 23: {fileID: 2331434}
   - 111: {fileID: 11152950}
   - 114: {fileID: 11469838}
+  - 114: {fileID: 11499896}
   m_Layer: 0
   m_Name: CaptureObjective
   m_TagString: Untagged
@@ -25,8 +26,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 143020}
-  m_LocalRotation: {x: 0.000000021855694, y: 0, z: -0, w: 1}
-  m_LocalPosition: {x: 314.65396, y: 127.65509, z: 0.000000021157328}
+  m_LocalRotation: {x: 0.000000021855698, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.233, y: 1.145, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -96,6 +97,21 @@ MonoBehaviour:
   posX: 0
   posY: 0
   HighlightRenderers: []
+--- !u!114 &11499896
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 143020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4146c7f841bf415ba43b02fb88eba06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bobHeight: 0.5
+  bobRate: 1
+  spinRate: {x: 0, y: 0, z: 0}
+  useOffset: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
